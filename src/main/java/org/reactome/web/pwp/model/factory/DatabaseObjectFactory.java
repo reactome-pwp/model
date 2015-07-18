@@ -55,14 +55,14 @@ public abstract class DatabaseObjectFactory {
     }
 
     public static void get(Collection<?> identifiers, final DatabaseObjectsCreatedHandler handler){
-        String url = SERVER + CONTENT_SERVICE_PATH + "queryByIds/DatabaseObject";
+        String url = SERVER + CONTENT_SERVICE_PATH + "mapByIds/DatabaseObject";
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url);
         requestBuilder.setHeader("Content-Type", "text/plain");
         requestBuilder.setHeader("Accept", "application/json");
 
         //In case the call is made without elements to query
         if(identifiers==null || identifiers.isEmpty()){
-            handler.onDatabaseObjectsLoaded(new LinkedList<DatabaseObject>());
+            handler.onDatabaseObjectsLoaded(new HashMap<String, DatabaseObject>());
             return;
         }
 
@@ -81,13 +81,19 @@ public abstract class DatabaseObjectFactory {
             requestBuilder.sendRequest(post, new RequestCallback() {
                 @Override
                 public void onResponseReceived(Request request, Response response) {
-                    JSONArray list = JSONParser.parseStrict(response.getText()).isArray();
-                    List<DatabaseObject> rtn = new LinkedList<>();
-                    for(int i=0; i<list.size(); ++i){
-                        JSONObject object = list.get(i).isObject();
-                        rtn.add(create(object));
+                    switch (response.getStatusCode()) {
+                        case Response.SC_OK:
+                            Map<String, DatabaseObject> map = new HashMap<>();
+                            JSONObject object = JSONParser.parseStrict(response.getText()).isObject();
+                            for (String key : object.keySet()) {
+                                DatabaseObject dbObject = DatabaseObjectFactory.create(object.get(key).isObject());
+                                map.put(key, dbObject);
+                            }
+                            handler.onDatabaseObjectsLoaded(map);
+                            break;
+                        default:
+                            handler.onDatabaseObjectError(new Exception(response.getStatusText()));
                     }
-                    handler.onDatabaseObjectsLoaded(rtn);
                 }
 
                 @Override

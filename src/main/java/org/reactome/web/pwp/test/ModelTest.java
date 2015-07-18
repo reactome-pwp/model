@@ -11,7 +11,7 @@ import org.reactome.web.pwp.model.handlers.DatabaseObjectsCreatedHandler;
 import org.reactome.web.pwp.model.util.Ancestors;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
@@ -50,8 +50,8 @@ public class ModelTest implements EntryPoint {
 
                 DatabaseObjectFactory.get(Arrays.asList(1643685,5663202,1643713), new DatabaseObjectsCreatedHandler() {
                     @Override
-                    public void onDatabaseObjectsLoaded(List<DatabaseObject> databaseObjects) {
-                        for (DatabaseObject databaseObject : databaseObjects) {
+                    public void onDatabaseObjectsLoaded(Map<String, DatabaseObject> databaseObjects) {
+                        for (DatabaseObject databaseObject : databaseObjects.values()) {
                             System.out.println(databaseObject);
                         }
                     }
