@@ -1,4 +1,4 @@
-package org.reactome.web.pwp.model.handlers;
+package org.reactome.web.pwp.model.client.handlers;
 
 import org.reactome.web.pwp.model.classes.Person;
 

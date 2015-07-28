@@ -3,8 +3,9 @@ package org.reactome.web.pwp.test;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.Scheduler;
 import org.reactome.web.pwp.model.classes.*;
+import org.reactome.web.pwp.model.client.RESTFulClient;
+import org.reactome.web.pwp.model.client.handlers.AncestorsCreatedHandler;
 import org.reactome.web.pwp.model.factory.DatabaseObjectFactory;
-import org.reactome.web.pwp.model.handlers.AncestorsCreatedHandler;
 import org.reactome.web.pwp.model.handlers.DatabaseObjectCreatedHandler;
 import org.reactome.web.pwp.model.handlers.DatabaseObjectLoadedHandler;
 import org.reactome.web.pwp.model.handlers.DatabaseObjectsCreatedHandler;
@@ -29,7 +30,7 @@ public class ModelTest implements EntryPoint {
                     @Override
                     public void onDatabaseObjectLoaded(DatabaseObject databaseObject) {
                         Event event = databaseObject.cast();
-                        DatabaseObjectFactory.getAncestors(event, new AncestorsCreatedHandler() {
+                        RESTFulClient.getAncestors(event, new AncestorsCreatedHandler() {
                             @Override
                             public void onAncestorsLoaded(Ancestors ancestors) {
                                 System.out.println(ancestors);

@@ -1,22 +1,23 @@
 package org.reactome.web.pwp.model.factory;
 
 import com.google.gwt.http.client.*;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import org.reactome.web.pwp.model.classes.*;
-import org.reactome.web.pwp.model.handlers.*;
-import org.reactome.web.pwp.model.util.Ancestors;
+import org.reactome.web.pwp.model.client.RESTFulClient;
+import org.reactome.web.pwp.model.handlers.DatabaseObjectCreatedHandler;
+import org.reactome.web.pwp.model.handlers.DatabaseObjectLoadedHandler;
+import org.reactome.web.pwp.model.handlers.DatabaseObjectsCreatedHandler;
 import org.reactome.web.pwp.model.util.LruCache;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 public abstract class DatabaseObjectFactory {
-    public static String SERVER = ""; //Here "http://reactome.org" can be set to use CORS
-    public static final String CONTENT_SERVICE_PATH = "/ReactomeRESTfulAPI/RESTfulWS/";
 
     private static final LruCache<String, DatabaseObject> cache = new LruCache<>(150);
 
@@ -30,7 +31,7 @@ public abstract class DatabaseObjectFactory {
             handler.onDatabaseObjectLoaded(databaseObject);
             return;
         }
-        String url = SERVER + CONTENT_SERVICE_PATH + "detailedView/DatabaseObject/" + identifier;
+        String url = RESTFulClient.SERVER + RESTFulClient.CONTENT_SERVICE_PATH + "detailedView/DatabaseObject/" + identifier;
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url);
         requestBuilder.setHeader("Accept", "application/json");
         try {
@@ -55,7 +56,7 @@ public abstract class DatabaseObjectFactory {
     }
 
     public static void get(Collection<?> identifiers, final DatabaseObjectsCreatedHandler handler){
-        String url = SERVER + CONTENT_SERVICE_PATH + "mapByIds/DatabaseObject";
+        String url = RESTFulClient.SERVER + RESTFulClient.CONTENT_SERVICE_PATH + "mapByIds/DatabaseObject";
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url);
         requestBuilder.setHeader("Content-Type", "text/plain");
         requestBuilder.setHeader("Accept", "application/json");
@@ -74,7 +75,7 @@ public abstract class DatabaseObjectFactory {
                 sb.append(((DatabaseObject) s).getDbId()).append(",");
             }
         }
-        sb.delete(sb.length()-1, sb.length());
+        sb.delete(sb.length() - 1, sb.length());
         String post = sb.toString();
 
         try {
@@ -106,36 +107,8 @@ public abstract class DatabaseObjectFactory {
         }
     }
 
-    public static void getAncestors(Event event, final AncestorsCreatedHandler handler){
-        String url = "/ReactomeRESTfulAPI/RESTfulWS/queryEventAncestors/" + event.getDbId();
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url);
-        requestBuilder.setHeader("Accept", "application/json");
-        try {
-            requestBuilder.sendRequest(null, new RequestCallback() {
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-                    try {
-                        JSONArray list = JSONParser.parseStrict(response.getText()).isArray();
-                        Ancestors ancestors = new Ancestors(list);
-                        //For the time being the events in the ancestors ARE NOT cached
-                        handler.onAncestorsLoaded(ancestors);
-                    }catch (Exception ex){
-                        handler.onAncestorsError(ex);
-                    }
-                }
-
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    handler.onAncestorsError(exception);
-                }
-            });
-        } catch (RequestException ex) {
-           handler.onAncestorsError(ex);
-        }
-    }
-
     public static void load(final DatabaseObject databaseObject, final DatabaseObjectLoadedHandler handler){
-        String url = SERVER + CONTENT_SERVICE_PATH + "detailedView/DatabaseObject/" +  databaseObject.getDbId();
+        String url = RESTFulClient.SERVER + RESTFulClient.CONTENT_SERVICE_PATH + "detailedView/DatabaseObject/" +  databaseObject.getDbId();
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url);
         requestBuilder.setHeader("Accept", "application/json");
         try {
@@ -155,39 +128,6 @@ public abstract class DatabaseObjectFactory {
             });
         } catch (RequestException e) {
             handler.onDatabaseObjectError(e);
-        }
-    }
-
-    public static void loadLiteratureReferences(final Person person, final LiteratureReferencesLoadedHandler handler){
-        String url = SERVER + CONTENT_SERVICE_PATH + "queryReferences/" + person.getDbId();
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url);
-        requestBuilder.setHeader("Accept", "application/json");
-        try {
-            requestBuilder.sendRequest(null, new RequestCallback() {
-                @Override
-                public void onResponseReceived(Request request, Response response) {
-                    try{
-                        JSONArray list = JSONParser.parseStrict(response.getText()).isArray();
-                        List<LiteratureReference> references = new ArrayList<LiteratureReference>();
-                        for(int i=0; i<list.size(); ++i){
-                            JSONObject object = list.get(i).isObject();
-                            references.add((LiteratureReference) DatabaseObjectFactory.create(object));
-                        }
-                        person.setLiteratureReferences(references);
-                        handler.onLiteratureReferencesLoaded(person);
-                    }catch (Exception ex){
-                        handler.onLiteratureReferencesError(ex);
-                    }
-                }
-
-                @Override
-                public void onError(Request request, Throwable exception) {
-                    handler.onLiteratureReferencesError(exception);
-                }
-            });
-        }
-        catch (RequestException ex) {
-            handler.onLiteratureReferencesError(ex);
         }
     }
 

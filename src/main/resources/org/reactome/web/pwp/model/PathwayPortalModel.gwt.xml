@@ -6,6 +6,7 @@
 
     <!-- Specify the paths for translatable code                    -->
     <source path='classes'/>
+    <source path='client'/>
     <source path='factory'/>
     <source path='handlers'/>
     <source path='images'/>
