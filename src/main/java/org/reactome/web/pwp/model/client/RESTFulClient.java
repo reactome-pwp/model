@@ -23,7 +23,7 @@ public class RESTFulClient {
     public static final String CONTENT_SERVICE_PATH = "/ReactomeRESTfulAPI/RESTfulWS/";
 
     public static void getAncestors(Event event, final AncestorsCreatedHandler handler){
-        String url = "/ReactomeRESTfulAPI/RESTfulWS/queryEventAncestors/" + event.getDbId();
+        String url = RESTFulClient.SERVER + RESTFulClient.CONTENT_SERVICE_PATH + "queryEventAncestors/" + event.getDbId();
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url);
         requestBuilder.setHeader("Accept", "application/json");
         try {
