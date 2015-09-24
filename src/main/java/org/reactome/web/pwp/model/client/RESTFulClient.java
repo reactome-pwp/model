@@ -84,13 +84,12 @@ public class RESTFulClient {
     }
 
 
-    public static void loadPathwaysForEntities(PhysicalEntity pe, final PathwaysForEntitiesLoadedHandler handler){
-        String url = RESTFulClient.SERVER + RESTFulClient.CONTENT_SERVICE_PATH + "pathwaysForEntities";
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url);
+    public static void loadPathwaysWithDiagramForEntity(PhysicalEntity pe, final PathwaysForEntitiesLoadedHandler handler){
+        String url = RESTFulClient.SERVER + RESTFulClient.CONTENT_SERVICE_PATH + "pathwaysWithDiagramForEntity/" + pe.getDbId();
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url);
         requestBuilder.setHeader("Accept", "application/json");
-        String post = "ID=" + pe.getDbId();
         try {
-            requestBuilder.sendRequest(post, new RequestCallback() {
+            requestBuilder.sendRequest(null, new RequestCallback() {
                 @Override
                 public void onResponseReceived(Request request, Response response) {
                     switch (response.getStatusCode()){
