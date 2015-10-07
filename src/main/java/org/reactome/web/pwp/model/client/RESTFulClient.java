@@ -8,6 +8,7 @@ import org.reactome.web.pwp.model.classes.*;
 import org.reactome.web.pwp.model.client.handlers.AncestorsCreatedHandler;
 import org.reactome.web.pwp.model.client.handlers.LiteratureReferencesLoadedHandler;
 import org.reactome.web.pwp.model.client.handlers.PathwaysForEntitiesLoadedHandler;
+import org.reactome.web.pwp.model.client.handlers.VersionRetrievedHandler;
 import org.reactome.web.pwp.model.factory.DatabaseObjectFactory;
 import org.reactome.web.pwp.model.util.Ancestors;
 
@@ -118,6 +119,38 @@ public class RESTFulClient {
             });
         } catch (RequestException e) {
             handler.onPathwaysForEntitiesError(e);
+        }
+    }
+
+    private static String version;
+    public static void getVersion(final VersionRetrievedHandler handler){
+        if(version!=null && !version.isEmpty()){
+            handler.onVersionRetrieved(version);
+        }else {
+            String url = RESTFulClient.SERVER + RESTFulClient.CONTENT_SERVICE_PATH + "version";
+            RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url);
+            try {
+                requestBuilder.sendRequest(null, new RequestCallback() {
+                    @Override
+                    public void onResponseReceived(Request request, Response response) {
+                        switch (response.getStatusCode()) {
+                            case Response.SC_OK:
+                                version = response.getText().trim();
+                                handler.onVersionRetrieved(response.getText());
+                                break;
+                            default:
+                                handler.onVersionRetrievedError(new Exception(response.getStatusText()));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Request request, Throwable exception) {
+                        handler.onVersionRetrievedError(exception);
+                    }
+                });
+            } catch (RequestException e) {
+                handler.onVersionRetrievedError(e);
+            }
         }
     }
 }
