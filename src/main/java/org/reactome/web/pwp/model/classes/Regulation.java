@@ -1,9 +1,11 @@
 package org.reactome.web.pwp.model.classes;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.resources.client.ImageResource;
 import org.reactome.web.pwp.model.factory.DatabaseObjectFactory;
 import org.reactome.web.pwp.model.factory.DatabaseObjectUtils;
 import org.reactome.web.pwp.model.factory.SchemaClass;
+import org.reactome.web.pwp.model.images.DatabaseObjectImages;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -152,5 +154,10 @@ public class Regulation extends DatabaseObject {
 
     public List<Pathway> getContainedInPathway() {
         return containedInPathway;
+    }
+
+    @Override
+    public ImageResource getImageResource() {
+        return DatabaseObjectImages.INSTANCE.regulator();
     }
 }

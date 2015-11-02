@@ -86,6 +86,9 @@ public interface DatabaseObjectImages extends ClientBundle {
     @Source("ReferenceRNASequence.png")
     ImageResource referenceRNASequence();
 
+    @Source("Regulator.png")
+    ImageResource regulator();
+
     @Source("SimpleEntity.png")
     ImageResource simpleEntity();
 
