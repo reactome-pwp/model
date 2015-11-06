@@ -38,11 +38,17 @@ public abstract class DatabaseObjectFactory {
             requestBuilder.sendRequest(null, new RequestCallback() {
                 @Override
                 public void onResponseReceived(Request request, Response response) {
-                    JSONObject json = JSONParser.parseStrict(response.getText()).isObject();
-                    DatabaseObject databaseObject = create(json);
-                    cache.put(databaseObject.getIdentifier(), databaseObject);
-                    cache.put(databaseObject.getDbId().toString(), databaseObject); //TODO: Under test
-                    handler.onDatabaseObjectLoaded(databaseObject);
+                    switch (response.getStatusCode()){
+                        case Response.SC_OK:
+                            JSONObject json = JSONParser.parseStrict(response.getText()).isObject();
+                            DatabaseObject databaseObject = create(json);
+                            cache.put(databaseObject.getIdentifier(), databaseObject);
+                            cache.put(databaseObject.getDbId().toString(), databaseObject); //TODO: Under test
+                            handler.onDatabaseObjectLoaded(databaseObject);
+                            break;
+                        default:
+                            handler.onDatabaseObjectError(new Exception(response.getStatusText()));
+                    }
                 }
 
                 @Override
@@ -115,10 +121,16 @@ public abstract class DatabaseObjectFactory {
             requestBuilder.sendRequest(null, new RequestCallback() {
                 @Override
                 public void onResponseReceived(Request request, Response response) {
-                    JSONObject json = JSONParser.parseStrict(response.getText()).isObject();
-                    databaseObject.load(json);
-                    cache.put(databaseObject.getIdentifier(), databaseObject);
-                    handler.onDatabaseObjectLoaded(databaseObject);
+                    switch (response.getStatusCode()) {
+                        case Response.SC_OK:
+                            JSONObject json = JSONParser.parseStrict(response.getText()).isObject();
+                            databaseObject.load(json);
+                            cache.put(databaseObject.getIdentifier(), databaseObject);
+                            handler.onDatabaseObjectLoaded(databaseObject);
+                            break;
+                        default:
+                            handler.onDatabaseObjectError(new Exception(response.getStatusText()));
+                    }
                 }
 
                 @Override
