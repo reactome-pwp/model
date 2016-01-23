@@ -13,8 +13,8 @@ public class Affiliation extends DatabaseObject {
     private String address;
     private String name;
 
-    public Affiliation(SchemaClass schemaClass) {
-        super(schemaClass);
+    public Affiliation() {
+        super(SchemaClass.AFFILIATION);
     }
 
     @Override
