@@ -23,7 +23,7 @@ public class Person extends DatabaseObject {
     // A new attribute added in December, 2013
     private List<DatabaseIdentifier> crossReference;
 
-    private List<LiteratureReference> literatureReferences;
+    private List<Publication> publications;
 
     public Person() {
         super(SchemaClass.PERSON);
@@ -92,11 +92,11 @@ public class Person extends DatabaseObject {
         return crossReference;
     }
 
-    public List<LiteratureReference> getLiteratureReferences() {
-        return literatureReferences;
+    public List<Publication> getPublications() {
+        return publications;
     }
 
-    public void setLiteratureReferences(List<LiteratureReference> literatureReferences) {
-        this.literatureReferences = literatureReferences;
+    public void setPublications(List<Publication> publications) {
+        this.publications = publications;
     }
 }
