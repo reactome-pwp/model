@@ -4,6 +4,7 @@ package org.reactome.web.pwp.model.factory;
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 public enum SchemaClass {
+    AFFILIATION("Affiliation"),
     ABSTRACT_MODIFIED_RESIDUE("AbstractModifiedResidue"),
     BLACK_BOX_EVENT("BlackBoxEvent"),
     BOOK("Book"),

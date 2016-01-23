@@ -154,6 +154,9 @@ public abstract class DatabaseObjectFactory {
 
         DatabaseObject rtn;
         switch (schemaClass) {
+            case AFFILIATION:
+                rtn = new Affiliation();
+                break;
             //case ABSTRACT_MODIFIED_RESIDUE:  //NOT USED HERE
             case BLACK_BOX_EVENT:
                 rtn = new BlackBoxEvent();
