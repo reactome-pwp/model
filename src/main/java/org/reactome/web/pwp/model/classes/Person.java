@@ -14,6 +14,7 @@ import java.util.List;
 @SuppressWarnings("UnusedDeclaration")
 public class Person extends DatabaseObject {
 
+    private List<Affiliation> affiliation;
     private String emailAddress;
     private String firstname;
     private String initial;
@@ -31,6 +32,11 @@ public class Person extends DatabaseObject {
     @Override
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
+
+        this.affiliation = new LinkedList<>();
+        for (JSONObject object : DatabaseObjectUtils.getObjectList(jsonObject, "affiliation")) {
+            this.affiliation.add((Affiliation) DatabaseObjectFactory.create(object));
+        }
 
         if (jsonObject.containsKey("emailAddress")) {
             this.emailAddress = DatabaseObjectUtils.getStringValue(jsonObject, "emailAddress");
@@ -56,6 +62,10 @@ public class Person extends DatabaseObject {
         for (JSONObject object : DatabaseObjectUtils.getObjectList(jsonObject, "crossReference")) {
             this.crossReference.add((DatabaseIdentifier) DatabaseObjectFactory.create(object));
         }
+    }
+
+    public List<Affiliation> getAffiliation() {
+        return affiliation;
     }
 
     public String getEmailAddress() {

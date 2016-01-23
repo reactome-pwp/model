@@ -13,7 +13,7 @@ public class Book extends Publication {
     private String isbn;
     private String chapterTitle;
     private String pages;
-    private Integer publisher;
+    private Affiliation publisher;
     private String publisherClass;
     private Integer year;
 
@@ -38,7 +38,7 @@ public class Book extends Publication {
         }
 
         if (jsonObject.containsKey("publisher")) {
-            this.publisher = DatabaseObjectUtils.getIntValue(jsonObject, "publisher");
+            this.publisher = DatabaseObjectUtils.getDatabaseObject(jsonObject, "publisher");
         }
 
         if (jsonObject.containsKey("publisherClass")) {
@@ -62,7 +62,7 @@ public class Book extends Publication {
         return pages;
     }
 
-    public Integer getPublisher() {
+    public Affiliation getPublisher() {
         return publisher;
     }
 
