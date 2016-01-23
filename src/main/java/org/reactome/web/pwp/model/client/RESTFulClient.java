@@ -51,7 +51,7 @@ public class RESTFulClient {
         }
     }
 
-    public static void loadLiteratureReferences(final Person person, final LiteratureReferencesLoadedHandler handler){
+    public static void loadPublications(final Person person, final LiteratureReferencesLoadedHandler handler){
         String url = RESTFulClient.SERVER + RESTFulClient.CONTENT_SERVICE_PATH + "queryReferences/" + person.getDbId();
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url);
         requestBuilder.setHeader("Accept", "application/json");
@@ -61,12 +61,12 @@ public class RESTFulClient {
                 public void onResponseReceived(Request request, Response response) {
                     try{
                         JSONArray list = JSONParser.parseStrict(response.getText()).isArray();
-                        List<LiteratureReference> references = new ArrayList<>();
+                        List<Publication> publications = new ArrayList<>();
                         for(int i=0; i<list.size(); ++i){
                             JSONObject object = list.get(i).isObject();
-                            references.add((LiteratureReference) DatabaseObjectFactory.create(object));
+                            publications.add((Publication) DatabaseObjectFactory.create(object));
                         }
-                        person.setLiteratureReferences(references);
+                        person.setPublications(publications);
                         handler.onLiteratureReferencesLoaded(person);
                     }catch (Exception ex){
                         handler.onLiteratureReferencesError(ex);
