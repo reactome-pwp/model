@@ -31,14 +31,16 @@ public class RESTFulClient {
             requestBuilder.sendRequest(null, new RequestCallback() {
                 @Override
                 public void onResponseReceived(Request request, Response response) {
+                    Ancestors ancestors;
                     try {
                         JSONArray list = JSONParser.parseStrict(response.getText()).isArray();
-                        Ancestors ancestors = new Ancestors(list);
+                        ancestors = new Ancestors(list);
                         //For the time being the events in the ancestors ARE NOT cached
-                        handler.onAncestorsLoaded(ancestors);
                     }catch (Exception ex){
                         handler.onAncestorsError(ex);
+                        return;
                     }
+                    handler.onAncestorsLoaded(ancestors);
                 }
 
                 @Override
@@ -59,18 +61,20 @@ public class RESTFulClient {
             requestBuilder.sendRequest(null, new RequestCallback() {
                 @Override
                 public void onResponseReceived(Request request, Response response) {
+                    List<Publication> publications;
                     try{
                         JSONArray list = JSONParser.parseStrict(response.getText()).isArray();
-                        List<Publication> publications = new ArrayList<>();
+                        publications = new ArrayList<>();
                         for(int i=0; i<list.size(); ++i){
                             JSONObject object = list.get(i).isObject();
                             publications.add((Publication) DatabaseObjectFactory.create(object));
                         }
-                        person.setPublications(publications);
-                        handler.onLiteratureReferencesLoaded(person);
                     }catch (Exception ex){
                         handler.onLiteratureReferencesError(ex);
+                        return;
                     }
+                    person.setPublications(publications);
+                    handler.onLiteratureReferencesLoaded(person);
                 }
 
                 @Override
@@ -95,17 +99,20 @@ public class RESTFulClient {
                 public void onResponseReceived(Request request, Response response) {
                     switch (response.getStatusCode()){
                         case Response.SC_OK:
+                            List<Pathway> pathways;
                             try {
                                 JSONArray list = JSONParser.parseStrict(response.getText()).isArray();
-                                List<Pathway> pathways = new ArrayList<>();
+                                pathways = new ArrayList<>();
                                 for (int i = 0; i < list.size(); ++i) {
                                     JSONObject object = list.get(i).isObject();
                                     pathways.add((Pathway) DatabaseObjectFactory.create(object));
                                 }
-                                handler.onPathwaysForEntitiesLoaded(pathways);
+
                             }catch (Exception e){
                                 handler.onPathwaysForEntitiesError(e);
+                                return;
                             }
+                            handler.onPathwaysForEntitiesLoaded(pathways);
                             break;
                         default:
                             handler.onPathwaysForEntitiesError(new Exception(response.getStatusText()));
