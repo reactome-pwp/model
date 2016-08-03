@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module>
+<module rename-to='model'>
     <!-- Inherit the core Web Toolkit stuff.                        -->
     <inherits name='com.google.gwt.user.User'/>
     <inherits name="com.google.gwt.json.JSON"/>
 
+    <inherits name="com.google.web.bindery.autobean.AutoBean"/>
+
     <!-- Specify the paths for translatable code                    -->
-    <source path='classes'/>
     <source path='client'/>
-    <source path='factory'/>
-    <source path='handlers'/>
-    <source path='images'/>
-    <source path='util'/>
 </module>

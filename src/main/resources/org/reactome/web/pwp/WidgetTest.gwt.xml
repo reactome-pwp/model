@@ -4,11 +4,11 @@
 
     <inherits name="org.reactome.web.pwp.model.PathwayPortalModel"/>
 
-    <!-- Default GWT style sheet -->
-    <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+    <!--&lt;!&ndash; Default GWT style sheet &ndash;&gt;-->
+    <!--<inherits name='com.google.gwt.user.theme.standard.Standard'/>-->
 
     <!-- Specify the app entry point class.                         -->
-    <entry-point class='org.reactome.web.pwp.test.ModelTest'/>
+    <entry-point class='org.reactome.web.pwp.model.test.WidgetTest'/>
 
     <!-- Specify the paths for translatable code                    -->
     <source path='model'/>
