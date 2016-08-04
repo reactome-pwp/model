@@ -25,7 +25,9 @@ public class BlackBoxEvent extends ReactionLikeEvent {
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
 
-        this.templateEvent = DatabaseObjectUtils.getDatabaseObject(jsonObject, "templateEvent");
+        setDatabaseObject(jsonObject.get("templateEvent"), () ->
+                templateEvent = DatabaseObjectUtils.getDatabaseObject(jsonObject, "templateEvent")
+        );
 
         this.hasEvent = DatabaseObjectUtils.getObjectList(jsonObject, "hasEvent");
     }

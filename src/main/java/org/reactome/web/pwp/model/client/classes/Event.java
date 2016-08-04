@@ -73,11 +73,15 @@ public abstract class Event extends DatabaseObject {
 
         this.edited  = DatabaseObjectUtils.getObjectList(jsonObject, "edited");
 
-        this.evidenceType = DatabaseObjectUtils.getDatabaseObject(jsonObject, "evidenceType");
+        setDatabaseObject(jsonObject.get("evidenceType"), () ->
+                evidenceType = DatabaseObjectUtils.getDatabaseObject(jsonObject, "evidenceType")
+        );
 
         this.figure = DatabaseObjectUtils.getObjectList(jsonObject, "figure");
 
-        this.goBiologicalProcess = DatabaseObjectUtils.getDatabaseObject(jsonObject, "goBiologicalProcess");
+        setDatabaseObject(jsonObject.get("goBiologicalProcess"), () ->
+                goBiologicalProcess = DatabaseObjectUtils.getDatabaseObject(jsonObject, "goBiologicalProcess")
+        );
 
         this.inferredFrom = DatabaseObjectUtils.getObjectList(jsonObject, "inferredFrom");
 

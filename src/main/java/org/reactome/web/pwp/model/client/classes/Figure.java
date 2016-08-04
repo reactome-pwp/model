@@ -9,6 +9,7 @@ import org.reactome.web.pwp.model.client.factory.SchemaClass;
  */
 @SuppressWarnings("UnusedDeclaration")
 public class Figure extends DatabaseObject {
+
     private String url;
 
     public Figure() {

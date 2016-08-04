@@ -13,7 +13,6 @@ import org.reactome.web.pwp.model.client.factory.SchemaClass;
 public class Reaction extends ReactionLikeEvent {
 
     private Reaction reverseReaction;
-//    private List<Regulation> regulation;
 
     public Reaction() {
         super(SchemaClass.REACTION);
@@ -23,38 +22,10 @@ public class Reaction extends ReactionLikeEvent {
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
 
-        this.reverseReaction = DatabaseObjectUtils.getDatabaseObject(jsonObject, "reverseReaction");
-
-//        this.regulation = new LinkedList<>();
-//        for (JSONObject object : DatabaseObjectUtils.getObjectList(jsonObject, "regulation")) {
-//            this.regulation.add((Regulation) DatabaseObjectFactory.create(object));
-//        }
+        setDatabaseObject(jsonObject.get("reverseReaction"), () ->
+                reverseReaction = DatabaseObjectUtils.getDatabaseObject(jsonObject, "reverseReaction")
+        );
     }
-
-    /******************************
-     * NEXT TWO METHODS NOT AUTO-GENERATED
-     ******************************/
-//    public List<PositiveRegulation> getPositiveRegulation() {
-//        List<PositiveRegulation> pr = new LinkedList<>();
-//        for (Regulation r : regulation) {
-//            if (r instanceof PositiveRegulation) {
-//                pr.add((PositiveRegulation) r);
-//            }
-//        }
-//        return pr;
-//    }
-//
-//    public List<NegativeRegulation> getNegativeRegulation() {
-//        List<NegativeRegulation> nr = new LinkedList<>();
-//        for (Regulation r : regulation) {
-//            if (r instanceof NegativeRegulation) {
-//                nr.add((NegativeRegulation) r);
-//            }
-//        }
-//        return nr;
-//    }
-
-    /*************************************************************************************************/
 
     @Override
     public ImageResource getImageResource() {
@@ -64,8 +35,4 @@ public class Reaction extends ReactionLikeEvent {
     public Reaction getReverseReaction() {
         return reverseReaction;
     }
-
-//    public List<Regulation> getRegulation() {
-//        return regulation;
-//    }
 }

@@ -9,6 +9,7 @@ import org.reactome.web.pwp.model.client.factory.SchemaClass;
  */
 @SuppressWarnings("unused")
 public class LiteratureReference extends Publication {
+
     private String journal;
     private String pages;
     private Integer pubMedIdentifier;

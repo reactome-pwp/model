@@ -21,7 +21,6 @@ public abstract class ReferenceSequence extends ReferenceEntity {
     private List<String> secondaryIdentifier;
     private Integer sequenceLength;
     private Species species;
-//    private String url; // Valid URL based on referenceDatabase
 
     public ReferenceSequence(SchemaClass schemaClass) {
         super(schemaClass);
@@ -47,10 +46,9 @@ public abstract class ReferenceSequence extends ReferenceEntity {
 
         this.sequenceLength = DatabaseObjectUtils.getIntValue(jsonObject, "sequenceLength");
 
-        this.species = DatabaseObjectUtils.getDatabaseObject(jsonObject, "species");
-
-//        this.url = DatabaseObjectUtils.getStringValue(jsonObject, "url");
-
+        setDatabaseObject(jsonObject.get("species"), () ->
+                species = DatabaseObjectUtils.getDatabaseObject(jsonObject, "species")
+        );
     }
 
     public String getChecksum() {
@@ -88,8 +86,4 @@ public abstract class ReferenceSequence extends ReferenceEntity {
     public Species getSpecies() {
         return species;
     }
-
-//    public String getUrl() {
-//        return url;
-//    }
 }

@@ -11,6 +11,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class FunctionalStatusType extends DatabaseObject {
+
     private String definition;
     private List<String> name;
 

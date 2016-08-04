@@ -23,7 +23,7 @@ public abstract class ContentClientAbstract {
     public static String SERVER = "";
 
     @SuppressWarnings("FieldCanBeLocal")
-    private static String CONTENT_SERVICE = "/ContentService/";
+    public static String CONTENT_SERVICE = "/ContentService/";
 
     public interface ResponseHandler {
         void on200(String body);
@@ -62,12 +62,14 @@ public abstract class ContentClientAbstract {
     public static <T extends DatabaseObject> List<T> getDatabaseObjectListOf(String body, ContentClientHandler handler) {
         JSONArray list = JSONParser.parseStrict(body).isArray();
         if (list != null) {
+            DatabaseObjectFactory.cmds.clear();
             List<T> rtn = new LinkedList<>();
             for (int i = 0; i < list.size(); ++i) {
                 JSONObject object = list.get(i).isObject();
                 //noinspection unchecked
                 rtn.add((T) DatabaseObjectFactory.create(object));
             }
+            DatabaseObjectFactory.fillUpObjectRefs();
             return rtn;
         } else {
             handler.onContentClientException(ContentClientHandler.Type.WRONG_RESPONSE_FORMAT, body);

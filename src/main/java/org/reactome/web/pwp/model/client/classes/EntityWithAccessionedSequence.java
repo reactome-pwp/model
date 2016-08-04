@@ -37,7 +37,9 @@ public class EntityWithAccessionedSequence extends GenomeEncodedEntity {
 
         this.hasModifiedResidue = DatabaseObjectUtils.getObjectList(jsonObject, "hasModifiedResidue");
 
-        this.referenceEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "referenceEntity");
+        setDatabaseObject(jsonObject.get("referenceEntity"), () ->
+                referenceEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "referenceEntity")
+        );
     }
 
     public Integer getEndCoordinate() {

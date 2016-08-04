@@ -78,16 +78,27 @@ public class DatabaseObjectUtils {
             if (listAux != null) {
                 for (int i = 0; i < listAux.size(); ++i) {
                     JSONValue value = listAux.get(i);
+                    // The reason why DatabaseObjectFactory.cmds is used in both (if and else) is
+                    // to preserve the order in which the elements are returned from the server
                     if (value.isObject() != null) {
-                        list.add((T) DatabaseObjectFactory.create(value.isObject()));
-                    } else if (value.isNumber() != null) { //This has a race condition, so it is not ensure to work always
+                        T obj = (T) DatabaseObjectFactory.create(value.isObject());
+                        DatabaseObjectFactory.cmds.add(() -> list.add(obj));
+                    } else if (value.isNumber() != null) {
                         Long dbId = (long) value.isNumber().doubleValue();
-                        T obj = (T) DatabaseObjectFactory.cache.get(dbId + "");
-                        if (obj != null) list.add(obj);
+                        DatabaseObjectFactory.cmds.add(() -> {
+                            T obj = (T) DatabaseObjectFactory.cache.get(dbId + "");
+                            if (obj != null) list.add(obj);
+                        });
                     }
                 }
-            } else {
+            } else if (aux.isObject() != null){
                 list.add((T) DatabaseObjectFactory.create(aux.isObject()));
+            } else if (aux.isNumber() != null) {
+                String dbId = (long) aux.isNumber().doubleValue() + "";
+                DatabaseObjectFactory.cmds.add(() -> {
+                    T obj = (T) DatabaseObjectFactory.cache.get(dbId);
+                    if (obj != null) list.add(obj);
+                });
             }
         }
         return list;

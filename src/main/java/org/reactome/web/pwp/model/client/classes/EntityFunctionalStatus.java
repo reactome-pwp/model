@@ -11,6 +11,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class EntityFunctionalStatus extends DatabaseObject {
+
     private List<FunctionalStatus> functionalStatus;
     private PhysicalEntity physicalEntity;
 
@@ -24,7 +25,9 @@ public class EntityFunctionalStatus extends DatabaseObject {
 
         this.functionalStatus = DatabaseObjectUtils.getObjectList(jsonObject, "functionalStatus");
 
-        this.physicalEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "physicalEntity");
+        setDatabaseObject(jsonObject.get("physicalEntity"), () ->
+                physicalEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "physicalEntity")
+        );
     }
 
     public List<FunctionalStatus> getFunctionalStatus() {

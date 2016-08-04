@@ -29,7 +29,7 @@ public class GwtTestDatabaseProperties extends GWTTestCaseCommon {
 
             @Override
             public void onContentClientError(ContentClientError error) {
-                fail(error.getMessages().toString());
+                fail(error.getMessage().toString());
             }
         });
     }
@@ -54,7 +54,7 @@ public class GwtTestDatabaseProperties extends GWTTestCaseCommon {
 
             @Override
             public void onContentClientError(ContentClientError error) {
-                fail(error.getMessages().toString());
+                fail(error.getMessage().toString());
             }
         });
     }

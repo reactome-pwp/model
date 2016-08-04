@@ -11,5 +11,5 @@ public interface ContentClientError {
 
     String getReason();
 
-    List<String> getMessages();
+    List<String> getMessage();
 }

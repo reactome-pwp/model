@@ -11,6 +11,7 @@ import java.util.List;
  */
 @SuppressWarnings("UnusedDeclaration")
 public class GO_MolecularFunction extends GO_Term {
+
     private List<String> ecNumber;
     private GO_MolecularFunction componentOf;
     private GO_MolecularFunction negativelyRegulate;
@@ -25,15 +26,23 @@ public class GO_MolecularFunction extends GO_Term {
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
 
-        this.componentOf = DatabaseObjectUtils.getDatabaseObject(jsonObject, "componentOf");
-
         this.ecNumber = DatabaseObjectUtils.getStringList(jsonObject, "ecNumber");
 
-        this.negativelyRegulate = DatabaseObjectUtils.getDatabaseObject(jsonObject, "negativelyRegulate");
+        setDatabaseObject(jsonObject.get("componentOf"), () ->
+                componentOf = DatabaseObjectUtils.getDatabaseObject(jsonObject, "componentOf")
+        );
 
-        this.positivelyRegulate = DatabaseObjectUtils.getDatabaseObject(jsonObject, "positivelyRegulate");
+        setDatabaseObject(jsonObject.get("negativelyRegulate"), () ->
+                negativelyRegulate = DatabaseObjectUtils.getDatabaseObject(jsonObject, "negativelyRegulate")
+        );
 
-        this.regulate = DatabaseObjectUtils.getDatabaseObject(jsonObject, "regulate");
+        setDatabaseObject(jsonObject.get("positivelyRegulate"), () ->
+                positivelyRegulate = DatabaseObjectUtils.getDatabaseObject(jsonObject, "positivelyRegulate")
+        );
+
+        setDatabaseObject(jsonObject.get("regulate"), () ->
+                regulate = DatabaseObjectUtils.getDatabaseObject(jsonObject, "regulate")
+        );
     }
 
     public List<String> getEcNumber() {

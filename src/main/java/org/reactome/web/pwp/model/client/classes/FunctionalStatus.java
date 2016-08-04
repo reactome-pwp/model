@@ -9,6 +9,7 @@ import org.reactome.web.pwp.model.client.factory.SchemaClass;
  */
 @SuppressWarnings("unused")
 public class FunctionalStatus extends DatabaseObject {
+
     private FunctionalStatusType functionalStatusType;
     private SequenceOntology structuralVariant;
 
@@ -20,9 +21,13 @@ public class FunctionalStatus extends DatabaseObject {
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
 
-        this.functionalStatusType = DatabaseObjectUtils.getDatabaseObject(jsonObject, "functionalStatusType");
+        setDatabaseObject(jsonObject.get("functionalStatusType"), () ->
+                functionalStatusType = DatabaseObjectUtils.getDatabaseObject(jsonObject, "functionalStatusType")
+        );
 
-        this.structuralVariant = DatabaseObjectUtils.getDatabaseObject(jsonObject, "structuralVariant");
+        setDatabaseObject(jsonObject.get("structuralVariant"), () ->
+                structuralVariant = DatabaseObjectUtils.getDatabaseObject(jsonObject, "structuralVariant")
+        );
     }
 
     public FunctionalStatusType getFunctionalStatusType() {

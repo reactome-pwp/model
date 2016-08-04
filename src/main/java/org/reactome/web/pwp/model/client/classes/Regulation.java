@@ -54,9 +54,13 @@ public class Regulation extends DatabaseObject {
 
         this.regulatedEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "regulatedEntity");
 
-        this.regulator = DatabaseObjectUtils.getDatabaseObject(jsonObject, "regulator");
+        setDatabaseObject(jsonObject.get("regulator"), () ->
+                regulator = DatabaseObjectUtils.getDatabaseObject(jsonObject, "species")
+        );
 
-        this.reviewed = DatabaseObjectUtils.getObjectList(jsonObject, "reviewed");
+        setDatabaseObject(jsonObject.get("reviewed"), () ->
+                reviewed = DatabaseObjectUtils.getDatabaseObject(jsonObject, "reviewed")
+        );
 
         this.revised = DatabaseObjectUtils.getObjectList(jsonObject, "revised");
 

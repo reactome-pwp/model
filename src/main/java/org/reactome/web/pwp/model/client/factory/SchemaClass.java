@@ -31,7 +31,6 @@ public enum SchemaClass {
     FRAGMENT_INSERTION_MODIFICATION("FragmentInsertionModification"),
     FRAGMENT_REPLACED_MODIFICATION("FragmentReplacedModification"),
     FRAGMENT_MODIFICATION("FragmentModification"),
-//    FRONT_PAGE("FrontPage"),
     FUNCTIONAL_STATUS("FunctionalStatus"),
     FUNCTIONAL_STATUS_TYPE("FunctionalStatusType"),
     GENETICALLY_MODIFIED_RESIDUE("GeneticallyModifiedResidue"),

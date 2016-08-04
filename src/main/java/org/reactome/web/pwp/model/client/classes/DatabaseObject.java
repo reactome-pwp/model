@@ -2,6 +2,7 @@ package org.reactome.web.pwp.model.client.classes;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.resources.client.ImageResource;
 import org.reactome.web.pwp.model.client.common.ContentClientHandler;
 import org.reactome.web.pwp.model.client.factory.DatabaseObjectFactory;
@@ -20,6 +21,7 @@ public abstract class DatabaseObject {
     private String stId;
     private String displayName;
     private SchemaClass schemaClass;
+    private String className; //A easier-to-understand name
     private InstanceEdit created;
     private InstanceEdit modified;
 
@@ -34,12 +36,12 @@ public abstract class DatabaseObject {
         return (T) this;
     }
 
-    public void load(final ContentClientHandler.ObjectLoaded handler) {
+    public void load(final ContentClientHandler.ObjectReady handler) {
         if(!this.isLoaded) {
             this.isLoaded = true;
             DatabaseObjectFactory.load(this, handler);
         }else{
-            handler.onObjectLoaded(this);
+            handler.onObjectReady(this);
         }
     }
 
@@ -53,9 +55,15 @@ public abstract class DatabaseObject {
 
         this.displayName = DatabaseObjectUtils.getStringValue(jsonObject, "displayName");
 
-        this.created = DatabaseObjectUtils.getDatabaseObject(jsonObject, "created");
+        this.className = DatabaseObjectUtils.getStringValue(jsonObject, "className");
 
-        this.modified = DatabaseObjectUtils.getDatabaseObject(jsonObject, "modified");
+        setDatabaseObject(jsonObject.get("created"), () ->
+                created = DatabaseObjectUtils.getDatabaseObject(jsonObject, "created")
+        );
+
+        setDatabaseObject(jsonObject.get("modified"), () ->
+                modified = DatabaseObjectUtils.getDatabaseObject(jsonObject, "modified")
+        );
 
         checkDatabaseObject(DatabaseObjectUtils.getSchemaClass(jsonObject));
     }
@@ -70,6 +78,10 @@ public abstract class DatabaseObject {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public String getClassName() {
+        return className;
     }
 
     public String getIdentifier() {
@@ -129,11 +141,12 @@ public abstract class DatabaseObject {
                 '}';
     }
 
-    void setDatabaseObject(JSONObject jsonObject, String property, Scheduler.ScheduledCommand command){
-        if (jsonObject.get(property).isNumber() == null) {
+    void setDatabaseObject(JSONValue jsonValue, Scheduler.ScheduledCommand command){
+        if(jsonValue == null) return;
+        if (jsonValue.isNumber() == null) {
             command.execute();
         } else {
-            Scheduler.get().scheduleDeferred(command);
+            DatabaseObjectFactory.cmds.add(command);
         }
     }
 }

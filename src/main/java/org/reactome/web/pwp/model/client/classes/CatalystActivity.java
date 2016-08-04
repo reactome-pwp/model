@@ -16,8 +16,6 @@ public class CatalystActivity extends DatabaseObject implements Regulator {
     private PhysicalEntity physicalEntity;
     private List<Regulation> regulatedBy;
 
-//    private String physicalEntityClass;
-
     public CatalystActivity() {
         super(SchemaClass.CATALYST_ACTIVITY);
     }
@@ -28,15 +26,17 @@ public class CatalystActivity extends DatabaseObject implements Regulator {
 
         this.activeUnit = DatabaseObjectUtils.getObjectList(jsonObject, "activeUnit");
 
-        this.activity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "activity");
+        setDatabaseObject(jsonObject.get("activity"), () ->
+                activity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "activity")
+        );
 
-        this.physicalEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "physicalEntity");
+        setDatabaseObject(jsonObject.get("physicalEntity"), () ->
+                physicalEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "physicalEntity")
+        );
 
         this.regulatedBy = DatabaseObjectUtils.getObjectList(jsonObject, "regulatedBy");
 
-//        this.physicalEntityClass = DatabaseObjectUtils.getStringValue(jsonObject, "physicalEntityClass");
     }
-
 
     public List<PhysicalEntity> getActiveUnit() {
         return activeUnit;
@@ -54,7 +54,4 @@ public class CatalystActivity extends DatabaseObject implements Regulator {
         return regulatedBy;
     }
 
-//    public String getPhysicalEntityClass() {
-//        return physicalEntityClass;
-//    }
 }

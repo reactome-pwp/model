@@ -22,7 +22,9 @@ public abstract class CrosslinkedResidue extends TranslationalModification {
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
 
-        this.modification = DatabaseObjectUtils.getDatabaseObject(jsonObject, "modification");
+        setDatabaseObject(jsonObject.get("modification"), () ->
+                modification = DatabaseObjectUtils.getDatabaseObject(jsonObject, "modification")
+        );
 
         this.secondCoordinate = DatabaseObjectUtils.getIntValue(jsonObject, "secondCoordinate");
     }

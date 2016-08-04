@@ -30,8 +30,10 @@ public class GenomeEncodedEntity extends PhysicalEntity {
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
 
-        DatabaseObject object = DatabaseObjectUtils.getDatabaseObject(jsonObject, "species");
-        if(object instanceof Species) this.species = (Species) object; //It could also be Taxon
+        setDatabaseObject(jsonObject.get("species"), () -> {
+            DatabaseObject object = DatabaseObjectUtils.getDatabaseObject(jsonObject, "species");
+            if(object instanceof Species) species = (Species) object; //It could also be Taxon
+        });
     }
 
     @Override

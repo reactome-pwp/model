@@ -16,7 +16,7 @@ public class Complex extends PhysicalEntity {
 
     private Boolean isChimeric;
     private List<PhysicalEntity> hasComponent;
-    private List<PhysicalEntity> entityOnOthercell;
+    private List<PhysicalEntity> entityOnOtherCell;
     private List<EntityCompartment> includedLocation;
     private List<Species> species;
 
@@ -32,7 +32,7 @@ public class Complex extends PhysicalEntity {
 
         this.hasComponent = DatabaseObjectUtils.getObjectList(jsonObject, "hasComponent");
 
-        this.entityOnOthercell = DatabaseObjectUtils.getObjectList(jsonObject, "entityOnOthercell");
+        this.entityOnOtherCell = DatabaseObjectUtils.getObjectList(jsonObject, "entityOnOtherCell");
 
         this.includedLocation = DatabaseObjectUtils.getObjectList(jsonObject, "includedLocation");
 
@@ -47,8 +47,8 @@ public class Complex extends PhysicalEntity {
         return hasComponent;
     }
 
-    public List<PhysicalEntity> getEntityOnOthercell() {
-        return entityOnOthercell;
+    public List<PhysicalEntity> getEntityOnOtherCell() {
+        return entityOnOtherCell;
     }
 
     public List<EntityCompartment> getIncludedLocation() {

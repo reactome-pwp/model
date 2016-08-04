@@ -19,7 +19,8 @@ public abstract class GWTTestCaseCommon extends GWTTestCase {
 
     @Override
     protected void gwtSetUp() throws Exception {
-        ContentClientAbstract.SERVER = "http://reactomedev.oicr.on.ca";
+        ContentClientAbstract.SERVER = "http://localhost:8585";
+        ContentClientAbstract.CONTENT_SERVICE = "/";
     }
 
 }

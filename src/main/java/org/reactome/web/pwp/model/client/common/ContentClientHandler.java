@@ -18,12 +18,8 @@ public interface ContentClientHandler {
     void onContentClientException(Type type, String message);
     void onContentClientError(ContentClientError error);
 
-    interface ObjectCreated extends ContentClientHandler {
-        void onObjectCreated(DatabaseObject databaseObject);
-    }
-
-    interface ObjectLoaded extends ContentClientHandler {
-        void onObjectLoaded(DatabaseObject databaseObject);
+    interface ObjectReady extends ContentClientHandler {
+        void onObjectReady(DatabaseObject databaseObject);
     }
 
     interface ObjectListLoaded extends ContentClientHandler {

@@ -26,7 +26,9 @@ public class OpenSet extends EntitySet {
 
         this.referenceType = DatabaseObjectUtils.getStringValue(jsonObject, "referenceType");
 
-        this.referenceEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "evidenceType");
+        setDatabaseObject(jsonObject.get("referenceEntity"), () ->
+                referenceEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "referenceEntity")
+        );
     }
 
     public String getReferenceType() {

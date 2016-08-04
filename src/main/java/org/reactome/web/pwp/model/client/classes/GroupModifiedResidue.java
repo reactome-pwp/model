@@ -20,7 +20,9 @@ public class GroupModifiedResidue extends TranslationalModification {
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
 
-        this.modification = DatabaseObjectUtils.getDatabaseObject(jsonObject, "modification");
+        setDatabaseObject(jsonObject.get("modification"), () ->
+                modification = DatabaseObjectUtils.getDatabaseObject(jsonObject, "modification")
+        );
     }
 
     public DatabaseObject getModification() {

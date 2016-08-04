@@ -33,7 +33,9 @@ public class DatabaseIdentifier extends DatabaseObject {
 
         this.crossReference = DatabaseObjectUtils.getObjectList(jsonObject, "crossReference");
 
-        this.referenceDatabase = DatabaseObjectUtils.getDatabaseObject(jsonObject, "referenceDatabase");
+        setDatabaseObject(jsonObject.get("referenceDatabase"), () ->
+                referenceDatabase = DatabaseObjectUtils.getDatabaseObject(jsonObject, "referenceDatabase")
+        );
     }
 
     public String getDatabaseName() {

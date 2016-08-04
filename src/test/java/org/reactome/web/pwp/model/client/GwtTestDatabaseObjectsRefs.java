@@ -1,9 +1,6 @@
 package org.reactome.web.pwp.model.client;
 
-import org.reactome.web.pwp.model.client.classes.DatabaseObject;
-import org.reactome.web.pwp.model.client.classes.Event;
-import org.reactome.web.pwp.model.client.classes.PhysicalEntity;
-import org.reactome.web.pwp.model.client.classes.ReactionLikeEvent;
+import org.reactome.web.pwp.model.client.classes.*;
 import org.reactome.web.pwp.model.client.common.ContentClientHandler;
 import org.reactome.web.pwp.model.client.content.ContentClientError;
 import org.reactome.web.pwp.model.client.factory.DatabaseObjectFactory;
@@ -14,7 +11,7 @@ import java.util.Set;
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public class GwtTestExpectedDuplicates extends GWTTestCaseCommon {
+public class GwtTestDatabaseObjectsRefs extends GWTTestCaseCommon {
 
     public void testDuplicatesInReactionLikeEvent() {
         // Since RPC calls are asynchronous, we will need to wait for a response
@@ -22,9 +19,9 @@ public class GwtTestExpectedDuplicates extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        DatabaseObjectFactory.get("R-HSA-5693551", new ContentClientHandler.ObjectCreated() {
+        DatabaseObjectFactory.get("R-HSA-5693551", new ContentClientHandler.ObjectReady() {
             @Override
-            public void onObjectCreated(DatabaseObject databaseObject) {
+            public void onObjectReady(DatabaseObject databaseObject) {
                 ReactionLikeEvent rle = databaseObject.cast();
                 assertTrue("Expecting more than 2 inputs and found " + rle.getInputs().size(), rle.getInputs().size() > 2);
                 assertTrue("Expecting more than 2 outputs and found " + rle.getOutputs().size(), rle.getOutputs().size() > 2);
@@ -58,34 +55,35 @@ public class GwtTestExpectedDuplicates extends GWTTestCaseCommon {
 
             @Override
             public void onContentClientError(ContentClientError error) {
-                fail(error.getMessages().toString());
+                fail(error.getMessage().toString());
             }
         });
     }
 
-//    public void tetsSpeciesList() {
-//        // Since RPC calls are asynchronous, we will need to wait for a response
-//        // after this test method returns. This line tells the test runner to wait
-//        // up to 2.5 seconds before timing out.
-//        delayTestFinish(2500);
-//
-//        ContentClient.getSpeciesList(new ContentClientHandler.SpeciesList() {
-//            @Override
-//            public void onSpeciesLoaded(List<Species> species) {
-//                assertTrue("Species list cannot be empty", species.size() > 0);
-//                assertTrue("The first element in the species list has to be human", species.get(0).getTaxId().equals("9606"));
-//                finishTest();
-//            }
-//
-//            @Override
-//            public void onContentClientException(Type type, String message) {
-//                fail(type + " " + message);
-//            }
-//
-//            @Override
-//            public void onContentClientError(ContentClientError error) {
-//                fail(error.getMessages().toString());
-//            }
-//        });
-//    }
+    public void testObjectsThatAreReferredWithTheIdentifier() {
+        // Since RPC calls are asynchronous, we will need to wait for a response
+        // after this test method returns. This line tells the test runner to wait
+        // up to 2.5 seconds before timing out.
+        delayTestFinish(2500);
+
+        DatabaseObjectFactory.get("R-MMU-1368092", new ContentClientHandler.ObjectReady() {
+            @Override
+            public void onObjectReady(DatabaseObject databaseObject) {
+                Pathway p = databaseObject.cast();
+
+                assertFalse("The list should contain ONE instance edit", p.getEdited()==null || p.getEdited().isEmpty());
+                finishTest();
+            }
+
+            @Override
+            public void onContentClientException(Type type, String message) {
+                fail(type + " " + message);
+            }
+
+            @Override
+            public void onContentClientError(ContentClientError error) {
+                fail(error.getMessage().toString());
+            }
+        });
+    }
 }

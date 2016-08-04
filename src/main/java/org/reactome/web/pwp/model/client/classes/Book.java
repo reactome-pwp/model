@@ -31,7 +31,9 @@ public class Book extends Publication {
 
         this.pages = DatabaseObjectUtils.getStringValue(jsonObject, "pages");
 
-        this.publisher = DatabaseObjectUtils.getDatabaseObject(jsonObject, "publisher");
+        setDatabaseObject(jsonObject.get("publisher"), () ->
+                publisher = DatabaseObjectUtils.getDatabaseObject(jsonObject, "publisher")
+        );
 
         this.publisherClass = DatabaseObjectUtils.getStringValue(jsonObject, "publisherClass");
 

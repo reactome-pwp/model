@@ -33,7 +33,7 @@ public class GwtTestLists extends GWTTestCaseCommon {
 
             @Override
             public void onContentClientError(ContentClientError error) {
-                fail(error.getMessages().toString());
+                fail(error.getMessage().toString());
             }
         });
     }
@@ -59,7 +59,7 @@ public class GwtTestLists extends GWTTestCaseCommon {
 
             @Override
             public void onContentClientError(ContentClientError error) {
-                fail(error.getMessages().toString());
+                fail(error.getMessage().toString());
             }
         });
     }

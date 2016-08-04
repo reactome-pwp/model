@@ -35,7 +35,9 @@ public class Taxon extends DatabaseObject {
 
         this.crossReference = DatabaseObjectUtils.getObjectList(jsonObject, "crossReference");
 
-        this.superTaxon = DatabaseObjectUtils.getDatabaseObject(jsonObject, "superTaxon");
+        setDatabaseObject(jsonObject.get("superTaxon"), () ->
+                superTaxon = DatabaseObjectUtils.getDatabaseObject(jsonObject, "superTaxon")
+        );
     }
 
     public List<String> getName() {

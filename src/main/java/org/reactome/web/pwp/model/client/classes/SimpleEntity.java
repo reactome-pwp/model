@@ -32,7 +32,9 @@ public class SimpleEntity extends PhysicalEntity {
 
         this.referenceEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "referenceEntity");
 
-        this.species = DatabaseObjectUtils.getDatabaseObject(jsonObject, "species");
+        setDatabaseObject(jsonObject.get("species"), () ->
+                species = DatabaseObjectUtils.getDatabaseObject(jsonObject, "species")
+        );
     }
 
     @Override

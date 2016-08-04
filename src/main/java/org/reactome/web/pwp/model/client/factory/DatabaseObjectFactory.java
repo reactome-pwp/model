@@ -11,6 +11,7 @@ import org.reactome.web.pwp.model.client.util.StringUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 
@@ -19,23 +20,25 @@ import java.util.Map;
  */
 public abstract class DatabaseObjectFactory extends ContentClientAbstract {
 
-    public static final LruCache<String, DatabaseObject> cache = new LruCache<>(150);
+    public static final LruCache<String, DatabaseObject> cache = new LruCache<>(200);
 
-    @SuppressWarnings({"WeakerAccess", "unused"})
-    public static void get(Long dbId, ContentClientHandler.ObjectCreated handler) {
+    public static final Collection<Scheduler.ScheduledCommand> cmds = new LinkedList<>();
+
+    public static void get(Long dbId, ContentClientHandler.ObjectReady handler) {
         get(dbId + "", handler);
     }
 
-    public static void get(String identifier, ContentClientHandler.ObjectCreated handler) {
+    public static void get(String identifier, ContentClientHandler.ObjectReady handler) {
         final DatabaseObject object = cache.get(identifier);
         if (object != null) {
-            Scheduler.get().scheduleDeferred(() -> handler.onObjectCreated(object));
+            object.load(handler);
         } else {
             request("data/query/" + identifier + "/more", handler, body -> {
                 JSONObject json = JSONParser.parseStrict(body).isObject();
+                cmds.clear();
                 DatabaseObject databaseObject = DatabaseObjectFactory.create(json);
-//                cache.put(databaseObject.getDbId() + "", databaseObject);
-                handler.onObjectCreated(databaseObject);
+                fillUpObjectRefs();
+                handler.onObjectReady(databaseObject);
             });
         }
     }
@@ -45,25 +48,35 @@ public abstract class DatabaseObjectFactory extends ContentClientAbstract {
         if (identifiers == null || identifiers.isEmpty()) {
             Scheduler.get().scheduleDeferred(() -> handler.onObjectListLoaded(new HashMap<>()));
         } else {
-            request("data/query/" + StringUtils.join(identifiers, ","), handler, body -> {
+            request("data/query/ids/map", StringUtils.join(identifiers, ","), handler, body -> {
                 Map<String, DatabaseObject> map = new HashMap<>();
                 JSONObject object = JSONParser.parseStrict(body).isObject();
                 for (String key : object.keySet()) {
                     DatabaseObject dbObject = DatabaseObjectFactory.create(object.get(key).isObject());
                     map.put(key, dbObject);
                 }
+                fillUpObjectRefs();
                 handler.onObjectListLoaded(map);
             });
         }
     }
 
-    public static void load(final DatabaseObject databaseObject, ContentClientHandler.ObjectLoaded handler) {
+    public static void load(final DatabaseObject databaseObject, ContentClientHandler.ObjectReady handler) {
         request("data/query/" + databaseObject.getIdentifier() + "/more", handler, body -> {
             JSONObject json = JSONParser.parseStrict(body).isObject();
+            cmds.clear();
             databaseObject.load(json);
+            fillUpObjectRefs();
             cache.put(databaseObject.getDbId() + "", databaseObject);
-            handler.onObjectLoaded(databaseObject);
+            handler.onObjectReady(databaseObject);
         });
+    }
+
+    public static void fillUpObjectRefs(){
+        for (Scheduler.ScheduledCommand cmd : cmds) {
+            cmd.execute();
+        }
+        cmds.clear();
     }
 
     @SuppressWarnings("unchecked")
@@ -151,9 +164,6 @@ public abstract class DatabaseObjectFactory extends ContentClientAbstract {
                 rtn = new FragmentReplacedModification();
                 break;
             //case FRAGMENT_MODIFICATION:  //NOT USED HERE
-//            case FRONT_PAGE:
-//                rtn = new FrontPage();
-//                break;
             case FUNCTIONAL_STATUS:
                 rtn = new FunctionalStatus();
                 break;
@@ -250,9 +260,6 @@ public abstract class DatabaseObjectFactory extends ContentClientAbstract {
             case REGULATION:
                 rtn = new Regulation();
                 break;
-//            case REGULATION_TYPE:
-//                rtn = new RegulationType();
-//                break;
             case REPLACED_RESIDUE:
                 rtn = new ReplacedResidue();
                 break;

@@ -43,7 +43,13 @@ public abstract class ExternalOntology extends DatabaseObject {
 
         this.instanceOf = DatabaseObjectUtils.getObjectList(jsonObject, "instanceOf");
 
-        this.referenceDatabase = DatabaseObjectUtils.getDatabaseObject(jsonObject, "referenceDatabase");
+        setDatabaseObject(jsonObject.get("referenceDatabase"), () ->
+                referenceDatabase = DatabaseObjectUtils.getDatabaseObject(jsonObject, "referenceDatabase")
+        );
+    }
+
+    public String getDatabaseName() {
+        return databaseName;
     }
 
     public String getDefinition() {
@@ -54,19 +60,23 @@ public abstract class ExternalOntology extends DatabaseObject {
         return identifier;
     }
 
-    public List<ExternalOntology> getInstanceOf() {
-        return instanceOf;
+    public String getUrl() {
+        return url;
     }
 
     public List<String> getName() {
         return name;
     }
 
-    public ReferenceDatabase getReferenceDatabase() {
-        return referenceDatabase;
-    }
-
     public List<String> getSynonym() {
         return synonym;
+    }
+
+    public List<ExternalOntology> getInstanceOf() {
+        return instanceOf;
+    }
+
+    public ReferenceDatabase getReferenceDatabase() {
+        return referenceDatabase;
     }
 }

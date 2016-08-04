@@ -13,6 +13,7 @@ import java.util.List;
  */
 @SuppressWarnings("UnusedDeclaration")
 public class Pathway extends Event {
+
     private String doi;
     private Boolean hasDiagram;
     private String isCanonical;
@@ -40,7 +41,9 @@ public class Pathway extends Event {
 
         this.hasEvent = DatabaseObjectUtils.getObjectList(jsonObject, "hasEvent");
 
-        this.normalPathway = DatabaseObjectUtils.getDatabaseObject(jsonObject, "normalPathway");
+        setDatabaseObject(jsonObject.get("normalPathway"), () ->
+                normalPathway = DatabaseObjectUtils.getDatabaseObject(jsonObject, "normalPathway")
+        );
     }
 
     public String getDoi() {

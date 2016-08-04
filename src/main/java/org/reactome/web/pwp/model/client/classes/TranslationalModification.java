@@ -23,7 +23,9 @@ public abstract class TranslationalModification extends AbstractModifiedResidue 
 
         this.coordinate = DatabaseObjectUtils.getIntValue(jsonObject, "coordinate");
 
-        this.psiMod = DatabaseObjectUtils.getDatabaseObject(jsonObject, "psiMod");
+        setDatabaseObject(jsonObject.get("psiMod"), () ->
+                psiMod = DatabaseObjectUtils.getDatabaseObject(jsonObject, "psiMod")
+        );
     }
 
     public Integer getCoordinate() {

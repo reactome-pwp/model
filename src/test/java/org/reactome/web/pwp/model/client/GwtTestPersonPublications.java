@@ -39,7 +39,7 @@ public class GwtTestPersonPublications extends GWTTestCaseCommon {
 
             @Override
             public void onContentClientError(ContentClientError error) {
-                fail(error.getMessages().toString());
+                fail(error.getMessage().toString());
             }
         });
     }

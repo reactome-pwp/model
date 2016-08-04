@@ -29,9 +29,9 @@ public class GwtTestDatabaseObjectFactory extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        DatabaseObjectFactory.get(stId, new ContentClientHandler.ObjectCreated() {
+        DatabaseObjectFactory.get(stId, new ContentClientHandler.ObjectReady() {
             @Override
-            public void onObjectCreated(DatabaseObject databaseObject) {
+            public void onObjectReady(DatabaseObject databaseObject) {
                 assertTrue("The stId has to be `" + stId + "'. Found: '" + databaseObject.getStId() + "'", databaseObject.getStId().equals(stId));
                 finishTest();
             }
@@ -43,7 +43,7 @@ public class GwtTestDatabaseObjectFactory extends GWTTestCaseCommon {
 
             @Override
             public void onContentClientError(ContentClientError error) {
-                fail(error.getMessages().toString());
+                fail(error.getMessage().toString());
             }
         });
     }
