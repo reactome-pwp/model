@@ -2,8 +2,9 @@ package org.reactome.web.pwp.model.client;
 
 import org.reactome.web.pwp.model.client.classes.DatabaseObject;
 import org.reactome.web.pwp.model.client.common.ContentClientHandler;
+import org.reactome.web.pwp.model.client.common.GwtTestCaseCommon;
+import org.reactome.web.pwp.model.client.content.ContentClient;
 import org.reactome.web.pwp.model.client.content.ContentClientError;
-import org.reactome.web.pwp.model.client.factory.DatabaseObjectFactory;
 
 
 /**
@@ -16,7 +17,7 @@ import org.reactome.web.pwp.model.client.factory.DatabaseObjectFactory;
  * See https://gwt-maven-plugin.github.io/gwt-maven-plugin/user-guide/testing.html
  * for details.
  */
-public class GwtTestDatabaseObjectFactory extends GWTTestCaseCommon {
+public class GwtTestBasicContentServiceQueries extends GwtTestCaseCommon {
 
     private static String stId = "R-HSA-199420";
 
@@ -29,7 +30,7 @@ public class GwtTestDatabaseObjectFactory extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        DatabaseObjectFactory.get(stId, new ContentClientHandler.ObjectReady() {
+        ContentClient.query(stId, new ContentClientHandler.ObjectReady() {
             @Override
             public void onObjectReady(DatabaseObject databaseObject) {
                 assertTrue("The stId has to be `" + stId + "'. Found: '" + databaseObject.getStId() + "'", databaseObject.getStId().equals(stId));

@@ -1,13 +1,12 @@
-package org.reactome.web.pwp.model.client;
+package org.reactome.web.pwp.model.client.common;
 
 import com.google.gwt.junit.client.GWTTestCase;
-import org.reactome.web.pwp.model.client.common.ContentClientAbstract;
 
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public abstract class GWTTestCaseCommon extends GWTTestCase {
+public abstract class GwtTestCaseCommon extends GWTTestCase {
 
     /**
      * Must refer to a valid module that sources this class.

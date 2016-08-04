@@ -2,6 +2,7 @@ package org.reactome.web.pwp.model.client;
 
 import org.reactome.web.pwp.model.client.classes.Publication;
 import org.reactome.web.pwp.model.client.common.ContentClientHandler;
+import org.reactome.web.pwp.model.client.common.GwtTestCaseCommon;
 import org.reactome.web.pwp.model.client.content.ContentClient;
 import org.reactome.web.pwp.model.client.content.ContentClientError;
 
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public class GwtTestPersonPublications extends GWTTestCaseCommon {
+public class GwtTestPersonPublications extends GwtTestCaseCommon {
 
     private static final int PERSON = 73447; //Bijay
 

@@ -2,8 +2,9 @@ package org.reactome.web.pwp.model.client;
 
 import org.reactome.web.pwp.model.client.classes.*;
 import org.reactome.web.pwp.model.client.common.ContentClientHandler;
+import org.reactome.web.pwp.model.client.common.GwtTestCaseCommon;
+import org.reactome.web.pwp.model.client.content.ContentClient;
 import org.reactome.web.pwp.model.client.content.ContentClientError;
-import org.reactome.web.pwp.model.client.factory.DatabaseObjectFactory;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +12,7 @@ import java.util.Set;
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public class GwtTestDatabaseObjectsRefs extends GWTTestCaseCommon {
+public class GwtTestDatabaseObjectsRefs extends GwtTestCaseCommon {
 
     public void testDuplicatesInReactionLikeEvent() {
         // Since RPC calls are asynchronous, we will need to wait for a response
@@ -19,7 +20,7 @@ public class GwtTestDatabaseObjectsRefs extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        DatabaseObjectFactory.get("R-HSA-5693551", new ContentClientHandler.ObjectReady() {
+        ContentClient.query("R-HSA-5693551", new ContentClientHandler.ObjectReady() {
             @Override
             public void onObjectReady(DatabaseObject databaseObject) {
                 ReactionLikeEvent rle = databaseObject.cast();
@@ -40,7 +41,6 @@ public class GwtTestDatabaseObjectsRefs extends GWTTestCaseCommon {
                     aux.add(physicalEntity);
                 }
                 assertTrue("Expecting duplicates in outputs", duplicates > 0);
-
 
                 for (Event event : rle.getOrthologousEvent()) {
                     assertTrue("The inferred from has to be the actual object", event.getInferredFrom().size() > 0);
@@ -66,7 +66,7 @@ public class GwtTestDatabaseObjectsRefs extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        DatabaseObjectFactory.get("R-MMU-1368092", new ContentClientHandler.ObjectReady() {
+        ContentClient.query(1368092L, new ContentClientHandler.ObjectReady() {
             @Override
             public void onObjectReady(DatabaseObject databaseObject) {
                 Pathway p = databaseObject.cast();

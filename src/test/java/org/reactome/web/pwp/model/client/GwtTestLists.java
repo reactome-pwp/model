@@ -3,6 +3,7 @@ package org.reactome.web.pwp.model.client;
 import org.reactome.web.pwp.model.client.classes.Pathway;
 import org.reactome.web.pwp.model.client.classes.Species;
 import org.reactome.web.pwp.model.client.common.ContentClientHandler;
+import org.reactome.web.pwp.model.client.common.GwtTestCaseCommon;
 import org.reactome.web.pwp.model.client.content.ContentClient;
 import org.reactome.web.pwp.model.client.content.ContentClientError;
 
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public class GwtTestLists extends GWTTestCaseCommon {
+public class GwtTestLists extends GwtTestCaseCommon {
 
     public void testTopLevelPathways(){
         // Since RPC calls are asynchronous, we will need to wait for a response
