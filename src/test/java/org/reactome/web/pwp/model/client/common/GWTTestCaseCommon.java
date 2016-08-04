@@ -6,7 +6,7 @@ import com.google.gwt.junit.client.GWTTestCase;
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public abstract class GwtTestCaseCommon extends GWTTestCase {
+public abstract class GWTTestCaseCommon extends GWTTestCase {
 
     /**
      * Must refer to a valid module that sources this class.

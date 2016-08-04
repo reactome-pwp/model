@@ -1,14 +1,14 @@
 package org.reactome.web.pwp.model.client;
 
 import org.reactome.web.pwp.model.client.common.ContentClientHandler;
-import org.reactome.web.pwp.model.client.common.GwtTestCaseCommon;
+import org.reactome.web.pwp.model.client.common.GWTTestCaseCommon;
 import org.reactome.web.pwp.model.client.content.ContentClient;
 import org.reactome.web.pwp.model.client.content.ContentClientError;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public class GwtTestDatabaseProperties extends GwtTestCaseCommon {
+public class GwtTestDatabaseProperties extends GWTTestCaseCommon {
 
     public void testVersion() {
         // Since RPC calls are asynchronous, we will need to wait for a response
