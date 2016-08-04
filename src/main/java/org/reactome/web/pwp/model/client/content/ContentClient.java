@@ -1,18 +1,61 @@
 package org.reactome.web.pwp.model.client.content;
 
-import org.reactome.web.pwp.model.client.classes.Pathway;
-import org.reactome.web.pwp.model.client.classes.Person;
-import org.reactome.web.pwp.model.client.classes.Publication;
-import org.reactome.web.pwp.model.client.classes.Species;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import org.reactome.web.pwp.model.client.classes.*;
 import org.reactome.web.pwp.model.client.common.ContentClientAbstract;
 import org.reactome.web.pwp.model.client.common.ContentClientHandler;
+import org.reactome.web.pwp.model.client.factory.DatabaseObjectFactory;
+import org.reactome.web.pwp.model.client.util.StringUtils;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 public abstract class ContentClient extends ContentClientAbstract {
+
+    public static void query(Long dbId, ContentClientHandler.ObjectReady handler) {
+        query(dbId + "", handler);
+    }
+
+    public static void query(String identifier, ContentClientHandler.ObjectReady handler) {
+        final DatabaseObject object = DatabaseObjectFactory.cache.get(identifier);
+        if (object != null) {
+            object.load(handler);
+        } else {
+            request("data/query/" + identifier + "/more", handler, body -> {
+                JSONObject json = JSONParser.parseStrict(body).isObject();
+                DatabaseObjectFactory.cmds.clear();
+                DatabaseObject databaseObject = DatabaseObjectFactory.create(json);
+                DatabaseObjectFactory.fillUpObjectRefs();
+                handler.onObjectReady(databaseObject);
+            });
+        }
+    }
+
+    public static void query(Collection<?> identifiers, ContentClientHandler.ObjectListLoaded handler) {
+        //In case the call is made without elements to query
+        if (identifiers == null || identifiers.isEmpty()) {
+            Scheduler.get().scheduleDeferred(() -> handler.onObjectListLoaded(new HashMap<>()));
+        } else {
+            request("data/query/ids/map", StringUtils.join(identifiers, ","), handler, body -> {
+                Map<String, DatabaseObject> map = new HashMap<>();
+                JSONObject object = JSONParser.parseStrict(body).isObject();
+                DatabaseObjectFactory.cmds.clear();
+                for (String key : object.keySet()) {
+                    DatabaseObject dbObject = DatabaseObjectFactory.create(object.get(key).isObject());
+                    map.put(key, dbObject);
+                }
+                DatabaseObjectFactory.fillUpObjectRefs();
+                handler.onObjectListLoaded(map);
+            });
+        }
+    }
 
     //TODO: getAncestors
 

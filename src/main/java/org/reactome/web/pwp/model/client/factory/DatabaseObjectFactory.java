@@ -7,72 +7,32 @@ import org.reactome.web.pwp.model.client.classes.*;
 import org.reactome.web.pwp.model.client.common.ContentClientAbstract;
 import org.reactome.web.pwp.model.client.common.ContentClientHandler;
 import org.reactome.web.pwp.model.client.util.LruCache;
-import org.reactome.web.pwp.model.client.util.StringUtils;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
-
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public abstract class DatabaseObjectFactory extends ContentClientAbstract {
+public abstract class DatabaseObjectFactory {
 
     public static final LruCache<String, DatabaseObject> cache = new LruCache<>(200);
 
     public static final Collection<Scheduler.ScheduledCommand> cmds = new LinkedList<>();
 
-    public static void get(Long dbId, ContentClientHandler.ObjectReady handler) {
-        get(dbId + "", handler);
-    }
-
-    public static void get(String identifier, ContentClientHandler.ObjectReady handler) {
-        final DatabaseObject object = cache.get(identifier);
-        if (object != null) {
-            object.load(handler);
-        } else {
-            request("data/query/" + identifier + "/more", handler, body -> {
-                JSONObject json = JSONParser.parseStrict(body).isObject();
-                cmds.clear();
-                DatabaseObject databaseObject = DatabaseObjectFactory.create(json);
-                fillUpObjectRefs();
-                handler.onObjectReady(databaseObject);
-            });
-        }
-    }
-
-    public static void get(Collection<?> identifiers, ContentClientHandler.ObjectListLoaded handler) {
-        //In case the call is made without elements to query
-        if (identifiers == null || identifiers.isEmpty()) {
-            Scheduler.get().scheduleDeferred(() -> handler.onObjectListLoaded(new HashMap<>()));
-        } else {
-            request("data/query/ids/map", StringUtils.join(identifiers, ","), handler, body -> {
-                Map<String, DatabaseObject> map = new HashMap<>();
-                JSONObject object = JSONParser.parseStrict(body).isObject();
-                for (String key : object.keySet()) {
-                    DatabaseObject dbObject = DatabaseObjectFactory.create(object.get(key).isObject());
-                    map.put(key, dbObject);
-                }
-                fillUpObjectRefs();
-                handler.onObjectListLoaded(map);
-            });
-        }
-    }
-
     public static void load(final DatabaseObject databaseObject, ContentClientHandler.ObjectReady handler) {
-        request("data/query/" + databaseObject.getIdentifier() + "/more", handler, body -> {
+        ContentClientAbstract.request("data/query/" + databaseObject.getIdentifier() + "/more", handler, body -> {
             JSONObject json = JSONParser.parseStrict(body).isObject();
             cmds.clear();
             databaseObject.load(json);
             fillUpObjectRefs();
             cache.put(databaseObject.getDbId() + "", databaseObject);
+            if(databaseObject.getStId()!=null) cache.put(databaseObject.getStId(), databaseObject);
             handler.onObjectReady(databaseObject);
         });
     }
 
-    public static void fillUpObjectRefs(){
+    public static void fillUpObjectRefs() {
         for (Scheduler.ScheduledCommand cmd : cmds) {
             cmd.execute();
         }
