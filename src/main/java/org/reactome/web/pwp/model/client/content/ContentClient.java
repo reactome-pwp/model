@@ -21,11 +21,11 @@ import java.util.Map;
  */
 public abstract class ContentClient extends ContentClientAbstract {
 
-    public static void query(Long dbId, ContentClientHandler.ObjectReady handler) {
+    public static <T extends DatabaseObject> void query(Long dbId, ContentClientHandler.ObjectLoaded<T> handler) {
         query(dbId + "", handler);
     }
 
-    public static void query(String identifier, ContentClientHandler.ObjectReady handler) {
+    public static <T extends DatabaseObject> void query(String identifier, ContentClientHandler.ObjectLoaded<T> handler) {
         final DatabaseObject object = DatabaseObjectFactory.cache.get(identifier);
         if (object != null) {
             object.load(handler);
@@ -33,17 +33,18 @@ public abstract class ContentClient extends ContentClientAbstract {
             request("data/query/" + identifier + "/more", handler, body -> {
                 JSONObject json = JSONParser.parseStrict(body).isObject();
                 DatabaseObjectFactory.cmds.clear();
-                DatabaseObject databaseObject = DatabaseObjectFactory.create(json);
+                @SuppressWarnings("unchecked")
+                T databaseObject = (T) DatabaseObjectFactory.create(json);
                 DatabaseObjectFactory.fillUpObjectRefs();
-                handler.onObjectReady(databaseObject);
+                handler.onObjectLoaded(databaseObject);
             });
         }
     }
 
-    public static void query(Collection<?> identifiers, ContentClientHandler.ObjectListLoaded handler) {
+    public static void query(Collection<?> identifiers, ContentClientHandler.ObjectMapLoaded handler) {
         //In case the call is made without elements to query
         if (identifiers == null || identifiers.isEmpty()) {
-            Scheduler.get().scheduleDeferred(() -> handler.onObjectListLoaded(new HashMap<>()));
+            Scheduler.get().scheduleDeferred(() -> handler.onObjectMapLoaded(new HashMap<>()));
         } else {
             request("data/query/ids/map", StringUtils.join(identifiers, ","), handler, body -> {
                 Map<String, DatabaseObject> map = new HashMap<>();
@@ -54,7 +55,7 @@ public abstract class ContentClient extends ContentClientAbstract {
                     map.put(key, dbObject);
                 }
                 DatabaseObjectFactory.fillUpObjectRefs();
-                handler.onObjectListLoaded(map);
+                handler.onObjectMapLoaded(map);
             });
         }
     }
@@ -72,48 +73,60 @@ public abstract class ContentClient extends ContentClientAbstract {
         });
     }
 
-    //TODO: loadPathwaysWithDiagramForEntity
-
-    //TODO: Check whether this is needed or it could be done differently with the new ContentService
-    public static void loadPersonPublications(Person person, ContentClientHandler.PersonHandler handler) {
+    @SuppressWarnings("unused")
+    public static void loadPersonPublications(Person person, ContentClientHandler.ObjectLoaded<Person> handler) {
         request("data/person/" + person.getIdentifier() + "/publications", handler, body -> {
             List<Publication> publications = getDatabaseObjectListOf(body, handler);
-            if (publications != null){
+            if (publications != null) {
                 person.setPublications(publications);
-                handler.onLiteratureReferencesLoaded(person);
+                handler.onObjectLoaded(person);
             }
         });
     }
 
     //TODO: Check whether this is needed or it could be done differently with the new ContentService
-    public static void getPersonPublications(String id, ContentClientHandler.Publications handler) {
+    public static void getPersonPublications(String id, ContentClientHandler.ObjectListLoaded<Publication> handler) {
         request("data/person/" + id + "/publications", handler, body -> {
             List<Publication> publications = getDatabaseObjectListOf(body, handler);
-            if (publications != null) handler.onPublicationsLoaded(publications);
+            if (publications != null) handler.onObjectListLoaded(publications);
         });
     }
 
-    public static void getSpeciesList(ContentClientHandler.SpeciesList handler){
+    public static void getSpeciesList(ContentClientHandler.ObjectListLoaded<Species> handler) {
         request("data/species/main", handler, body -> {
             List<Species> speciesList = getDatabaseObjectListOf(body, handler);
-            if(speciesList != null) handler.onSpeciesLoaded(speciesList);
+            if (speciesList != null) handler.onObjectListLoaded(speciesList);
         });
     }
 
-    public static void getTopLevelPathways(String species, ContentClientHandler.TopLevelPathways handler) {
+    public static void getTopLevelPathways(String species, ContentClientHandler.ObjectListLoaded<TopLevelPathway> handler) {
         request("data/pathways/top/" + species, handler, body -> {
-            List<Pathway> tpls = getDatabaseObjectListOf(body, handler);
-            if (tpls != null) handler.onTopLevelPathwaysLoaded(tpls);
+            List<TopLevelPathway> tpls = getDatabaseObjectListOf(body, handler);
+            if (tpls != null) handler.onObjectListLoaded(tpls);
+        });
+    }
+
+    @SuppressWarnings("unused")
+    public static void getPathwaysWithDiagramForEntity(PhysicalEntity pe, boolean allForms, ContentClientHandler.ObjectListLoaded<Pathway> handler) {
+        getPathwaysWithDiagramForEntity(pe.getDbId(), allForms, handler);
+    }
+
+    public static void getPathwaysWithDiagramForEntity(Object peId, boolean allForms, ContentClientHandler.ObjectListLoaded<Pathway> handler) {
+        request("data/pathways/low/diagram/entity/" + peId + ( allForms ? "/allForms" : ""), handler, body -> {
+            List<Pathway> pathways = getDatabaseObjectListOf(body, handler);
+            if(pathways != null) handler.onObjectListLoaded(pathways);
         });
     }
 
     private static String dbName = null;
+
     public static void getDatabaseName(ContentClientHandler.DatabaseName handler) {
         if (dbName != null) handler.onDatabaseNameLoaded(dbName);
         request("data/database/name", handler, body -> handler.onDatabaseNameLoaded(dbName = body));
     }
 
     private static String version = null;
+
     public static void getDatabaseVersion(ContentClientHandler.Version handler) {
         if (version != null) handler.onVersionLoaded(version);
         else request("data/database/version", handler, body -> handler.onVersionLoaded(version = body));
