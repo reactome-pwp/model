@@ -13,8 +13,7 @@ import java.util.Map;
  */
 public interface ContentClientHandler {
 
-    enum Type {CONNECTION_ERROR, REQUEST_TIMEOUT, WRONG_RESPONSE_FORMAT}
-
+    enum Type {CONNECTION_ERROR, REQUEST_TIMEOUT, WRONG_RESPONSE_FORMAT, RESPONSE_EMPTY_LIST}
 
     void onContentClientException(Type type, String message);
     void onContentClientError(ContentClientError error);

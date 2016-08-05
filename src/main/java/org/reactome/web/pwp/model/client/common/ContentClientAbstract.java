@@ -3,14 +3,15 @@ package org.reactome.web.pwp.model.client.common;
 import com.google.gwt.http.client.*;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import org.reactome.web.pwp.model.client.classes.DatabaseObject;
 import org.reactome.web.pwp.model.client.content.ContentClientException;
 import org.reactome.web.pwp.model.client.content.ContentClientFactory;
 import org.reactome.web.pwp.model.client.factory.DatabaseObjectFactory;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * These are the common methods for the ContentClient implementation
@@ -59,8 +60,23 @@ public abstract class ContentClientAbstract {
         }
     }
 
-    public static <T extends DatabaseObject> List<T> getDatabaseObjectListOf(String body, ContentClientHandler handler) {
-        JSONArray list = JSONParser.parseStrict(body).isArray();
+    static void processError(ContentClientHandler handler, String json) {
+        try {
+            handler.onContentClientError(ContentClientFactory.getContentClientError(json));
+        } catch (ContentClientException e) {
+            handler.onContentClientException(ContentClientHandler.Type.WRONG_RESPONSE_FORMAT, json);
+        }
+    }
+
+    protected static <T extends DatabaseObject> T getDatabaseObject(JSONObject json) {
+        DatabaseObjectFactory.cmds.clear();
+        @SuppressWarnings("unchecked")
+        T databaseObject = (T) DatabaseObjectFactory.create(json);
+        DatabaseObjectFactory.fillUpObjectRefs();
+        return databaseObject;
+    }
+
+    protected static <T extends DatabaseObject> List<T> getDatabaseObjectList(JSONArray list) {
         if (list != null) {
             DatabaseObjectFactory.cmds.clear();
             List<T> rtn = new LinkedList<>();
@@ -71,17 +87,18 @@ public abstract class ContentClientAbstract {
             }
             DatabaseObjectFactory.fillUpObjectRefs();
             return rtn;
-        } else {
-            handler.onContentClientException(ContentClientHandler.Type.WRONG_RESPONSE_FORMAT, body);
-            return null;
         }
+        return null;
     }
 
-    static void processError(ContentClientHandler handler, String json) {
-        try {
-            handler.onContentClientError(ContentClientFactory.getContentClientError(json));
-        } catch (ContentClientException e) {
-            handler.onContentClientException(ContentClientHandler.Type.WRONG_RESPONSE_FORMAT, json);
+    protected static Map<String, DatabaseObject> getDatabaseObjectMap(JSONObject object) {
+        Map<String, DatabaseObject> map = new HashMap<>();
+        DatabaseObjectFactory.cmds.clear();
+        for (String key : object.keySet()) {
+            DatabaseObject dbObject = DatabaseObjectFactory.create(object.get(key).isObject());
+            map.put(key, dbObject);
         }
+        DatabaseObjectFactory.fillUpObjectRefs();
+        return map;
     }
 }
