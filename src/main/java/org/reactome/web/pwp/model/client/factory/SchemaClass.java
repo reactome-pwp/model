@@ -74,7 +74,6 @@ public enum SchemaClass {
     SEQUENCE_ONTOLOGY("SequenceOntology"),
     SIMPLE_ENTITY("SimpleEntity"),
     SPECIES("Species"),
-//    STABLE_IDENTIFIER("StableIdentifier"),
     SUMMATION("Summation"),
     TAXON("Taxon"),
     TRANSLATIONAL_MODIFICATION("TranslationalModification"),
