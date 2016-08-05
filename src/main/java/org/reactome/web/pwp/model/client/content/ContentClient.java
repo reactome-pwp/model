@@ -59,8 +59,13 @@ public abstract class ContentClient extends ContentClientAbstract {
         }
     }
 
+    @SuppressWarnings("unused")
     public static void getAncestors(Event event, ContentClientHandler.AncestorsLoaded handler) {
-        request("data/event/" + event.getDbId() + "/ancestors", handler, body -> {
+        getAncestors(event.getDbId() + "", handler);
+    }
+
+    public static void getAncestors(String event, ContentClientHandler.AncestorsLoaded handler) {
+        request("data/event/" + event + "/ancestors", handler, body -> {
             JSONArray aux = JSONParser.parseStrict(body).isArray();
             Ancestors ancestors = new Ancestors(aux);
             handler.onAncestorsLoaded(ancestors);
