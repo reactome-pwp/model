@@ -23,9 +23,9 @@ public class GwtTestLists extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.getTopLevelPathways("9606", new ContentClientHandler.TopLevelPathways() {
+        ContentClient.getTopLevelPathways("9606", new ContentClientHandler.ObjectListLoaded<TopLevelPathway>() {
             @Override
-            public void onTopLevelPathwaysLoaded(List<Pathway> tpls) {
+            public void onObjectListLoaded(List<TopLevelPathway> tpls) {
                 assertTrue("There has to be more than 20 top level pathways", tpls.size() > 20);
                 finishTest();
             }
@@ -48,12 +48,31 @@ public class GwtTestLists extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.getSpeciesList(new ContentClientHandler.SpeciesList() {
+        ContentClient.getSpeciesList(new ContentClientHandler.ObjectListLoaded<Species>() {
             @Override
-            public void onSpeciesLoaded(List<Species> species) {
+            public void onObjectListLoaded(List<Species> species) {
                 assertTrue("Species list cannot be empty", species.size() > 0);
                 assertTrue("The first element in the species list has to be human", species.get(0).getTaxId().equals("9606"));
                 finishTest();
+            }
+
+            @Override
+            public void onContentClientException(Type type, String message) {
+                fail(type + " " + message);
+            }
+
+            @Override
+            public void onContentClientError(ContentClientError error) {
+                fail(error.getMessage().toString());
+            }
+        });
+    }
+
+    public void testPathwaysWithDiagramForEntity(){
+        ContentClient.getPathwaysWithDiagramForEntity("R-HSA-199420", true, new ContentClientHandler.ObjectListLoaded<Pathway>() {
+            @Override
+            public void onObjectListLoaded(List<Pathway> pathways) {
+                assertTrue(pathways!=null && !pathways.isEmpty());
             }
 
             @Override
