@@ -242,6 +242,9 @@ public abstract class DatabaseObjectFactory {
                 rtn = new Taxon();
                 break;
             //case TRANSLATIONAL_MODIFICATION:   //NOT USED HERE
+            case TOP_LEVEL_PATHWAY:
+                rtn = new TopLevelPathway();
+                break;
             case URL:
                 rtn = new Url();
                 break;

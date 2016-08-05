@@ -78,6 +78,7 @@ public enum SchemaClass {
     SUMMATION("Summation"),
     TAXON("Taxon"),
     TRANSLATIONAL_MODIFICATION("TranslationalModification"),
+    TOP_LEVEL_PATHWAY("TopLevelPathway", "Pathway"),
     URL("URL");
 
     public final String schemaClass;
