@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import org.reactome.web.pwp.model.client.classes.Pathway;
 import org.reactome.web.pwp.model.client.classes.Species;
+import org.reactome.web.pwp.model.client.classes.TopLevelPathway;
 import org.reactome.web.pwp.model.client.common.ContentClientHandler;
 import org.reactome.web.pwp.model.client.content.ContentClient;
 import org.reactome.web.pwp.model.client.content.ContentClientError;
@@ -120,9 +121,9 @@ public class WidgetTest implements EntryPoint {
     }
 
     private void addSpecies(){
-        ContentClient.getSpeciesList(new ContentClientHandler.SpeciesList() {
+        ContentClient.getSpeciesList(new ContentClientHandler.ObjectListLoaded<Species>() {
             @Override
-            public void onSpeciesLoaded(List<Species> species) {
+            public void onObjectListLoaded(List<Species> species) {
                 ListBox speciesList = new ListBox();
                 for (Species s : species) {
                     speciesList.addItem(s.getDisplayName(), s.getIdentifier());
@@ -143,9 +144,9 @@ public class WidgetTest implements EntryPoint {
     }
 
     private void addTopLvelPathway(){
-        ContentClient.getTopLevelPathways("9606", new ContentClientHandler.TopLevelPathways() {
+        ContentClient.getTopLevelPathways("9606", new ContentClientHandler.ObjectListLoaded<TopLevelPathway>() {
             @Override
-            public void onTopLevelPathwaysLoaded(List<Pathway> tpls) {
+            public void onObjectListLoaded(List<TopLevelPathway> tpls) {
                 ListBox listBox = new ListBox();
                 for (Pathway tpl : tpls) {
                     listBox.addItem(tpl.getDisplayName(), tpl.getIdentifier());

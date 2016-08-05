@@ -36,12 +36,12 @@ public abstract class DatabaseObject {
         return (T) this;
     }
 
-    public void load(final ContentClientHandler.ObjectReady handler) {
+    public void load(final ContentClientHandler.ObjectLoaded handler) {
         if(!this.isLoaded) {
             this.isLoaded = true;
             DatabaseObjectFactory.load(this, handler);
         }else{
-            handler.onObjectReady(this);
+            handler.onObjectLoaded(this);
         }
     }
 
