@@ -1,7 +1,7 @@
 package org.reactome.web.pwp.model.client.common;
 
 
-import org.reactome.web.pwp.model.client.classes.*;
+import org.reactome.web.pwp.model.client.classes.DatabaseObject;
 import org.reactome.web.pwp.model.client.content.ContentClientError;
 import org.reactome.web.pwp.model.client.util.Ancestors;
 
@@ -19,32 +19,20 @@ public interface ContentClientHandler {
     void onContentClientException(Type type, String message);
     void onContentClientError(ContentClientError error);
 
-    interface ObjectReady extends ContentClientHandler {
-        void onObjectReady(DatabaseObject databaseObject);
+    interface ObjectLoaded<T extends DatabaseObject> extends ContentClientHandler {
+        void onObjectLoaded(T databaseObject);
     }
 
-    interface ObjectListLoaded extends ContentClientHandler {
-        void onObjectListLoaded(Map<String, DatabaseObject> databaseObjects);
+    interface ObjectListLoaded<T extends DatabaseObject> extends ContentClientHandler {
+        void onObjectListLoaded(List<T> list);
+    }
+
+    interface ObjectMapLoaded extends ContentClientHandler {
+        void onObjectMapLoaded(Map<String, DatabaseObject> map);
     }
 
     interface AncestorsLoaded extends ContentClientHandler {
         void onAncestorsLoaded(Ancestors ancestors);
-    }
-
-    interface PersonHandler extends ContentClientHandler {
-        void onLiteratureReferencesLoaded(Person person);
-    }
-
-    interface Publications extends ContentClientHandler {
-        void onPublicationsLoaded(List<Publication> publications);
-    }
-
-    interface SpeciesList extends ContentClientHandler {
-        void onSpeciesLoaded(List<Species> species);
-    }
-
-    interface TopLevelPathways extends ContentClientHandler {
-        void onTopLevelPathwaysLoaded(List<Pathway> tpls);
     }
 
     interface DatabaseName extends ContentClientHandler {
