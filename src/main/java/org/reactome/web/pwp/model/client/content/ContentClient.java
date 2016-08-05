@@ -1,12 +1,14 @@
 package org.reactome.web.pwp.model.client.content;
 
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import org.reactome.web.pwp.model.client.classes.*;
 import org.reactome.web.pwp.model.client.common.ContentClientAbstract;
 import org.reactome.web.pwp.model.client.common.ContentClientHandler;
 import org.reactome.web.pwp.model.client.factory.DatabaseObjectFactory;
+import org.reactome.web.pwp.model.client.util.Ancestors;
 import org.reactome.web.pwp.model.client.util.StringUtils;
 
 import java.util.Collection;
@@ -57,7 +59,13 @@ public abstract class ContentClient extends ContentClientAbstract {
         }
     }
 
-    //TODO: getAncestors
+    public static void getAncestors(Event event, ContentClientHandler.AncestorsLoaded handler) {
+        request("data/event/" + event.getDbId() + "/ancestors", handler, body -> {
+            JSONArray aux = JSONParser.parseStrict(body).isArray();
+            Ancestors ancestors = new Ancestors(aux);
+            handler.onAncestorsLoaded(ancestors);
+        });
+    }
 
     //TODO: loadPathwaysWithDiagramForEntity
 

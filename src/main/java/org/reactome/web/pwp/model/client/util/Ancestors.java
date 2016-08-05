@@ -5,7 +5,7 @@ import com.google.gwt.json.client.JSONObject;
 import org.reactome.web.pwp.model.client.classes.DatabaseObject;
 import org.reactome.web.pwp.model.client.classes.Event;
 import org.reactome.web.pwp.model.client.classes.Pathway;
-import org.reactome.web.pwp.model.client.factory.DatabaseObjectUtils;
+import org.reactome.web.pwp.model.client.factory.DatabaseObjectFactory;
 
 import java.util.*;
 
@@ -18,11 +18,12 @@ public class Ancestors implements Iterable<Path>, Comparator<Path> {
 
     public Ancestors(JSONArray jsonArray) {
         this.pathList = new LinkedList<>();
-        for(int i=0; i<jsonArray.size(); ++i){
-            JSONObject object = jsonArray.get(i).isObject();
+        for (int i = 0; i < jsonArray.size(); ++i) {
+            JSONArray jPath = jsonArray.get(i).isArray();
             Path path = new Path();
-            for (DatabaseObject event : DatabaseObjectUtils.getObjectList(object, "databaseObject")) {
-                path.add((Event) event);
+            for (int j = 0; j < jPath.size(); ++j) {
+                JSONObject object = jPath.get(j).isObject();
+                path.add((Event) DatabaseObjectFactory.create(object));
             }
             this.pathList.add(path);
         }
@@ -30,52 +31,52 @@ public class Ancestors implements Iterable<Path>, Comparator<Path> {
         Collections.sort(pathList, this);
     }
 
-    public Path get(int index){
+    public Path get(int index) {
         return this.pathList.get(index);
     }
 
-    public void removeOrphanPaths(){
+    public void removeOrphanPaths() {
         List<Path> aux = new LinkedList<>();
         for (Path path : this.pathList) {
-            if(path.rootHasDiagram()){
+            if (path.rootHasDiagram()) {
                 aux.add(path);
             }
         }
         this.pathList = aux;
     }
 
-    public List<Path> getPathsContaining(List<Event> path){
+    public List<Path> getPathsContaining(List<Event> path) {
         List<Path> list = new LinkedList<>();
         for (Path aux : this.pathList) {
-            if(aux.contains(path)){
+            if (aux.contains(path)) {
                 list.add(aux);
             }
-         }
+        }
         return list;
     }
 
-    public List<Path> getPathsContaining(Event event){
+    public List<Path> getPathsContaining(Event event) {
         List<Path> list = new LinkedList<>();
         for (Path path : this.pathList) {
-            if(path.contains(event)){
+            if (path.contains(event)) {
                 list.add(path);
             }
         }
         return list;
     }
 
-    public List<Pathway> getPathways(){
+    public List<Pathway> getPathways() {
         List<Pathway> pathwayList = new LinkedList<>();
         for (Path path : this.pathList) {
             Pathway pathway = path.getLastPathway();
-            if(pathway!=null){
+            if (pathway != null) {
                 pathwayList.add(pathway);
             }
         }
         return pathwayList;
     }
 
-    public int size(){
+    public int size() {
         return this.pathList.size();
     }
 
@@ -91,7 +92,8 @@ public class Ancestors implements Iterable<Path>, Comparator<Path> {
             sb.append("\t[ ");
             boolean addBar = false;
             for (DatabaseObject databaseObject : path) {
-                if(addBar) sb.append(" | "); addBar=true;
+                if (addBar) sb.append(" | ");
+                addBar = true;
                 sb.append(databaseObject.getDisplayName());
             }
             sb.append("]\n");

@@ -3,6 +3,7 @@ package org.reactome.web.pwp.model.client.common;
 
 import org.reactome.web.pwp.model.client.classes.*;
 import org.reactome.web.pwp.model.client.content.ContentClientError;
+import org.reactome.web.pwp.model.client.util.Ancestors;
 
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,10 @@ public interface ContentClientHandler {
 
     interface ObjectListLoaded extends ContentClientHandler {
         void onObjectListLoaded(Map<String, DatabaseObject> databaseObjects);
+    }
+
+    interface AncestorsLoaded extends ContentClientHandler {
+        void onAncestorsLoaded(Ancestors ancestors);
     }
 
     interface PersonHandler extends ContentClientHandler {

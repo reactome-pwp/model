@@ -113,6 +113,11 @@ public class DatabaseObjectUtils {
             aux = jsonObject.get("className");
             if (aux != null) {
                 val = aux.isString();
+            } else {
+                aux = jsonObject.get("simpleLabel");
+                if (aux != null) {
+                    val = aux.isString();
+                }
             }
         }
         return SchemaClass.getSchemaClass((val != null) ? val.stringValue() : null);
