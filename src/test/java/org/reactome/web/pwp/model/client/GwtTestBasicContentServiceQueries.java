@@ -23,9 +23,9 @@ public class GwtTestBasicContentServiceQueries extends GWTTestCaseCommon {
         delayTestFinish(2500);
 
         String stId = "R-HSA-199420";
-        ContentClient.query("R-HSA-199420", new ContentClientHandler.ObjectReady() {
+        ContentClient.query("R-HSA-199420", new ContentClientHandler.ObjectLoaded() {
             @Override
-            public void onObjectReady(DatabaseObject databaseObject) {
+            public void onObjectLoaded(DatabaseObject databaseObject) {
                 assertTrue("The stId has to be `" + stId + "'. Found: '" + databaseObject.getStId() + "'", databaseObject.getStId().equals(stId));
                 finishTest();
             }
@@ -48,18 +48,18 @@ public class GwtTestBasicContentServiceQueries extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.query("R-HSA-1640170", new ContentClientHandler.ObjectReady() {
+        ContentClient.query("R-HSA-1640170", new ContentClientHandler.ObjectLoaded() {
             @Override
-            public void onObjectReady(DatabaseObject databaseObject) {
+            public void onObjectLoaded(DatabaseObject databaseObject) {
                 Pathway p = databaseObject.cast();
                 assertFalse(p.getOrthologousEvent().isEmpty());
 
                 Pathway orth = p.getOrthologousEvent().get(0).cast();
                 assertTrue(orth.getCreated() == null);
 
-                orth.load(new ObjectReady() {
+                orth.load(new ObjectLoaded() {
                     @Override
-                    public void onObjectReady(DatabaseObject databaseObject) {
+                    public void onObjectLoaded(DatabaseObject databaseObject) {
                         Pathway orth = databaseObject.cast();
                         assertTrue(orth.getCreated() != null);
                         finishTest();
@@ -96,17 +96,17 @@ public class GwtTestBasicContentServiceQueries extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.query(Arrays.asList("REACT_13", "R-HSA-199420", "1368092"), new ContentClientHandler.ObjectListLoaded() {
+        ContentClient.query(Arrays.asList("REACT_13", "R-HSA-199420", "1368092"), new ContentClientHandler.ObjectMapLoaded() {
             @Override
-            public void onObjectListLoaded(Map<String, DatabaseObject> databaseObjects) {
-                assertTrue(databaseObjects.get("REACT_13") != null);
-                assertTrue(databaseObjects.get("REACT_13").getStId().equals("R-HSA-71291"));
+            public void onObjectMapLoaded(Map<String, DatabaseObject> map) {
+                assertTrue(map.get("REACT_13") != null);
+                assertTrue(map.get("REACT_13").getStId().equals("R-HSA-71291"));
 
-                assertTrue(databaseObjects.get("R-HSA-199420") != null);
-                assertTrue(databaseObjects.get("R-HSA-199420").getDbId().equals(199420L));
+                assertTrue(map.get("R-HSA-199420") != null);
+                assertTrue(map.get("R-HSA-199420").getDbId().equals(199420L));
 
-                assertTrue(databaseObjects.get("1368092") != null);
-                assertTrue(databaseObjects.get("1368092").getStId().equals("R-MMU-1368092"));
+                assertTrue(map.get("1368092") != null);
+                assertTrue(map.get("1368092").getStId().equals("R-MMU-1368092"));
                 finishTest();
             }
 

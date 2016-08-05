@@ -20,9 +20,9 @@ public class GwtTestDatabaseObjectsRefs extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.query("R-HSA-5693551", new ContentClientHandler.ObjectReady() {
+        ContentClient.query("R-HSA-5693551", new ContentClientHandler.ObjectLoaded() {
             @Override
-            public void onObjectReady(DatabaseObject databaseObject) {
+            public void onObjectLoaded(DatabaseObject databaseObject) {
                 ReactionLikeEvent rle = databaseObject.cast();
                 assertTrue("Expecting more than 2 inputs and found " + rle.getInputs().size(), rle.getInputs().size() > 2);
                 assertTrue("Expecting more than 2 outputs and found " + rle.getOutputs().size(), rle.getOutputs().size() > 2);
@@ -66,9 +66,9 @@ public class GwtTestDatabaseObjectsRefs extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.query(1368092L, new ContentClientHandler.ObjectReady() {
+        ContentClient.query(1368092L, new ContentClientHandler.ObjectLoaded() {
             @Override
-            public void onObjectReady(DatabaseObject databaseObject) {
+            public void onObjectLoaded(DatabaseObject databaseObject) {
                 Pathway p = databaseObject.cast();
 
                 assertFalse("The list should contain ONE instance edit", p.getEdited()==null || p.getEdited().isEmpty());

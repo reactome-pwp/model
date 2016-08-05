@@ -21,9 +21,9 @@ public class GwtTestPersonPublications extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.getPersonPublications("" + PERSON, new ContentClientHandler.Publications() {
+        ContentClient.getPersonPublications("" + PERSON, new ContentClientHandler.ObjectListLoaded<Publication>() {
             @Override
-            public void onPublicationsLoaded(List<Publication> publications) {
+            public void onObjectListLoaded(List<Publication> publications) {
                 assertTrue("Bijay has one or more publications", publications.size() > 0);
                 boolean found = false;
                 for (Publication publication : publications) {
