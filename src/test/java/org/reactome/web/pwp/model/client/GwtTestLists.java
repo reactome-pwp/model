@@ -23,21 +23,11 @@ public class GwtTestLists extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.getTopLevelPathways("9606", new ContentClientHandler.ObjectListLoaded<TopLevelPathway>() {
+        ContentClient.getTopLevelPathways("9606", new ObjectListLoadedTest<TopLevelPathway>() {
             @Override
-            public void onObjectListLoaded(List<TopLevelPathway> tpls) {
-                assertTrue("There has to be more than 20 top level pathways", tpls.size() > 20);
+            public void onObjectListLoaded(List<TopLevelPathway> tlps) {
+                assertTrue("There has to be more than 20 top level pathways", tlps.size() > 20);
                 finishTest();
-            }
-
-            @Override
-            public void onContentClientException(Type type, String message) {
-                fail(type + " " + message);
-            }
-
-            @Override
-            public void onContentClientError(ContentClientError error) {
-                fail(error.getMessage().toString());
             }
         });
     }
@@ -48,41 +38,21 @@ public class GwtTestLists extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.getSpeciesList(new ContentClientHandler.ObjectListLoaded<Species>() {
+        ContentClient.getSpeciesList(new ObjectListLoadedTest<Species>() {
             @Override
             public void onObjectListLoaded(List<Species> species) {
                 assertTrue("Species list cannot be empty", species.size() > 0);
                 assertTrue("The first element in the species list has to be human", species.get(0).getTaxId().equals("9606"));
                 finishTest();
             }
-
-            @Override
-            public void onContentClientException(Type type, String message) {
-                fail(type + " " + message);
-            }
-
-            @Override
-            public void onContentClientError(ContentClientError error) {
-                fail(error.getMessage().toString());
-            }
         });
     }
 
     public void testPathwaysWithDiagramForEntity(){
-        ContentClient.getPathwaysWithDiagramForEntity("R-HSA-199420", true, new ContentClientHandler.ObjectListLoaded<Pathway>() {
+        ContentClient.getPathwaysWithDiagramForEntity("R-HSA-199420", true, new ObjectListLoadedTest<Pathway>() {
             @Override
             public void onObjectListLoaded(List<Pathway> pathways) {
                 assertTrue(pathways!=null && !pathways.isEmpty());
-            }
-
-            @Override
-            public void onContentClientException(Type type, String message) {
-                fail(type + " " + message);
-            }
-
-            @Override
-            public void onContentClientError(ContentClientError error) {
-                fail(error.getMessage().toString());
             }
         });
     }

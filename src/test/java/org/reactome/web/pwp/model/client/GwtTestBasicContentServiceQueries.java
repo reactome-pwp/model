@@ -2,7 +2,6 @@ package org.reactome.web.pwp.model.client;
 
 import org.reactome.web.pwp.model.client.classes.DatabaseObject;
 import org.reactome.web.pwp.model.client.classes.Pathway;
-import org.reactome.web.pwp.model.client.common.ContentClientHandler;
 import org.reactome.web.pwp.model.client.common.GWTTestCaseCommon;
 import org.reactome.web.pwp.model.client.content.ContentClient;
 import org.reactome.web.pwp.model.client.content.ContentClientError;
@@ -23,21 +22,11 @@ public class GwtTestBasicContentServiceQueries extends GWTTestCaseCommon {
         delayTestFinish(2500);
 
         String stId = "R-HSA-199420";
-        ContentClient.query("R-HSA-199420", new ContentClientHandler.ObjectLoaded() {
+        ContentClient.query("R-HSA-199420", new ObjectLoadedTest() {
             @Override
             public void onObjectLoaded(DatabaseObject databaseObject) {
                 assertTrue("The stId has to be `" + stId + "'. Found: '" + databaseObject.getStId() + "'", databaseObject.getStId().equals(stId));
                 finishTest();
-            }
-
-            @Override
-            public void onContentClientException(Type type, String message) {
-                fail(type + " " + message);
-            }
-
-            @Override
-            public void onContentClientError(ContentClientError error) {
-                fail(error.getMessage().toString());
             }
         });
     }
@@ -48,7 +37,7 @@ public class GwtTestBasicContentServiceQueries extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.query("R-HSA-1640170", new ContentClientHandler.ObjectLoaded() {
+        ContentClient.query("R-HSA-1640170", new ObjectLoadedTest() {
             @Override
             public void onObjectLoaded(DatabaseObject databaseObject) {
                 Pathway p = databaseObject.cast();
@@ -77,16 +66,6 @@ public class GwtTestBasicContentServiceQueries extends GWTTestCaseCommon {
                 });
                 finishTest();
             }
-
-            @Override
-            public void onContentClientException(Type type, String message) {
-                fail(type + " " + message);
-            }
-
-            @Override
-            public void onContentClientError(ContentClientError error) {
-                fail(error.getMessage().toString());
-            }
         });
     }
 
@@ -96,7 +75,7 @@ public class GwtTestBasicContentServiceQueries extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.query(Arrays.asList("REACT_13", "R-HSA-199420", "1368092"), new ContentClientHandler.ObjectMapLoaded() {
+        ContentClient.query(Arrays.asList("REACT_13", "R-HSA-199420", "1368092"), new ObjectMapLoadedTest() {
             @Override
             public void onObjectMapLoaded(Map<String, DatabaseObject> map) {
                 assertTrue(map.get("REACT_13") != null);
@@ -108,16 +87,6 @@ public class GwtTestBasicContentServiceQueries extends GWTTestCaseCommon {
                 assertTrue(map.get("1368092") != null);
                 assertTrue(map.get("1368092").getStId().equals("R-MMU-1368092"));
                 finishTest();
-            }
-
-            @Override
-            public void onContentClientException(Type type, String message) {
-                fail(type + " " + message);
-            }
-
-            @Override
-            public void onContentClientError(ContentClientError error) {
-                fail(error.getMessage().toString());
             }
         });
 

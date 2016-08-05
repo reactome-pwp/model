@@ -1,10 +1,11 @@
 package org.reactome.web.pwp.model.client;
 
-import org.reactome.web.pwp.model.client.classes.*;
-import org.reactome.web.pwp.model.client.common.ContentClientHandler;
+import org.reactome.web.pwp.model.client.classes.Event;
+import org.reactome.web.pwp.model.client.classes.Pathway;
+import org.reactome.web.pwp.model.client.classes.PhysicalEntity;
+import org.reactome.web.pwp.model.client.classes.ReactionLikeEvent;
 import org.reactome.web.pwp.model.client.common.GWTTestCaseCommon;
 import org.reactome.web.pwp.model.client.content.ContentClient;
-import org.reactome.web.pwp.model.client.content.ContentClientError;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,10 +21,9 @@ public class GwtTestDatabaseObjectsRefs extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.query("R-HSA-5693551", new ContentClientHandler.ObjectLoaded() {
+        ContentClient.query("R-HSA-5693551", new ObjectLoadedTest<ReactionLikeEvent>() {
             @Override
-            public void onObjectLoaded(DatabaseObject databaseObject) {
-                ReactionLikeEvent rle = databaseObject.cast();
+            public void onObjectLoaded(ReactionLikeEvent rle) {
                 assertTrue("Expecting more than 2 inputs and found " + rle.getInputs().size(), rle.getInputs().size() > 2);
                 assertTrue("Expecting more than 2 outputs and found " + rle.getOutputs().size(), rle.getOutputs().size() > 2);
 
@@ -47,16 +47,6 @@ public class GwtTestDatabaseObjectsRefs extends GWTTestCaseCommon {
                 }
                 finishTest();
             }
-
-            @Override
-            public void onContentClientException(Type type, String message) {
-                fail(type + " " + message);
-            }
-
-            @Override
-            public void onContentClientError(ContentClientError error) {
-                fail(error.getMessage().toString());
-            }
         });
     }
 
@@ -66,23 +56,11 @@ public class GwtTestDatabaseObjectsRefs extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.query(1368092L, new ContentClientHandler.ObjectLoaded() {
+        ContentClient.query(1368092L, new ObjectLoadedTest<Pathway>() {
             @Override
-            public void onObjectLoaded(DatabaseObject databaseObject) {
-                Pathway p = databaseObject.cast();
-
-                assertFalse("The list should contain ONE instance edit", p.getEdited()==null || p.getEdited().isEmpty());
+            public void onObjectLoaded(Pathway pathway) {
+                assertFalse("The list should contain ONE instance edit", pathway.getEdited()==null || pathway.getEdited().isEmpty());
                 finishTest();
-            }
-
-            @Override
-            public void onContentClientException(Type type, String message) {
-                fail(type + " " + message);
-            }
-
-            @Override
-            public void onContentClientError(ContentClientError error) {
-                fail(error.getMessage().toString());
             }
         });
     }

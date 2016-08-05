@@ -1,10 +1,8 @@
 package org.reactome.web.pwp.model.client;
 
 import org.reactome.web.pwp.model.client.classes.Publication;
-import org.reactome.web.pwp.model.client.common.ContentClientHandler;
 import org.reactome.web.pwp.model.client.common.GWTTestCaseCommon;
 import org.reactome.web.pwp.model.client.content.ContentClient;
-import org.reactome.web.pwp.model.client.content.ContentClientError;
 
 import java.util.List;
 
@@ -21,7 +19,7 @@ public class GwtTestPersonPublications extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.getPersonPublications("" + PERSON, new ContentClientHandler.ObjectListLoaded<Publication>() {
+        ContentClient.getPersonPublications("" + PERSON, new ObjectListLoadedTest<Publication>() {
             @Override
             public void onObjectListLoaded(List<Publication> publications) {
                 assertTrue("Bijay has one or more publications", publications.size() > 0);
@@ -31,16 +29,6 @@ public class GwtTestPersonPublications extends GWTTestCaseCommon {
                 }
                 assertTrue("Bijay has a reference with id 5612460", found);
                 finishTest();
-            }
-
-            @Override
-            public void onContentClientException(Type type, String message) {
-                fail(type + " " + message);
-            }
-
-            @Override
-            public void onContentClientError(ContentClientError error) {
-                fail(error.getMessage().toString());
             }
         });
     }
