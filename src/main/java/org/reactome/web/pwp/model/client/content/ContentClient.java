@@ -32,10 +32,7 @@ public abstract class ContentClient extends ContentClientAbstract {
         } else {
             request("data/query/" + identifier + "/more", handler, body -> {
                 JSONObject json = JSONParser.parseStrict(body).isObject();
-                DatabaseObjectFactory.cmds.clear();
-                @SuppressWarnings("unchecked")
-                T databaseObject = (T) DatabaseObjectFactory.create(json);
-                DatabaseObjectFactory.fillUpObjectRefs();
+                T databaseObject = getDatabaseObject(json);
                 handler.onObjectLoaded(databaseObject);
             });
         }
@@ -47,14 +44,8 @@ public abstract class ContentClient extends ContentClientAbstract {
             Scheduler.get().scheduleDeferred(() -> handler.onObjectMapLoaded(new HashMap<>()));
         } else {
             request("data/query/ids/map", StringUtils.join(identifiers, ","), handler, body -> {
-                Map<String, DatabaseObject> map = new HashMap<>();
                 JSONObject object = JSONParser.parseStrict(body).isObject();
-                DatabaseObjectFactory.cmds.clear();
-                for (String key : object.keySet()) {
-                    DatabaseObject dbObject = DatabaseObjectFactory.create(object.get(key).isObject());
-                    map.put(key, dbObject);
-                }
-                DatabaseObjectFactory.fillUpObjectRefs();
+                Map<String, DatabaseObject> map = getDatabaseObjectMap(object);
                 handler.onObjectMapLoaded(map);
             });
         }
@@ -73,36 +64,63 @@ public abstract class ContentClient extends ContentClientAbstract {
         });
     }
 
+    public static <T extends DatabaseObject> void getOrthologous(Object databaseObject, Object species, ContentClientHandler.ObjectLoaded<T> handler) {
+        String dbId = databaseObject instanceof DatabaseObject ? ((DatabaseObject) databaseObject).getDbId() + "" : databaseObject.toString();
+        Long speciesId = species instanceof Species ? ((Species) species).getDbId() : (Long) species;
+        request("/data/orthology/" + dbId + "/species/" + speciesId, handler, body -> {
+            JSONObject json = JSONParser.parseStrict(body).isObject();
+            T rtn = getDatabaseObject(json);
+            handler.onObjectLoaded(rtn);
+        });
+    }
+
+    public static void getOrthologousMap(List<?> objs, Object species, ContentClientHandler.ObjectMapLoaded handler) {
+        Long speciesId = species instanceof Species ? ((Species) species).getDbId() : (Long) species;
+        request("/data/orthologies/ids/species/" + speciesId, StringUtils.join(objs, ","), handler, body -> {
+            JSONObject object = JSONParser.parseStrict(body).isObject();
+            Map<String, DatabaseObject> map = getDatabaseObjectMap(object);
+            handler.onObjectMapLoaded(map);
+        });
+    }
+
     @SuppressWarnings("unused")
     public static void loadPersonPublications(Person person, ContentClientHandler.ObjectLoaded<Person> handler) {
         request("data/person/" + person.getIdentifier() + "/publications", handler, body -> {
-            List<Publication> publications = getDatabaseObjectListOf(body, handler);
+            JSONArray list = JSONParser.parseStrict(body).isArray();
+            List<Publication> publications = getDatabaseObjectList(list);
             if (publications != null) {
                 person.setPublications(publications);
                 handler.onObjectLoaded(person);
-            }
+            } else handler.onContentClientException(ContentClientHandler.Type.RESPONSE_EMPTY_LIST, body);
+
         });
     }
 
     //TODO: Check whether this is needed or it could be done differently with the new ContentService
     public static void getPersonPublications(String id, ContentClientHandler.ObjectListLoaded<Publication> handler) {
         request("data/person/" + id + "/publications", handler, body -> {
-            List<Publication> publications = getDatabaseObjectListOf(body, handler);
+            JSONArray list = JSONParser.parseStrict(body).isArray();
+            List<Publication> publications = getDatabaseObjectList(list);
             if (publications != null) handler.onObjectListLoaded(publications);
+            else handler.onContentClientException(ContentClientHandler.Type.RESPONSE_EMPTY_LIST, body);
         });
     }
 
     public static void getSpeciesList(ContentClientHandler.ObjectListLoaded<Species> handler) {
         request("data/species/main", handler, body -> {
-            List<Species> speciesList = getDatabaseObjectListOf(body, handler);
+            JSONArray list = JSONParser.parseStrict(body).isArray();
+            List<Species> speciesList = getDatabaseObjectList(list);
             if (speciesList != null) handler.onObjectListLoaded(speciesList);
+            else handler.onContentClientException(ContentClientHandler.Type.RESPONSE_EMPTY_LIST, body);
         });
     }
 
     public static void getTopLevelPathways(String species, ContentClientHandler.ObjectListLoaded<TopLevelPathway> handler) {
         request("data/pathways/top/" + species, handler, body -> {
-            List<TopLevelPathway> tpls = getDatabaseObjectListOf(body, handler);
+            JSONArray list = JSONParser.parseStrict(body).isArray();
+            List<TopLevelPathway> tpls = getDatabaseObjectList(list);
             if (tpls != null) handler.onObjectListLoaded(tpls);
+            else handler.onContentClientException(ContentClientHandler.Type.RESPONSE_EMPTY_LIST, body);
         });
     }
 
@@ -112,9 +130,11 @@ public abstract class ContentClient extends ContentClientAbstract {
     }
 
     public static void getPathwaysWithDiagramForEntity(Object peId, boolean allForms, ContentClientHandler.ObjectListLoaded<Pathway> handler) {
-        request("data/pathways/low/diagram/entity/" + peId + ( allForms ? "/allForms" : ""), handler, body -> {
-            List<Pathway> pathways = getDatabaseObjectListOf(body, handler);
-            if(pathways != null) handler.onObjectListLoaded(pathways);
+        request("data/pathways/low/diagram/entity/" + peId + (allForms ? "/allForms" : ""), handler, body -> {
+            JSONArray list = JSONParser.parseStrict(body).isArray();
+            List<Pathway> pathways = getDatabaseObjectList(list);
+            if (pathways != null) handler.onObjectListLoaded(pathways);
+            else handler.onContentClientException(ContentClientHandler.Type.RESPONSE_EMPTY_LIST, body);
         });
     }
 
@@ -131,5 +151,4 @@ public abstract class ContentClient extends ContentClientAbstract {
         if (version != null) handler.onVersionLoaded(version);
         else request("data/database/version", handler, body -> handler.onVersionLoaded(version = body));
     }
-
 }
