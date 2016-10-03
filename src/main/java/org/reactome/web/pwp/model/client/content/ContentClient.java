@@ -85,7 +85,7 @@ public abstract class ContentClient extends ContentClientAbstract {
 
     @SuppressWarnings("unused")
     public static void loadPersonPublications(Person person, ContentClientHandler.ObjectLoaded<Person> handler) {
-        request("data/person/" + person.getIdentifier() + "/publications", handler, body -> {
+        request("data/person/" + person.getReactomeIdentifier() + "/publications", handler, body -> {
             JSONArray list = JSONParser.parseStrict(body).isArray();
             List<Publication> publications = getDatabaseObjectList(list);
             if (publications != null) {

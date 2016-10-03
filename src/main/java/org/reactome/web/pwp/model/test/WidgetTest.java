@@ -126,7 +126,7 @@ public class WidgetTest implements EntryPoint {
             public void onObjectListLoaded(List<Species> species) {
                 ListBox speciesList = new ListBox();
                 for (Species s : species) {
-                    speciesList.addItem(s.getDisplayName(), s.getIdentifier());
+                    speciesList.addItem(s.getDisplayName(), s.getReactomeIdentifier());
                 }
                 container.add(speciesList);
             }
@@ -149,7 +149,7 @@ public class WidgetTest implements EntryPoint {
             public void onObjectListLoaded(List<TopLevelPathway> tpls) {
                 ListBox listBox = new ListBox();
                 for (Pathway tpl : tpls) {
-                    listBox.addItem(tpl.getDisplayName(), tpl.getIdentifier());
+                    listBox.addItem(tpl.getDisplayName(), tpl.getReactomeIdentifier());
                 }
                 container.add(listBox);
             }

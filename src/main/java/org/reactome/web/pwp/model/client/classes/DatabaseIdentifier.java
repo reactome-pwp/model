@@ -42,7 +42,6 @@ public class DatabaseIdentifier extends DatabaseObject {
         return databaseName;
     }
 
-    @Override
     public String getIdentifier() {
         return identifier;
     }

@@ -49,7 +49,6 @@ public abstract class ReferenceEntity extends DatabaseObject {
         return databaseName;
     }
 
-    @Override
     public String getIdentifier() {
         return identifier;
     }

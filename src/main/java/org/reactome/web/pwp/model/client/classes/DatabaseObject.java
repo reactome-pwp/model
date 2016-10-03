@@ -84,7 +84,7 @@ public abstract class DatabaseObject {
         return className;
     }
 
-    public String getIdentifier() {
+    public String getReactomeIdentifier() {
         return stId != null ? stId : "" + dbId;
     }
 
