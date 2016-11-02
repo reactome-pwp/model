@@ -96,6 +96,7 @@ public abstract class DatabaseObjectFactory {
             case INTRA_CHAIN_CROSSLINKED_RESIDUE:           rtn = new IntraChainCrosslinkedResidue();       break;
             case LITERATURE_REFERENCE:                      rtn = new LiteratureReference();                break;
             case MODIFIED_RESIDUE:                          rtn = new ModifiedResidue();                    break;
+            case NEGATIVE_GENE_EXPRESSION_REGULATION:       rtn = new NegativeGeneExpressionRegulation();   break;
             case NEGATIVE_REGULATION:                       rtn = new NegativeRegulation();                 break;
             case OPEN_SET:                                  rtn = new OpenSet();                            break;
             case OTHER_ENTITY:                              rtn = new OtherEntity();                        break;
@@ -104,6 +105,7 @@ public abstract class DatabaseObjectFactory {
             //case PHYSICAL_ENTITY: //NOT USED HERE
             case POLYMER:                                   rtn = new Polymer();                            break;
             case POLYMERISATION:                            rtn = new Polymerisation();                     break;
+            case POSITIVE_GENE_EXPRESSION_REGULATION:       rtn = new PositiveGeneExpressionRegulation();   break;
             case POSITIVE_REGULATION:                       rtn = new PositiveRegulation();                 break;
             case PSI_MOD:                                   rtn = new PsiMod();                             break;
             //case PUBLICATION: //NOT USED HERE

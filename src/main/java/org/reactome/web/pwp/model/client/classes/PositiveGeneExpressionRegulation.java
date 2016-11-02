@@ -6,14 +6,10 @@ import org.reactome.web.pwp.model.client.factory.SchemaClass;
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public class NegativeRegulation extends Regulation {
+public class PositiveGeneExpressionRegulation extends PositiveRegulation {
 
-    NegativeRegulation(SchemaClass schemaClass){
-        super(schemaClass);
-    }
-
-    public NegativeRegulation() {
-        super(SchemaClass.NEGATIVE_REGULATION);
+    public PositiveGeneExpressionRegulation() {
+        super(SchemaClass.POSITIVE_GENE_EXPRESSION_REGULATION);
     }
 
     @Override
