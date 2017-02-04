@@ -9,29 +9,42 @@
     <artifactId>model</artifactId>
     <packaging>jar</packaging>
     <version>2.0.0-SNAPSHOT</version>
-    <name>GWT Maven Archetype</name>
+    <name>Reactome Data Model</name>
 
-    <properties>
-        <!-- Convenience property to set the GWT version -->
-        <gwtVersion>2.8.0-beta1</gwtVersion>
+    <description>
+        Reactome Data Model and ContentService client
+    </description>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <organization>
+        <name>The European Bioinformatics Institute</name>
+        <url>http://www.ebi.ac.uk/</url>
+    </organization>
 
     <developers>
         <developer>
             <id>fabregat</id>
             <name>Antonio Fabregat</name>
             <email>fabregat@ebi.ac.uk</email>
-            <roles>
-                <role>Author</role>
-            </roles>
             <organization>http://www.ebi.ac.uk/</organization>
         </developer>
     </developers>
+
+    <properties>
+        <!-- Convenience property to set the GWT version -->
+        <gwtVersion>2.8.0</gwtVersion>
+        <gwtStyle>OBF</gwtStyle> <!-- OBF | PRETTY | DETAILED -->
+
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+
+        <reactome.utils.version>1.0.3</reactome.utils.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <appModule>org.reactome.web.pwp.model.PathwayPortalModel</appModule>
+        <appName>${appModule}</appName>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -45,12 +58,17 @@
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <appModule>org.reactome.web.pwp.WidgetTest</appModule>
+                <appName>widgettest</appName>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-servlet</artifactId>
-            <scope>runtime</scope>
-        </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
@@ -58,8 +76,12 @@
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-dev</artifactId>
+            <artifactId>gwt-codeserver</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -71,14 +93,26 @@
         <dependency>
             <groupId>org.reactome.server.utils</groupId>
             <artifactId>reactome-utils</artifactId>
-            <version>1.0.2</version>
+            <version>${reactome.utils.version}</version>
             <scope>runtime</scope>
+        </dependency>
+
+        <!-- logging dependencies, delegate all to slf4j and use logback -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.22</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.22</version>
         </dependency>
     </dependencies>
 
     <build>
-        <!-- Output classes directly into the webapp, so that IDEs and "mvn process-classes" update them in DevMode -->
-        <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+        <!-- Generate compiled stuff in the folder used for developing mode -->
+        <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
 
         <plugins>
             <plugin>
@@ -96,22 +130,46 @@
                 </configuration>
             </plugin>
 
-            <!-- GWT Maven Plugin -->
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
+                <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>${gwtVersion}</version>
+                <version>1.0-rc-6</version>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>resources</goal>
-                            <!-- Compile is not needed because other projects using the jar will do it -->
-                            <!--<goal>compile</goal>-->
-                            <goal>test</goal>
-                            <goal>generateAsync</goal>
+                            <goal>import-sources</goal>
+                            <goal>compile</goal>
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <moduleName>${appModule}</moduleName>
+                    <moduleShortName>${appName}</moduleShortName>
+                    <failOnError>true</failOnError>
+                    <compilerArgs>
+                        <arg>-compileReport</arg>
+                        <arg>-XcompilerMetrics</arg>
+                        <arg>-optimize</arg>
+                        <arg>9</arg>
+                        <arg>-style</arg>
+                        <arg>${gwtStyle}</arg>
+                    </compilerArgs>
+                    <devmodeArgs>
+                        <arg>-bindAddress</arg>
+                        <arg>0.0.0.0</arg>
+                    </devmodeArgs>
+                    <codeserverArgs>
+                        <arg>-bindAddress</arg>
+                        <arg>0.0.0.0</arg>
+                        <arg>-gen</arg>
+                        <arg>${project.build.directory}/.generated</arg>
+                    </codeserverArgs>
+                    <warDir>${project.build.directory}/${project.build.finalName}</warDir>
+                    <classpathScope>compile+runtime</classpathScope>
+                    <startupUrls>
+                        <startupUrl>index.html</startupUrl>
+                    </startupUrls>
+                </configuration>
             </plugin>
 
             <!-- Copy static web files before executing gwt:run -->
@@ -200,11 +258,6 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-        </repository>
-        <repository>
-            <id>smartclient</id>
-            <name>smartclient.com</name>
-            <url>http://www.smartclient.com/maven2</url>
         </repository>
 
         <!-- EBI repo -->
