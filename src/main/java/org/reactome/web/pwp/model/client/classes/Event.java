@@ -40,8 +40,8 @@ public abstract class Event extends DatabaseObject {
     private List<Species> species;
     private List<Summation> summation;
 
-    private List<NegativeRegulation> negativeRegulators;
-    private List<PositiveRegulation> positiveRegulators;
+    private List<NegativeRegulation> negativeRegulations;
+    private List<PositiveRegulation> positiveRegulations;
     private List<Requirement> requirements;
 
     public Event(SchemaClass schemaClass) {
@@ -101,9 +101,9 @@ public abstract class Event extends DatabaseObject {
 
         this.summation = DatabaseObjectUtils.getObjectList(jsonObject, "summation");
 
-        this.negativeRegulators = DatabaseObjectUtils.getObjectList(jsonObject, "negativelyRegulatedBy");
+        this.negativeRegulations = DatabaseObjectUtils.getObjectList(jsonObject, "negativelyRegulatedBy");
 
-        this.positiveRegulators = DatabaseObjectUtils.getObjectList(jsonObject, "positivelyRegulatedBy");
+        this.positiveRegulations = DatabaseObjectUtils.getObjectList(jsonObject, "positivelyRegulatedBy");
 
         this.requirements = DatabaseObjectUtils.getObjectList(jsonObject, "requirements");
     }
@@ -227,12 +227,12 @@ public abstract class Event extends DatabaseObject {
         return summation;
     }
 
-    public List<NegativeRegulation> getNegativeRegulators() {
-        return negativeRegulators;
+    public List<NegativeRegulation> getNegativeRegulations() {
+        return negativeRegulations;
     }
 
-    public List<PositiveRegulation> getPositiveRegulators() {
-        return positiveRegulators;
+    public List<PositiveRegulation> getPositiveRegulations() {
+        return positiveRegulations;
     }
 
     public List<Requirement> getRequirements() {
