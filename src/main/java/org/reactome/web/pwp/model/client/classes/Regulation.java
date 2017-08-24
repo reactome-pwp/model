@@ -25,6 +25,7 @@ public class Regulation extends DatabaseObject {
     private List<InstanceEdit> reviewed;
     private List<InstanceEdit> revised;
     private List<Summation> summation;
+    private GO_BiologicalProcess goBiologicalProcess;
 
     public Regulation() {
         this(SchemaClass.REGULATION);
@@ -65,6 +66,10 @@ public class Regulation extends DatabaseObject {
         this.revised = DatabaseObjectUtils.getObjectList(jsonObject, "revised");
 
         this.summation = DatabaseObjectUtils.getObjectList(jsonObject, "summation");
+
+        setDatabaseObject(jsonObject.get("goBiologicalProcess"), () ->
+                goBiologicalProcess = DatabaseObjectUtils.getDatabaseObject(jsonObject, "goBiologicalProcess")
+        );
     }
 
     public String getReleaseDate() {
@@ -113,6 +118,10 @@ public class Regulation extends DatabaseObject {
 
     public List<Summation> getSummation() {
         return summation;
+    }
+
+    public GO_BiologicalProcess getGoBiologicalProcess() {
+        return goBiologicalProcess;
     }
 
     @Override
