@@ -12,7 +12,6 @@ import java.util.List;
 @SuppressWarnings("UnusedDeclaration")
 public class Person extends DatabaseObject {
 
-    private String emailAddress;
     private String firstname;
     private String initial;
     private String orcidId;
@@ -32,8 +31,6 @@ public class Person extends DatabaseObject {
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
 
-        this.emailAddress = DatabaseObjectUtils.getStringValue(jsonObject, "emailAddress");
-
         this.firstname = DatabaseObjectUtils.getStringValue(jsonObject, "firstname");
 
         this.initial = DatabaseObjectUtils.getStringValue(jsonObject, "initial");
@@ -47,10 +44,6 @@ public class Person extends DatabaseObject {
         this.affiliation = DatabaseObjectUtils.getObjectList(jsonObject, "affiliation");
 
         this.crossReference = DatabaseObjectUtils.getObjectList(jsonObject, "crossReference");
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
     }
 
     public String getFirstname() {
