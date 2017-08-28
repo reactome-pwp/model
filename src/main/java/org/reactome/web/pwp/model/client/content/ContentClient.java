@@ -87,12 +87,8 @@ public abstract class ContentClient extends ContentClientAbstract {
     public static void loadPersonPublications(Person person, ContentClientHandler.ObjectLoaded<Person> handler) {
         request("data/person/" + person.getReactomeIdentifier() + "/publications", handler, body -> {
             JSONArray list = JSONParser.parseStrict(body).isArray();
-            List<Publication> publications = getDatabaseObjectList(list);
-            if (publications != null) {
-                person.setPublications(publications);
-                handler.onObjectLoaded(person);
-            } else handler.onContentClientException(ContentClientHandler.Type.RESPONSE_EMPTY_LIST, body);
-
+            person.setPublications(getDatabaseObjectList(list));
+            handler.onObjectLoaded(person);
         });
     }
 
@@ -101,40 +97,56 @@ public abstract class ContentClient extends ContentClientAbstract {
         request("data/person/" + id + "/publications", handler, body -> {
             JSONArray list = JSONParser.parseStrict(body).isArray();
             List<Publication> publications = getDatabaseObjectList(list);
-            if (publications != null) handler.onObjectListLoaded(publications);
-            else handler.onContentClientException(ContentClientHandler.Type.RESPONSE_EMPTY_LIST, body);
+            handler.onObjectListLoaded(publications);
         });
+    }
+
+    public static void getReferenceSequences(DatabaseObject databaseObject, ContentClientHandler.ObjectListLoaded<ReferenceEntity> handler) {
+        if (databaseObject instanceof Event || databaseObject instanceof PhysicalEntity) {
+            request("data/participants/" + databaseObject.getReactomeIdentifier() + "/referenceEntities", handler, body -> {
+                JSONArray list = JSONParser.parseStrict(body).isArray();
+                List<ReferenceEntity> referenceEntities = getDatabaseObjectList(list);
+                handler.onObjectListLoaded(referenceEntities);
+            });
+        } else {
+            handler.onContentClientException(ContentClientHandler.Type.WRONG_REQUEST, "The object is not an Event nor PhysicalEntity");
+        }
     }
 
     public static void getSpeciesList(ContentClientHandler.ObjectListLoaded<Species> handler) {
         request("data/species/main", handler, body -> {
             JSONArray list = JSONParser.parseStrict(body).isArray();
             List<Species> speciesList = getDatabaseObjectList(list);
-            if (speciesList != null) handler.onObjectListLoaded(speciesList);
-            else handler.onContentClientException(ContentClientHandler.Type.RESPONSE_EMPTY_LIST, body);
+            handler.onObjectListLoaded(speciesList);
         });
     }
 
     public static void getTopLevelPathways(String species, ContentClientHandler.ObjectListLoaded<TopLevelPathway> handler) {
-        request("data/pathways/top/" + species, handler, body -> {
+        request("data/pathways/top/" + species.replaceAll("[ _]+", "+"), handler, body -> {
             JSONArray list = JSONParser.parseStrict(body).isArray();
             List<TopLevelPathway> tpls = getDatabaseObjectList(list);
-            if (tpls != null) handler.onObjectListLoaded(tpls);
-            else handler.onContentClientException(ContentClientHandler.Type.RESPONSE_EMPTY_LIST, body);
+            handler.onObjectListLoaded(tpls);
         });
     }
 
-    @SuppressWarnings("unused")
-    public static void getPathwaysWithDiagramForEntity(PhysicalEntity pe, boolean allForms, ContentClientHandler.ObjectListLoaded<Pathway> handler) {
-        getPathwaysWithDiagramForEntity(pe.getDbId(), allForms, handler);
+    public static void getPathwaysWithDiagramForEntity(PhysicalEntity pe, boolean allForms, String species, ContentClientHandler.ObjectListLoaded<Pathway> handler) {
+        getPathwaysWithDiagramForEntity(pe.getReactomeIdentifier(), allForms, species, handler);
     }
 
-    public static void getPathwaysWithDiagramForEntity(Object peId, boolean allForms, ContentClientHandler.ObjectListLoaded<Pathway> handler) {
-        request("data/pathways/low/diagram/entity/" + peId + (allForms ? "/allForms" : ""), handler, body -> {
+    public static void getPathwaysWithDiagramForEntity(PhysicalEntity pe, boolean allForms, ContentClientHandler.ObjectListLoaded<Pathway> handler) {
+        getPathwaysWithDiagramForEntity(pe.getReactomeIdentifier(), allForms, null, handler);
+    }
+
+    public static void getPathwaysWithDiagramForEntity(String pe, boolean allForms, ContentClientHandler.ObjectListLoaded<Pathway> handler) {
+        getPathwaysWithDiagramForEntity(pe, allForms, null, handler);
+    }
+
+    public static void getPathwaysWithDiagramForEntity(String peId, boolean allForms, String species, ContentClientHandler.ObjectListLoaded<Pathway> handler) {
+        String speciesRequest = (species == null || species.isEmpty()) ? "" : "?species=" + species;
+        request("data/pathways/low/diagram/entity/" + peId + (allForms ? "/allForms" : "") + speciesRequest, handler, body -> {
             JSONArray list = JSONParser.parseStrict(body).isArray();
             List<Pathway> pathways = getDatabaseObjectList(list);
-            if (pathways != null) handler.onObjectListLoaded(pathways);
-            else handler.onContentClientException(ContentClientHandler.Type.RESPONSE_EMPTY_LIST, body);
+            handler.onObjectListLoaded(pathways);
         });
     }
 
