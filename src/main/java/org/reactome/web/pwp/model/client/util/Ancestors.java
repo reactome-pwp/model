@@ -7,28 +7,30 @@ import org.reactome.web.pwp.model.client.classes.Event;
 import org.reactome.web.pwp.model.client.classes.Pathway;
 import org.reactome.web.pwp.model.client.factory.DatabaseObjectFactory;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 public class Ancestors implements Iterable<Path>, Comparator<Path> {
 
-    private List<Path> pathList;
+    private List<Path> pathList = new LinkedList<>();
 
     public Ancestors(JSONArray jsonArray) {
-        this.pathList = new LinkedList<>();
         for (int i = 0; i < jsonArray.size(); ++i) {
             JSONArray jPath = jsonArray.get(i).isArray();
             Path path = new Path();
             for (int j = 0; j < jPath.size(); ++j) {
                 JSONObject object = jPath.get(j).isObject();
-                path.add((Event) DatabaseObjectFactory.create(object));
+                path.addFirst((Event) DatabaseObjectFactory.create(object));
             }
             this.pathList.add(path);
         }
         this.removeOrphanPaths();
-        Collections.sort(pathList, this);
+        pathList.sort(this);
     }
 
     public Path get(int index) {
