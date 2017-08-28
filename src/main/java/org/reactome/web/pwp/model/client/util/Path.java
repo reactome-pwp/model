@@ -35,8 +35,12 @@ public class Path implements Iterable<Event> {
         this.add(databaseObject);
     }
 
-    public void add(Event databaseObject){
-        this.path.add(databaseObject);
+    void addFirst(Event event) {
+        this.path.add(0, event);
+    }
+
+    public void add(Event event){
+        this.path.add(event);
     }
 
     public List<Event> asList() {
