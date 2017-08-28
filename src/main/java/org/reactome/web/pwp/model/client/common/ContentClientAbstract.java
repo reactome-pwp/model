@@ -88,7 +88,7 @@ public abstract class ContentClientAbstract {
             DatabaseObjectFactory.fillUpObjectRefs();
             return rtn;
         }
-        return null;
+        return new LinkedList<>();
     }
 
     protected static Map<String, DatabaseObject> getDatabaseObjectMap(JSONObject object) {
