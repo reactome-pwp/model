@@ -51,6 +51,7 @@ public class SimpleEntity extends PhysicalEntity {
         return referenceEntity;
     }
 
+    @Override
     public List<Species> getSpecies() {
         if (species == null) return new LinkedList<>();
         return Collections.singletonList(species);
