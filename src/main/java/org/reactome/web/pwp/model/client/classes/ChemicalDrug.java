@@ -1,6 +1,8 @@
 package org.reactome.web.pwp.model.client.classes;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.resources.client.ImageResource;
+import org.reactome.web.pwp.model.client.factory.DatabaseObjectImages;
 import org.reactome.web.pwp.model.client.factory.DatabaseObjectUtils;
 import org.reactome.web.pwp.model.client.factory.SchemaClass;
 
@@ -26,5 +28,15 @@ public class ChemicalDrug extends Drug {
 
     public ReferenceMolecule getReferenceEntity() {
         return referenceEntity;
+    }
+
+    @Override
+    public ImageResource getImageResource() {
+        return DatabaseObjectImages.INSTANCE.chemicalDrug();
+    }
+
+    @Override
+    public String getDefinition() {
+        return super.getDefinition();
     }
 }
