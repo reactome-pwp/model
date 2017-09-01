@@ -37,7 +37,7 @@ public class GwtTestOrthologous extends GWTTestCaseCommon {
         String stId = "R-HSA-199420";
         ContentClient.getOrthologousMap(Collections.singletonList(stId), 49633L, new ObjectMapLoadedTest() {
             @Override
-            public void onObjectMapLoaded(Map<String, DatabaseObject> map) {
+            public void onObjectMapLoaded(Map<String, ? extends DatabaseObject> map) {
                 assertTrue(map!=null && !map.isEmpty());
                 assertTrue(map.get(stId).getStId().equals("R-SSC-199420"));
                 finishTest();

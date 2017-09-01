@@ -77,7 +77,7 @@ public class GwtTestBasicContentServiceQueries extends GWTTestCaseCommon {
 
         ContentClient.query(Arrays.asList("REACT_13", "R-HSA-199420", "1368092"), new ObjectMapLoadedTest() {
             @Override
-            public void onObjectMapLoaded(Map<String, DatabaseObject> map) {
+            public void onObjectMapLoaded(Map<String, ? extends DatabaseObject> map) {
                 assertTrue(map.get("REACT_13") != null);
                 assertTrue(map.get("REACT_13").getStId().equals("R-HSA-71291"));
 

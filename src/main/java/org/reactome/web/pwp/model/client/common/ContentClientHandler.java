@@ -27,7 +27,7 @@ public interface ContentClientHandler {
     }
 
     interface ObjectMapLoaded extends ContentClientHandler {
-        void onObjectMapLoaded(Map<String, DatabaseObject> map);
+        void onObjectMapLoaded(Map<String, ? extends DatabaseObject> map);
     }
 
     interface AncestorsLoaded extends ContentClientHandler {

@@ -67,18 +67,18 @@ public abstract class ContentClient extends ContentClientAbstract {
     public static <T extends DatabaseObject> void getOrthologous(Object databaseObject, Object species, ContentClientHandler.ObjectLoaded<T> handler) {
         String dbId = databaseObject instanceof DatabaseObject ? ((DatabaseObject) databaseObject).getDbId() + "" : databaseObject.toString();
         Long speciesId = species instanceof Species ? ((Species) species).getDbId() : (Long) species;
-        request("/data/orthology/" + dbId + "/species/" + speciesId, handler, body -> {
+        request("data/orthology/" + dbId + "/species/" + speciesId, handler, body -> {
             JSONObject json = JSONParser.parseStrict(body).isObject();
             T rtn = getDatabaseObject(json);
             handler.onObjectLoaded(rtn);
         });
     }
 
-    public static void getOrthologousMap(List<?> objs, Object species, ContentClientHandler.ObjectMapLoaded handler) {
+    public static void getOrthologousMap(List<?> identifiers, Object species, ContentClientHandler.ObjectMapLoaded handler) {
         Long speciesId = species instanceof Species ? ((Species) species).getDbId() : (Long) species;
-        request("/data/orthologies/ids/species/" + speciesId, StringUtils.join(objs, ","), handler, body -> {
+        request("data/orthologies/ids/species/" + speciesId, StringUtils.join(identifiers, ","), handler, body -> {
             JSONObject object = JSONParser.parseStrict(body).isObject();
-            Map<String, DatabaseObject> map = getDatabaseObjectMap(object);
+            Map<String, ? extends DatabaseObject> map = getDatabaseObjectMap(object);
             handler.onObjectMapLoaded(map);
         });
     }
