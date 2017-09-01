@@ -41,7 +41,7 @@ public abstract class DatabaseObject {
             this.isLoaded = true;
             DatabaseObjectFactory.load(this, handler);
         }else{
-            handler.onObjectLoaded(this);
+            Scheduler.get().scheduleDeferred(() -> handler.onObjectLoaded(DatabaseObject.this));
         }
     }
 
