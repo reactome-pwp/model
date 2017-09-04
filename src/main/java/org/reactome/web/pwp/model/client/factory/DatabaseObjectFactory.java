@@ -26,8 +26,12 @@ public abstract class DatabaseObjectFactory {
             cmds.clear();
             databaseObject.load(json);
             fillUpObjectRefs();
+            //Cache update
             cache.put(databaseObject.getDbId() + "", databaseObject);
             if(databaseObject.getStId()!=null) cache.put(databaseObject.getStId(), databaseObject);
+            //Flagging the object as loaded
+            databaseObject.isLoaded = true;
+
             handler.onObjectLoaded(databaseObject);
         });
     }

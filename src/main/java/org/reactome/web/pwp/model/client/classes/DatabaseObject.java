@@ -25,7 +25,8 @@ public abstract class DatabaseObject {
     private InstanceEdit created;
     private InstanceEdit modified;
 
-    private boolean isLoaded = false;
+    //DO NOT CHANGE THE VALUE IN THIS OBJECT
+    public boolean isLoaded = false;
 
     public DatabaseObject(SchemaClass schemaClass) {
         this.schemaClass = schemaClass;
@@ -37,10 +38,9 @@ public abstract class DatabaseObject {
     }
 
     public void load(final ContentClientHandler.ObjectLoaded handler) {
-        if(!this.isLoaded) {
-            this.isLoaded = true;
+        if (!this.isLoaded) {
             DatabaseObjectFactory.load(this, handler);
-        }else{
+        } else {
             Scheduler.get().scheduleDeferred(() -> handler.onObjectLoaded(DatabaseObject.this));
         }
     }
@@ -113,7 +113,7 @@ public abstract class DatabaseObject {
     }
 
     //Override this method for those objects with associated icon
-    public ImageResource getImageResource(){
+    public ImageResource getImageResource() {
         return DatabaseObjectImages.INSTANCE.exclamation();
     }
 
@@ -141,8 +141,8 @@ public abstract class DatabaseObject {
                 '}';
     }
 
-    void setDatabaseObject(JSONValue jsonValue, Scheduler.ScheduledCommand command){
-        if(jsonValue == null) return;
+    void setDatabaseObject(JSONValue jsonValue, Scheduler.ScheduledCommand command) {
+        if (jsonValue == null) return;
         if (jsonValue.isNumber() == null) {
             command.execute();
         } else {
