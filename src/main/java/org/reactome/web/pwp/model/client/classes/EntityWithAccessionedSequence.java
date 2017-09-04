@@ -58,6 +58,7 @@ public class EntityWithAccessionedSequence extends GenomeEncodedEntity {
         return hasModifiedResidue;
     }
 
+    @Override
     public ReferenceSequence getReferenceEntity() {
         return referenceEntity;
     }

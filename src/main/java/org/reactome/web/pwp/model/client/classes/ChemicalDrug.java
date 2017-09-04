@@ -26,6 +26,7 @@ public class ChemicalDrug extends Drug {
         );
     }
 
+    @Override
     public ReferenceMolecule getReferenceEntity() {
         return referenceEntity;
     }

@@ -47,6 +47,7 @@ public class SimpleEntity extends PhysicalEntity {
         return referenceType;
     }
 
+    @Override
     public ReferenceMolecule getReferenceEntity() {
         return referenceEntity;
     }

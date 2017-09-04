@@ -35,6 +35,7 @@ public class OpenSet extends EntitySet {
         return referenceType;
     }
 
+    @Override
     public ReferenceEntity getReferenceEntity() {
         return referenceEntity;
     }

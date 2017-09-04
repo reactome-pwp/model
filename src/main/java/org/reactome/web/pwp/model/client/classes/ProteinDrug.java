@@ -25,6 +25,7 @@ public class ProteinDrug extends Drug {
         );
     }
 
+    @Override
     public ReferenceGeneProduct getReferenceEntity() {
         return referenceEntity;
     }

@@ -107,6 +107,10 @@ public abstract class PhysicalEntity extends DatabaseObject {
         this.repeatedUnitOf = DatabaseObjectUtils.getObjectList(jsonObject, "repeatedUnitOf");
     }
 
+    public ReferenceEntity getReferenceEntity(){
+        return null;
+    }
+
     public String getDefinition() {
         return definition;
     }

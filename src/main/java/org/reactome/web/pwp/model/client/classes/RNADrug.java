@@ -24,6 +24,7 @@ public class RNADrug extends Drug {
         );
     }
 
+    @Override
     public ReferenceRNASequence getReferenceEntity() {
         return referenceEntity;
     }
