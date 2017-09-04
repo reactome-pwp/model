@@ -10,7 +10,7 @@ import java.util.List;
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 @SuppressWarnings("UnusedDeclaration")
-public class DatabaseIdentifier extends DatabaseObject {
+public class DatabaseIdentifier extends DatabaseObject implements Comparable<DatabaseIdentifier> {
     private String databaseName;
     private String identifier;
     private String url; // Valid URL based on referenceDatabase
@@ -19,6 +19,15 @@ public class DatabaseIdentifier extends DatabaseObject {
 
     public DatabaseIdentifier() {
         super(SchemaClass.DATABASE_IDENTIFIER);
+    }
+
+    public DatabaseIdentifier(ReferenceEntity re){
+        super(SchemaClass.DATABASE_IDENTIFIER);
+        this.databaseName = re.getDatabaseName();
+        this.identifier = re.getIdentifier();
+        this.url = re.getUrl();
+        this.crossReference = re.getCrossReference();
+        this.referenceDatabase = re.getReferenceDatabase();
     }
 
     @Override
@@ -56,5 +65,14 @@ public class DatabaseIdentifier extends DatabaseObject {
 
     public ReferenceDatabase getReferenceDatabase() {
         return referenceDatabase;
+    }
+
+    @Override
+    public int compareTo(DatabaseIdentifier o) {
+        try {
+            return (databaseName + identifier).compareTo(o.databaseName + o.identifier);
+        } catch (Exception e) {
+            return 1;
+        }
     }
 }
