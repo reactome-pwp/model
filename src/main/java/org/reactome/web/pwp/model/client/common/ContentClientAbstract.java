@@ -26,6 +26,8 @@ public abstract class ContentClientAbstract {
     @SuppressWarnings("FieldCanBeLocal")
     public static String CONTENT_SERVICE = "/ContentService/";
 
+    private static final String SERVICE_ERROR_MESSAGE = "There are problems connecting to the service. Please try in a short while.";
+
     public interface ResponseHandler {
         void on200(String body);
     }
@@ -41,30 +43,44 @@ public abstract class ContentClientAbstract {
             requestBuilder.sendRequest(post, new RequestCallback() {
                 @Override
                 public void onResponseReceived(Request request, Response response) {
-                    switch (response.getStatusCode()) {
+                    int sc = response.getStatusCode();
+                    switch (sc) {
                         case Response.SC_OK:
                             responseHandler.on200(response.getText());
                             break;
                         default:
-                            processError(handler, response.getText());
+                            processError(handler, sc, response.getText());
                     }
                 }
 
                 @Override
                 public void onError(Request request, Throwable exception) {
-                    handler.onContentClientException(ContentClientHandler.Type.REQUEST_TIMEOUT, exception.getMessage());
+                    handler.onContentClientException(ContentClientHandler.Type.REQUEST_TIMEOUT, SERVICE_ERROR_MESSAGE);
                 }
             });
         } catch (RequestException ex) {
-            handler.onContentClientException(ContentClientHandler.Type.CONNECTION_ERROR, ex.getMessage());
+            handler.onContentClientException(ContentClientHandler.Type.CONNECTION_ERROR, SERVICE_ERROR_MESSAGE);
         }
     }
 
-    static void processError(ContentClientHandler handler, String json) {
+    static void processError(ContentClientHandler handler, int rc, String json) {
         try {
             handler.onContentClientError(ContentClientFactory.getContentClientError(json));
         } catch (ContentClientException e) {
-            handler.onContentClientException(ContentClientHandler.Type.WRONG_RESPONSE_FORMAT, json);
+            String msg;
+            ContentClientHandler.Type type;
+            switch (rc) {
+                case Response.SC_BAD_GATEWAY:
+                case Response.SC_INTERNAL_SERVER_ERROR:
+                    type = ContentClientHandler.Type.CONNECTION_ERROR;
+                    msg = SERVICE_ERROR_MESSAGE;
+                    break;
+                default:
+                    type = ContentClientHandler.Type.WRONG_RESPONSE_FORMAT;
+                    msg = json;
+
+            }
+            handler.onContentClientException(type, msg);
         }
     }
 
