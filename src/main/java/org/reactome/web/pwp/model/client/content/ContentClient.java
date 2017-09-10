@@ -30,7 +30,7 @@ public abstract class ContentClient extends ContentClientAbstract {
         if (object != null) {
             object.load(handler);
         } else {
-            request("data/query/" + identifier + "/more", handler, body -> {
+            request("data/query/enhanced/" + identifier , handler, body -> {
                 JSONObject json = JSONParser.parseStrict(body).isObject();
                 T databaseObject = getDatabaseObject(json);
                 handler.onObjectLoaded(databaseObject);

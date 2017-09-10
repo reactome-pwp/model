@@ -21,7 +21,7 @@ public abstract class DatabaseObjectFactory {
     public static final Collection<Scheduler.ScheduledCommand> cmds = new LinkedList<>();
 
     public static <T extends DatabaseObject> void load(final T databaseObject, ContentClientHandler.ObjectLoaded<T> handler) {
-        ContentClientAbstract.request("data/query/" + databaseObject.getReactomeIdentifier() + "/more", handler, body -> {
+        ContentClientAbstract.request("data/query/enhanced/" + databaseObject.getReactomeIdentifier(), handler, body -> {
             JSONObject json = JSONParser.parseStrict(body).isObject();
             cmds.clear();
             databaseObject.load(json);
