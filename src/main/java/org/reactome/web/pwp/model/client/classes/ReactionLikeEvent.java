@@ -4,6 +4,7 @@ import com.google.gwt.json.client.JSONObject;
 import org.reactome.web.pwp.model.client.factory.DatabaseObjectUtils;
 import org.reactome.web.pwp.model.client.factory.SchemaClass;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,8 @@ public abstract class ReactionLikeEvent extends Event {
     private List<ReactionLikeEvent> normalReaction;
     private List<PhysicalEntity> outputs;
     private List<DatabaseObject> requiredInputComponent;
+
+    private List<Regulation> regulatedBy;
 
     public ReactionLikeEvent(SchemaClass schemaClass) {
         super(schemaClass);
@@ -47,6 +50,8 @@ public abstract class ReactionLikeEvent extends Event {
         this.outputs = DatabaseObjectUtils.getObjectList(jsonObject, "output");
 
         this.requiredInputComponent = DatabaseObjectUtils.getObjectList(jsonObject, "requiredInputComponent");
+
+        this.regulatedBy = DatabaseObjectUtils.getObjectList(jsonObject, "regulatedBy");
     }
 
     public Boolean getChimeric() {
@@ -83,5 +88,31 @@ public abstract class ReactionLikeEvent extends Event {
 
     public List<DatabaseObject> getRequiredInputComponent() {
         return requiredInputComponent;
+    }
+
+    private List<NegativeRegulation> negativeRegulations;
+
+    public List<NegativeRegulation> getNegativeRegulations() {
+        if (negativeRegulations != null) return negativeRegulations;
+        negativeRegulations = new ArrayList<>();
+        for (Regulation regulation : regulatedBy) {
+            if (regulation instanceof NegativeRegulation) {
+                negativeRegulations.add((NegativeRegulation) regulation);
+            }
+        }
+        return negativeRegulations;
+    }
+
+    private List<PositiveRegulation> positiveRegulations;
+
+    public List<PositiveRegulation> getPositiveRegulations() {
+        if (positiveRegulations != null) return positiveRegulations;
+        positiveRegulations = new ArrayList<>();
+        for (Regulation regulation : regulatedBy) {
+            if (regulation instanceof PositiveRegulation) {
+                positiveRegulations.add((PositiveRegulation) regulation);
+            }
+        }
+        return positiveRegulations;
     }
 }

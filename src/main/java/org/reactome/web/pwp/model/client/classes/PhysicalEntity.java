@@ -18,7 +18,7 @@ public abstract class PhysicalEntity extends DatabaseObject {
     private String speciesName;
     private String systematicName;
     private InstanceEdit authored;
-    private List<EntityCompartment> compartment;
+    private List<Compartment> compartment;
     private List<DatabaseIdentifier> crossReference;
     private List<Disease> disease;
     private List<InstanceEdit> edited;
@@ -135,7 +135,7 @@ public abstract class PhysicalEntity extends DatabaseObject {
         return authored;
     }
 
-    public List<EntityCompartment> getCompartment() {
+    public List<Compartment> getCompartment() {
         return compartment;
     }
 

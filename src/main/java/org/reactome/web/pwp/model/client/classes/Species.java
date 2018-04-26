@@ -4,15 +4,13 @@ import com.google.gwt.json.client.JSONObject;
 import org.reactome.web.pwp.model.client.factory.DatabaseObjectUtils;
 import org.reactome.web.pwp.model.client.factory.SchemaClass;
 
-import java.util.List;
-
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 @SuppressWarnings("UnusedDeclaration")
 public class Species extends Taxon {
 
-    private List<Figure> figure;
+    private String abbreviation;
 
     public Species() {
         super(SchemaClass.SPECIES);
@@ -22,10 +20,10 @@ public class Species extends Taxon {
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
 
-        this.figure = DatabaseObjectUtils.getObjectList(jsonObject, "figure");
+        this.abbreviation = DatabaseObjectUtils.getStringValue(jsonObject, "abbreviation");
     }
 
-    public List<Figure> getFigure() {
-        return figure;
+    public String getAbbreviation() {
+        return abbreviation;
     }
 }

@@ -20,7 +20,6 @@ public class Regulation extends DatabaseObject {
     private List<InstanceEdit> edited;
     private List<Figure> figure;
     private List<Publication> literatureReference;
-    private DatabaseObject regulatedEntity;
     private DatabaseObject regulator;
     private List<InstanceEdit> reviewed;
     private List<InstanceEdit> revised;
@@ -52,8 +51,6 @@ public class Regulation extends DatabaseObject {
         this.figure = DatabaseObjectUtils.getObjectList(jsonObject, "figure");
 
         this.literatureReference = DatabaseObjectUtils.getObjectList(jsonObject, "literatureReference");
-
-        this.regulatedEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "regulatedEntity");
 
         setDatabaseObject(jsonObject.get("regulator"), () ->
                 regulator = DatabaseObjectUtils.getDatabaseObject(jsonObject, "regulator")
@@ -98,10 +95,6 @@ public class Regulation extends DatabaseObject {
 
     public List<Publication> getLiteratureReference() {
         return literatureReference;
-    }
-
-    public DatabaseObject getRegulatedEntity() {
-        return regulatedEntity;
     }
 
     public DatabaseObject getRegulator() {

@@ -17,8 +17,9 @@ public class Complex extends PhysicalEntity {
     private Boolean isChimeric;
     private List<PhysicalEntity> hasComponent;
     private List<PhysicalEntity> entityOnOtherCell;
-    private List<EntityCompartment> includedLocation;
+    private List<Compartment> includedLocation;
     private List<Species> species;
+    private Boolean stoichiometryKnown;
 
     public Complex() {
         super(SchemaClass.COMPLEX);
@@ -37,6 +38,8 @@ public class Complex extends PhysicalEntity {
         this.includedLocation = DatabaseObjectUtils.getObjectList(jsonObject, "includedLocation");
 
         this.species = DatabaseObjectUtils.getObjectList(jsonObject, "species");
+
+        this.stoichiometryKnown = DatabaseObjectUtils.getBooleanValue(jsonObject, "stoichiometryKnown");
     }
 
     public Boolean getChimeric() {
@@ -51,13 +54,17 @@ public class Complex extends PhysicalEntity {
         return entityOnOtherCell;
     }
 
-    public List<EntityCompartment> getIncludedLocation() {
+    public List<Compartment> getIncludedLocation() {
         return includedLocation;
     }
 
     @Override
     public List<Species> getSpecies() {
         return species;
+    }
+
+    public Boolean getStoichiometryKnown() {
+        return stoichiometryKnown;
     }
 
     @Override

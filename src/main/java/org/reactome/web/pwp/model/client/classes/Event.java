@@ -40,10 +40,6 @@ public abstract class Event extends DatabaseObject {
     private List<Species> species;
     private List<Summation> summation;
 
-    private List<NegativeRegulation> negativeRegulations;
-    private List<PositiveRegulation> positiveRegulations;
-    private List<Requirement> requirements;
-
     public Event(SchemaClass schemaClass) {
         super(schemaClass);
     }
@@ -100,12 +96,6 @@ public abstract class Event extends DatabaseObject {
         this.species = DatabaseObjectUtils.getObjectList(jsonObject, "species");
 
         this.summation = DatabaseObjectUtils.getObjectList(jsonObject, "summation");
-
-        this.negativeRegulations = DatabaseObjectUtils.getObjectList(jsonObject, "negativelyRegulatedBy");
-
-        this.positiveRegulations = DatabaseObjectUtils.getObjectList(jsonObject, "positivelyRegulatedBy");
-
-        this.requirements = DatabaseObjectUtils.getObjectList(jsonObject, "requirements");
     }
 
     public ImageResource getStatusIcon() {
@@ -227,15 +217,4 @@ public abstract class Event extends DatabaseObject {
         return summation;
     }
 
-    public List<NegativeRegulation> getNegativeRegulations() {
-        return negativeRegulations;
-    }
-
-    public List<PositiveRegulation> getPositiveRegulations() {
-        return positiveRegulations;
-    }
-
-    public List<Requirement> getRequirements() {
-        return requirements;
-    }
 }

@@ -6,6 +6,7 @@ import org.reactome.web.pwp.model.client.factory.SchemaClass;
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
+@Deprecated
 public class EntityCompartment extends Compartment {
 
     public EntityCompartment() {
