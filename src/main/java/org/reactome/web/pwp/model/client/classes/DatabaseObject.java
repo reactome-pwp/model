@@ -19,6 +19,7 @@ import org.reactome.web.pwp.model.client.factory.SchemaClass;
 public abstract class DatabaseObject {
     private Long dbId;
     private String stId;
+    private String stIdVersion;
     private String displayName;
     private SchemaClass schemaClass;
     private String className; //A easier-to-understand name
@@ -53,6 +54,8 @@ public abstract class DatabaseObject {
         //Not all DatabaseObjects have ST_ID
         if (this.stId != null) DatabaseObjectFactory.cache.put(stId + "", this);
 
+        this.stIdVersion = DatabaseObjectUtils.getStringValue(jsonObject, "stIdVersion");
+
         this.displayName = DatabaseObjectUtils.getStringValue(jsonObject, "displayName");
 
         this.className = DatabaseObjectUtils.getStringValue(jsonObject, "className");
@@ -74,6 +77,10 @@ public abstract class DatabaseObject {
 
     public String getStId() {
         return stId;
+    }
+
+    public String getStIdVersion() {
+        return stIdVersion;
     }
 
     public String getDisplayName() {
