@@ -38,7 +38,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 
-        <reactome.utils.version>1.0.3</reactome.utils.version>
+        <reactome.utils.version>1.0.7</reactome.utils.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
