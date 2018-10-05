@@ -150,12 +150,17 @@ public abstract class ContentClient extends ContentClientAbstract {
         });
     }
 
-    private static String dbName = null;
+    private static DBInfo dbInfo = null;
 
     public static void getDatabaseInformation(ContentClientHandler.DatabaseInfo handler) {
+        if (dbInfo != null) {
+            handler.onDatabaseInfoLoaded(dbInfo);
+        } else {
             request("data/database/info", handler, body -> {
                 JSONObject json = JSONParser.parseStrict(body).isObject();
-                handler.onDatabaseInfoLoaded(new DBInfo(json));
+                dbInfo = new DBInfo(json);
+                handler.onDatabaseInfoLoaded(dbInfo);
             });
+        }
     }
 }
