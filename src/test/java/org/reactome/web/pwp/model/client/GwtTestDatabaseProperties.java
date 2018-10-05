@@ -1,5 +1,6 @@
 package org.reactome.web.pwp.model.client;
 
+import org.reactome.web.pwp.model.client.classes.DBInfo;
 import org.reactome.web.pwp.model.client.common.ContentClientHandler;
 import org.reactome.web.pwp.model.client.common.GWTTestCaseCommon;
 import org.reactome.web.pwp.model.client.content.ContentClient;
@@ -16,35 +17,17 @@ public class GwtTestDatabaseProperties extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.getDatabaseVersion(new ContentClientHandler.Version() {
+        ContentClient.getDatabaseInformation(new ContentClientHandler.DatabaseInfo() {
             @Override
-            public void onVersionLoaded(String version) {
-                assertTrue("Version cannot be null or empty", version != null && !version.isEmpty());
-                finishTest();
-            }
+            public void onDatabaseInfoLoaded(DBInfo dbInfo) {
+                String name = dbInfo.getName();
+                assertTrue("Name cannot be null or empty", name != null && !name.isEmpty());
+                Integer version = dbInfo.getVersion();
+                assertNotNull("Version cannot be null", version);
 
-            @Override
-            public void onContentClientException(Type type, String message) {
-                fail(type + " " + message);
-            }
+                Long checksum = dbInfo.getChecksum();
+                assertNotNull("Version cannot be null", checksum);
 
-            @Override
-            public void onContentClientError(ContentClientError error) {
-                fail(error.getMessage().toString());
-            }
-        });
-    }
-
-    public void testDbName() {
-        // Since RPC calls are asynchronous, we will need to wait for a response
-        // after this test method returns. This line tells the test runner to wait
-        // up to 2.5 seconds before timing out.
-        delayTestFinish(2500);
-
-        ContentClient.getDatabaseName(new ContentClientHandler.DatabaseName() {
-            @Override
-            public void onDatabaseNameLoaded(String name) {
-                assertTrue("Database name cannot be null or empty", name != null && !name.isEmpty());
                 finishTest();
             }
 

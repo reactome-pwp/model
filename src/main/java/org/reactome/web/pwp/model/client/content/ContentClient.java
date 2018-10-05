@@ -152,15 +152,10 @@ public abstract class ContentClient extends ContentClientAbstract {
 
     private static String dbName = null;
 
-    public static void getDatabaseName(ContentClientHandler.DatabaseName handler) {
-        if (dbName != null) handler.onDatabaseNameLoaded(dbName);
-        request("data/database/name", handler, body -> handler.onDatabaseNameLoaded(dbName = body));
-    }
-
-    private static String version = null;
-
-    public static void getDatabaseVersion(ContentClientHandler.Version handler) {
-        if (version != null) handler.onVersionLoaded(version);
-        else request("data/database/version", handler, body -> handler.onVersionLoaded(version = body));
+    public static void getDatabaseInformation(ContentClientHandler.DatabaseInfo handler) {
+            request("data/database/info", handler, body -> {
+                JSONObject json = JSONParser.parseStrict(body).isObject();
+                handler.onDatabaseInfoLoaded(new DBInfo(json));
+            });
     }
 }

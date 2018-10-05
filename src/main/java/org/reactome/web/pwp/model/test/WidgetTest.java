@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import org.reactome.web.pwp.model.client.classes.DBInfo;
 import org.reactome.web.pwp.model.client.classes.Pathway;
 import org.reactome.web.pwp.model.client.classes.Species;
 import org.reactome.web.pwp.model.client.classes.TopLevelPathway;
@@ -28,7 +29,6 @@ public class WidgetTest implements EntryPoint {
         Scheduler.get().scheduleDeferred(() -> {
             RootPanel.get().add(container);
             addDatabaseName();
-            addVersion();
             addSpecies();
             addTopLvelPathway();
 //                //RAF/MAP -> 109869 (for v52)
@@ -83,29 +83,11 @@ public class WidgetTest implements EntryPoint {
     }
 
     private void addDatabaseName(){
-        ContentClient.getDatabaseName(new ContentClientHandler.DatabaseName() {
+        ContentClient.getDatabaseInformation(new ContentClientHandler.DatabaseInfo() {
             @Override
-            public void onDatabaseNameLoaded(String name) {
-                container.add(new Label("Database name: " + name));
-            }
-
-            @Override
-            public void onContentClientException(Type type, String message) {
-                //TODO
-            }
-
-            @Override
-            public void onContentClientError(ContentClientError error) {
-                //TODO
-            }
-        });
-    }
-
-    private void addVersion(){
-        ContentClient.getDatabaseVersion(new ContentClientHandler.Version() {
-            @Override
-            public void onVersionLoaded(String version) {
-                container.add(new Label("Version: " + version));
+            public void onDatabaseInfoLoaded(DBInfo dbInfo) {
+                container.add(new Label("Database name: " + dbInfo.getName()));
+                container.add(new Label("Version: " + dbInfo.getVersion()));
             }
 
             @Override

@@ -1,6 +1,7 @@
 package org.reactome.web.pwp.model.client.common;
 
 
+import org.reactome.web.pwp.model.client.classes.DBInfo;
 import org.reactome.web.pwp.model.client.classes.DatabaseObject;
 import org.reactome.web.pwp.model.client.content.ContentClientError;
 import org.reactome.web.pwp.model.client.util.Ancestors;
@@ -34,11 +35,7 @@ public interface ContentClientHandler {
         void onAncestorsLoaded(Ancestors ancestors);
     }
 
-    interface DatabaseName extends ContentClientHandler {
-        void onDatabaseNameLoaded(String name);
-    }
-
-    interface Version extends ContentClientHandler {
-        void onVersionLoaded(String version);
+    interface DatabaseInfo extends ContentClientHandler {
+        void onDatabaseInfoLoaded(DBInfo dbInfo);
     }
 }
