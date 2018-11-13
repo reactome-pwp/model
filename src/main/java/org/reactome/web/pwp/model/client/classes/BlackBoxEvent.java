@@ -6,8 +6,6 @@ import org.reactome.web.pwp.model.client.factory.DatabaseObjectImages;
 import org.reactome.web.pwp.model.client.factory.DatabaseObjectUtils;
 import org.reactome.web.pwp.model.client.factory.SchemaClass;
 
-import java.util.List;
-
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
@@ -15,7 +13,6 @@ import java.util.List;
 public class BlackBoxEvent extends ReactionLikeEvent {
 
     private Event templateEvent;
-    private List<Event> hasEvent;
 
     public BlackBoxEvent() {
         super(SchemaClass.BLACK_BOX_EVENT);
@@ -29,15 +26,10 @@ public class BlackBoxEvent extends ReactionLikeEvent {
                 templateEvent = DatabaseObjectUtils.getDatabaseObject(jsonObject, "templateEvent")
         );
 
-        this.hasEvent = DatabaseObjectUtils.getObjectList(jsonObject, "hasEvent");
     }
 
     public Event getTemplateEvent() {
         return templateEvent;
-    }
-
-    public List<Event> getHasEvent() {
-        return hasEvent;
     }
 
     @Override
