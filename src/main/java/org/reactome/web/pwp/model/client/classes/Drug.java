@@ -10,25 +10,36 @@ import java.util.List;
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public abstract class Drug extends PhysicalEntity {
+public class Drug extends PhysicalEntity {
 
-    private ReferenceTherapeutic referenceTherapeutic;
+    private DrugType drugType;
 
-    Drug(SchemaClass schemaClass) {
-        super(schemaClass);
+    private ReferenceTherapeutic referenceEntity;
+
+    public Drug() {
+        super(SchemaClass.DRUG);
     }
 
     @Override
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
 
-        setDatabaseObject(jsonObject.get("referenceTherapeutic"), () ->
-                referenceTherapeutic = DatabaseObjectUtils.getDatabaseObject(jsonObject, "referenceTherapeutic")
+        setDatabaseObject(jsonObject.get("referenceEntity"), () ->
+                referenceEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "referenceEntity")
+        );
+
+        setDatabaseObject(jsonObject.get("drugType"), () ->
+                drugType = DatabaseObjectUtils.getDatabaseObject(jsonObject, "drugType")
         );
     }
 
-    public ReferenceTherapeutic getReferenceTherapeutic() {
-        return referenceTherapeutic;
+    public DrugType getDrugType() {
+        return drugType;
+    }
+
+    @Override
+    public ReferenceTherapeutic getReferenceEntity() {
+        return referenceEntity;
     }
 
     @Override
