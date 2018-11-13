@@ -16,6 +16,7 @@ public class Pathway extends Event {
 
     private String doi;
     private Boolean hasDiagram;
+    private Boolean hasEHLD;
     private String isCanonical;
     private List<Event> hasEvent;
     private Pathway normalPathway;
@@ -37,6 +38,9 @@ public class Pathway extends Event {
         this.hasDiagram = DatabaseObjectUtils.getBooleanValue(jsonObject, "hasDiagram");
         if(this.hasDiagram == null) this.hasDiagram = false;
 
+        this.hasEHLD = DatabaseObjectUtils.getBooleanValue(jsonObject, "hasEHLD");
+        if(this.hasEHLD == null) this.hasEHLD = false;
+
         this.isCanonical = DatabaseObjectUtils.getStringValue(jsonObject, "isCanonical");
 
         this.hasEvent = DatabaseObjectUtils.getObjectList(jsonObject, "hasEvent");
@@ -52,6 +56,10 @@ public class Pathway extends Event {
 
     public Boolean getHasDiagram() {
         return hasDiagram;
+    }
+
+    public Boolean getHasEHLD() {
+        return hasEHLD;
     }
 
     public String getIsCanonical() {
