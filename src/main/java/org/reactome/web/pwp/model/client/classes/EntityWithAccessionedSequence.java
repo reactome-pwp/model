@@ -65,6 +65,6 @@ public class EntityWithAccessionedSequence extends GenomeEncodedEntity {
 
     @Override
     public ImageResource getImageResource() {
-        return DatabaseObjectImages.INSTANCE.entityWithAccessionedSequence();
+        return DatabaseObjectImages.INSTANCE.protein();
     }
 }

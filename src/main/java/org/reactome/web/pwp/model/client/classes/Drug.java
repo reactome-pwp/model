@@ -10,14 +10,12 @@ import java.util.List;
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public class Drug extends PhysicalEntity {
-
-    private DrugType drugType;
+public abstract class Drug extends PhysicalEntity {
 
     private ReferenceTherapeutic referenceEntity;
 
-    public Drug() {
-        super(SchemaClass.DRUG);
+    public Drug(SchemaClass schemaClass) {
+        super(schemaClass);
     }
 
     @Override
@@ -27,14 +25,6 @@ public class Drug extends PhysicalEntity {
         setDatabaseObject(jsonObject.get("referenceEntity"), () ->
                 referenceEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "referenceEntity")
         );
-
-        setDatabaseObject(jsonObject.get("drugType"), () ->
-                drugType = DatabaseObjectUtils.getDatabaseObject(jsonObject, "drugType")
-        );
-    }
-
-    public DrugType getDrugType() {
-        return drugType;
     }
 
     @Override

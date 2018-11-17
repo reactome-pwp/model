@@ -67,18 +67,16 @@ public abstract class DatabaseObjectFactory {
             case CANDIDATE_SET:                             rtn = new CandidateSet();                       break;
             case CATALYST_ACTIVITY:                         rtn = new CatalystActivity();                   break;
             case CELL_TYPE:                                 rtn = new CellType();                           break;
+            case CHEMICAL_DRUG:                             rtn = new ChemicalDrug();                       break;
             case COMPARTMENT:                               rtn = new Compartment();                        break;
             case COMPLEX:                                   rtn = new Complex();                            break;
             //case CROSS_LINKED_RESIDUE: //NOT USED H
             case DATABASE_IDENTIFIER:                       rtn = new DatabaseIdentifier();                 break;
             //case DATABASE_OBJECT: //NOT USED HERE
-            case DRUG:                                      rtn = new Drug();                               break;
-            case DRUG_TYPE:                                 rtn = new DrugType();                           break;
             case DEFINED_SET:                               rtn = new DefinedSet();                         break;
             case DEPOLYMERISATION:                          rtn = new Depolymerisation();                   break;
             case DISEASE:                                   rtn = new Disease();                            break;
             //case DRUG: //NOT USED HERE
-            case ENTITY_COMPARTMENT:                        rtn = new EntityCompartment();                  break;
             case ENTITY_FUNCTIONAL_STATUS:                  rtn = new EntityFunctionalStatus();             break;
             case ENTITY_SET:                                rtn = new EntitySet();                          break;
             case ENTITY_WITH_ACCESSIONED_SEQUENCE:          rtn = new EntityWithAccessionedSequence();      break;
@@ -114,6 +112,7 @@ public abstract class DatabaseObjectFactory {
             case POLYMERISATION:                            rtn = new Polymerisation();                     break;
             case POSITIVE_GENE_EXPRESSION_REGULATION:       rtn = new PositiveGeneExpressionRegulation();   break;
             case POSITIVE_REGULATION:                       rtn = new PositiveRegulation();                 break;
+            case PROTEIN_DRUG:                              rtn = new ProteinDrug();                        break;
             case PSI_MOD:                                   rtn = new PsiMod();                             break;
             //case PUBLICATION: //NOT USED HERE
             case REACTION:                                  rtn = new Reaction();                           break;
@@ -131,6 +130,7 @@ public abstract class DatabaseObjectFactory {
             case REGULATION:                                rtn = new Regulation();                         break;
             case REPLACED_RESIDUE:                          rtn = new ReplacedResidue();                    break;
             case REQUIREMENT:                               rtn = new Requirement();                        break;
+            case RNA_DRUG:                                  rtn = new RNADrug();                            break;
             case SEQUENCE_ONTOLOGY:                         rtn = new SequenceOntology();                   break;
             case SIMPLE_ENTITY:                             rtn = new SimpleEntity();                       break;
             case SPECIES:                                   rtn = new Species();                            break;

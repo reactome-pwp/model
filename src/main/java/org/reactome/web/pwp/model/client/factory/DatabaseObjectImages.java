@@ -35,8 +35,7 @@ public interface DatabaseObjectImages extends ClientBundle {
     @Source("images/EntitySet.png")
     ImageResource entitySet();
 
-    @Source("images/EntityWithAccessionedSequence.png")
-    ImageResource entityWithAccessionedSequence();
+
 
     @Source("images/EquivalentEventSet.png")
     ImageResource equivalentEventSet();
@@ -77,22 +76,31 @@ public interface DatabaseObjectImages extends ClientBundle {
     @Source("images/Polymerization.png")
     ImageResource polymerization();
 
+    @Source("images/Protein.png")
+    ImageResource protein();
+
+    @Source("images/ProteinDrug.png")
+    ImageResource proteinDrug();
+
     @Source("images/Reaction.png")
     ImageResource reaction();
 
-    @Source("images/ReferenceDNASequence.png")
+    @Source("images/DNA.png")
     ImageResource referenceDNASequence();
 
     @Source("images/ReferenceGroup.png")
     ImageResource referenceGroup();
 
-    @Source("images/ReferenceRNASequence.png")
-    ImageResource referenceRNASequence();
+    @Source("images/RNA.png")
+    ImageResource RNA();
+
+    @Source("images/RNADrug.png")
+    ImageResource RNADrug();
 
     @Source("images/Regulator.png")
     ImageResource regulator();
 
-    @Source("images/SimpleEntity.png")
+    @Source("images/Chemical.png")
     ImageResource simpleEntity();
 
 }
