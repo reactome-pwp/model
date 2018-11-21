@@ -28,23 +28,39 @@ public abstract class ContentClientAbstract {
 
     private static final String SERVICE_ERROR_MESSAGE = "There are problems connecting to the service. Please try in a short while.";
 
+    protected enum Accept {
+        APPLICATION_JSON("application/json"),
+        TEXT_PLAIN("text/plain");
+
+        final String format;
+
+        Accept(String format) {
+            this.format = format;
+        }
+    }
+
     public interface ResponseHandler {
         void on200(String body);
     }
 
     public static Request request(String url, ContentClientHandler handler, ResponseHandler responseHandler) {
-        return request(url, "application/json", null, handler, responseHandler);
+        return request(url, null, Accept.APPLICATION_JSON, handler, responseHandler);
     }
 
-    public static Request request(String url, String accept, ContentClientHandler handler, ResponseHandler responseHandler) {
-        return request(url, accept, null, handler, responseHandler);
+
+    public static Request request(String url, Accept accept, ContentClientHandler handler, ResponseHandler responseHandler) {
+        return request(url, null, accept, handler, responseHandler);
     }
 
-    public static Request request(String method, String accept, String post, ContentClientHandler handler, ResponseHandler responseHandler) {
+    public static Request request(String method, String post, ContentClientHandler handler, ResponseHandler responseHandler) {
+        return request(method, post, Accept.APPLICATION_JSON, handler, responseHandler);
+    }
+
+    public static Request request(String method, String post, Accept accept, ContentClientHandler handler, ResponseHandler responseHandler) {
         String url = SERVER + CONTENT_SERVICE + method;
         RequestBuilder requestBuilder = new RequestBuilder(post == null ? RequestBuilder.GET : RequestBuilder.POST, url);
         try {
-            requestBuilder.setHeader("Accept", accept);
+            requestBuilder.setHeader("Accept", accept.format);
             return requestBuilder.sendRequest(post, new RequestCallback() {
                 @Override
                 public void onResponseReceived(Request request, Response response) {

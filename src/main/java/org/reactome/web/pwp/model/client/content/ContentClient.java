@@ -39,7 +39,7 @@ public abstract class ContentClient extends ContentClientAbstract {
     }
 
     public static Request query(String identifier, String attribute, ContentClientHandler.AttributesLoaded handler) {
-        return request("data/query/" + identifier + "/" + attribute, "text/plain", handler, body -> {
+        return request("data/query/" + identifier + "/" + attribute, Accept.TEXT_PLAIN, handler, body -> {
             List<String[]> attributes = new ArrayList<>();
             String[] lines = body.split("\n");
             for (String line : lines) attributes.add(line.split("\t"));
