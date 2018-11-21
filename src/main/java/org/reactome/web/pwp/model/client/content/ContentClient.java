@@ -1,6 +1,7 @@
 package org.reactome.web.pwp.model.client.content;
 
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.http.client.Request;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -11,26 +12,25 @@ import org.reactome.web.pwp.model.client.factory.DatabaseObjectFactory;
 import org.reactome.web.pwp.model.client.util.Ancestors;
 import org.reactome.web.pwp.model.client.util.StringUtils;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
+@SuppressWarnings("UnusedReturnValue")
 public abstract class ContentClient extends ContentClientAbstract {
 
-    public static <T extends DatabaseObject> void query(Long dbId, ContentClientHandler.ObjectLoaded<T> handler) {
-        query(dbId + "", handler);
+    public static <T extends DatabaseObject> Request query(Long dbId, ContentClientHandler.ObjectLoaded<T> handler) {
+        return query(dbId + "", handler);
     }
 
-    public static <T extends DatabaseObject> void query(String identifier, ContentClientHandler.ObjectLoaded<T> handler) {
+    public static <T extends DatabaseObject> Request query(String identifier, ContentClientHandler.ObjectLoaded<T> handler) {
         final DatabaseObject object = DatabaseObjectFactory.cache.get(identifier);
         if (object != null) {
             object.load(handler);
+            return null;
         } else {
-            request("data/query/enhanced/" + identifier , handler, body -> {
+            return request("data/query/enhanced/" + identifier , handler, body -> {
                 JSONObject json = JSONParser.parseStrict(body).isObject();
                 T databaseObject = getDatabaseObject(json);
                 handler.onObjectLoaded(databaseObject);
@@ -38,12 +38,22 @@ public abstract class ContentClient extends ContentClientAbstract {
         }
     }
 
-    public static void query(Collection<?> identifiers, ContentClientHandler.ObjectMapLoaded handler) {
+    public static Request query(String identifier, String attribute, ContentClientHandler.AttributesLoaded handler) {
+        return request("data/query/" + identifier + "/" + attribute, "text/plain", handler, body -> {
+            List<String[]> attributes = new ArrayList<>();
+            String[] lines = body.split("\n");
+            for (String line : lines) attributes.add(line.split("\t"));
+            handler.onAttributesLoaded(attributes);
+        });
+    }
+
+    public static Request query(Collection<?> identifiers, ContentClientHandler.ObjectMapLoaded handler) {
         //In case the call is made without elements to query
         if (identifiers == null || identifiers.isEmpty()) {
             Scheduler.get().scheduleDeferred(() -> handler.onObjectMapLoaded(new HashMap<>()));
+            return null;
         } else {
-            request("data/query/ids/map", StringUtils.join(identifiers, ","), handler, body -> {
+            return request("data/query/ids/map", StringUtils.join(identifiers, ","), handler, body -> {
                 JSONObject object = JSONParser.parseStrict(body).isObject();
                 Map<String, DatabaseObject> map = getDatabaseObjectMap(object);
                 handler.onObjectMapLoaded(map);
@@ -52,12 +62,12 @@ public abstract class ContentClient extends ContentClientAbstract {
     }
 
     @SuppressWarnings("unused")
-    public static void getAncestors(Event event, ContentClientHandler.AncestorsLoaded handler) {
-        getAncestors(event.getDbId() + "", handler);
+    public static Request getAncestors(Event event, ContentClientHandler.AncestorsLoaded handler) {
+        return getAncestors(event.getDbId() + "", handler);
     }
 
-    public static void getAncestors(String event, ContentClientHandler.AncestorsLoaded handler) {
-        request("data/event/" + event + "/ancestors", handler, body -> {
+    public static Request getAncestors(String event, ContentClientHandler.AncestorsLoaded handler) {
+        return request("data/event/" + event + "/ancestors", handler, body -> {
             JSONArray aux = JSONParser.parseStrict(body).isArray();
             Ancestors ancestors = new Ancestors(aux);
             handler.onAncestorsLoaded(ancestors);
