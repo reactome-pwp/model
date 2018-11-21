@@ -23,6 +23,10 @@ public interface ContentClientHandler {
         void onObjectLoaded(T databaseObject);
     }
 
+    interface AttributesLoaded extends ContentClientHandler {
+        void onAttributesLoaded(List<String[]> attributes);
+    }
+
     interface ObjectListLoaded<T extends DatabaseObject> extends ContentClientHandler {
         void onObjectListLoaded(List<T> list);
     }
