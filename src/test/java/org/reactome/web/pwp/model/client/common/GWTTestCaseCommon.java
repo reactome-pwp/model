@@ -19,12 +19,24 @@ public abstract class GWTTestCaseCommon extends GWTTestCase {
     }
 
     @Override
-    protected void gwtSetUp() throws Exception {
-        ContentClientAbstract.SERVER = "http://localhost:8585";
+    protected void gwtSetUp() {
+        ContentClientAbstract.SERVER = "http://localhost:8686";
         ContentClientAbstract.CONTENT_SERVICE = "/";
     }
 
     public abstract class ObjectLoadedTest<T extends DatabaseObject> implements ContentClientHandler.ObjectLoaded<T> {
+        @Override
+        public void onContentClientException(Type type, String message) {
+            fail(type + " " + message);
+        }
+
+        @Override
+        public void onContentClientError(ContentClientError error) {
+            fail(error.getMessage().toString());
+        }
+    }
+
+    public abstract class AttributesLoadedTest implements ContentClientHandler.AttributesLoaded {
         @Override
         public void onContentClientException(Type type, String message) {
             fail(type + " " + message);

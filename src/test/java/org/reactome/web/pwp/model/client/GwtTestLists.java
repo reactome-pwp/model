@@ -42,7 +42,7 @@ public class GwtTestLists extends GWTTestCaseCommon {
             @Override
             public void onObjectListLoaded(List<Species> species) {
                 assertTrue("Species list cannot be empty", species.size() > 0);
-                assertTrue("The first element in the species list has to be human", species.get(0).getTaxId().equals("9606"));
+                assertEquals("The first element in the species list has to be human", "9606", species.get(0).getTaxId());
                 finishTest();
             }
         });

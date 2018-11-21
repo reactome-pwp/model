@@ -22,7 +22,7 @@ public class GwtTestOrthologous extends GWTTestCaseCommon {
         ContentClient.getOrthologous("R-HSA-199420", 49633L, new ObjectLoadedTest<EntityWithAccessionedSequence>() {
             @Override
             public void onObjectLoaded(EntityWithAccessionedSequence ewas) {
-                assertTrue(ewas.getStId().equals("R-SSC-199420"));
+                assertEquals("R-SSC-199420", ewas.getStId());
                 finishTest();
             }
         });
@@ -39,7 +39,7 @@ public class GwtTestOrthologous extends GWTTestCaseCommon {
             @Override
             public void onObjectMapLoaded(Map<String, ? extends DatabaseObject> map) {
                 assertTrue(map!=null && !map.isEmpty());
-                assertTrue(map.get(stId).getStId().equals("R-SSC-199420"));
+                assertEquals("R-SSC-199420", map.get(stId).getStId());
                 finishTest();
             }
         });
