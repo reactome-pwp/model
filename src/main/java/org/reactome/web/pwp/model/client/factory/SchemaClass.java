@@ -48,7 +48,6 @@ public enum SchemaClass {
     MODIFIED_RESIDUE("ModifiedResidue"),
     NEGATIVE_GENE_EXPRESSION_REGULATION("NegativeGeneExpressionRegulation"),
     NEGATIVE_REGULATION("NegativeRegulation"),
-    OPEN_SET("OpenSet"),
     OTHER_ENTITY("OtherEntity"),
     PATHWAY("Pathway"),
     PERSON("Person"),

@@ -103,7 +103,6 @@ public abstract class DatabaseObjectFactory {
             case MODIFIED_RESIDUE:                          rtn = new ModifiedResidue();                    break;
             case NEGATIVE_GENE_EXPRESSION_REGULATION:       rtn = new NegativeGeneExpressionRegulation();   break;
             case NEGATIVE_REGULATION:                       rtn = new NegativeRegulation();                 break;
-            case OPEN_SET:                                  rtn = new OpenSet();                            break;
             case OTHER_ENTITY:                              rtn = new OtherEntity();                        break;
             case PATHWAY:                                   rtn = new Pathway();                            break;
             case PERSON:                                    rtn = new Person();                             break;
