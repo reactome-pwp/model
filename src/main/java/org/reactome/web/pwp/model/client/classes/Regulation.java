@@ -14,11 +14,11 @@ import java.util.List;
 @SuppressWarnings("UnusedDeclaration")
 public class Regulation extends DatabaseObject {
     private String releaseDate;
-    private List<String> name;
+    private List<PhysicalEntity> activeUnit;
+    private GO_MolecularFunction activity;
     private InstanceEdit authored;
     private List<Pathway> containedInPathway;
     private List<InstanceEdit> edited;
-    private List<Figure> figure;
     private List<Publication> literatureReference;
     private DatabaseObject regulator;
     private List<InstanceEdit> reviewed;
@@ -40,15 +40,15 @@ public class Regulation extends DatabaseObject {
 
         this.releaseDate = DatabaseObjectUtils.getStringValue(jsonObject, "releaseDate");
 
-        this.name = DatabaseObjectUtils.getStringList(jsonObject, "name");
+        this.activeUnit = DatabaseObjectUtils.getObjectList(jsonObject, "activeUnit");
+
+        this.activity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "activity");
 
         this.authored = DatabaseObjectUtils.getDatabaseObject(jsonObject, "authored");
 
         this.containedInPathway = DatabaseObjectUtils.getObjectList(jsonObject, "containedInPathway");
 
         this.edited = DatabaseObjectUtils.getObjectList(jsonObject, "edited");
-
-        this.figure = DatabaseObjectUtils.getObjectList(jsonObject, "figure");
 
         this.literatureReference = DatabaseObjectUtils.getObjectList(jsonObject, "literatureReference");
 
@@ -73,8 +73,12 @@ public class Regulation extends DatabaseObject {
         return releaseDate;
     }
 
-    public List<String> getName() {
-        return name;
+    public List<PhysicalEntity> getActiveUnit() {
+        return activeUnit;
+    }
+
+    public GO_MolecularFunction getActivity() {
+        return activity;
     }
 
     public InstanceEdit getAuthored() {
@@ -87,10 +91,6 @@ public class Regulation extends DatabaseObject {
 
     public List<InstanceEdit> getEdited() {
         return edited;
-    }
-
-    public List<Figure> getFigure() {
-        return figure;
     }
 
     public List<Publication> getLiteratureReference() {
