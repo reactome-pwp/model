@@ -19,7 +19,7 @@ public abstract class ReactionLikeEvent extends Event {
     private List<EntityFunctionalStatus> entityFunctionalStatus;
     private List<PhysicalEntity> entityOnOtherCell;
     private List<PhysicalEntity> inputs;
-    private List<ReactionLikeEvent> normalReaction;
+    private ReactionLikeEvent normalReaction;
     private List<PhysicalEntity> outputs;
     private List<DatabaseObject> requiredInputComponent;
 
@@ -45,7 +45,7 @@ public abstract class ReactionLikeEvent extends Event {
 
         this.inputs = DatabaseObjectUtils.getObjectList(jsonObject, "input");
 
-        this.normalReaction = DatabaseObjectUtils.getObjectList(jsonObject, "normalReaction");
+        this.normalReaction = DatabaseObjectUtils.getDatabaseObject(jsonObject, "normalReaction");
 
         this.outputs = DatabaseObjectUtils.getObjectList(jsonObject, "output");
 
@@ -78,7 +78,7 @@ public abstract class ReactionLikeEvent extends Event {
         return inputs;
     }
 
-    public List<ReactionLikeEvent> getNormalReaction() {
+    public ReactionLikeEvent getNormalReaction() {
         return normalReaction;
     }
 
