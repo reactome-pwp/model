@@ -13,7 +13,8 @@ import java.util.List;
 public class EntityFunctionalStatus extends DatabaseObject {
 
     private List<FunctionalStatus> functionalStatus;
-    private PhysicalEntity physicalEntity;
+    private PhysicalEntity diseaseEntity;
+    private PhysicalEntity normalEntity;
 
     public EntityFunctionalStatus() {
         super(SchemaClass.ENTITY_FUNCTIONAL_STATUS);
@@ -25,8 +26,14 @@ public class EntityFunctionalStatus extends DatabaseObject {
 
         this.functionalStatus = DatabaseObjectUtils.getObjectList(jsonObject, "functionalStatus");
 
+        setDatabaseObject(jsonObject.get("diseaseEntity"), () ->
+                diseaseEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "diseaseEntity"));
+        //For backwards compatibility
         setDatabaseObject(jsonObject.get("physicalEntity"), () ->
-                physicalEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "physicalEntity")
+                diseaseEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "physicalEntity"));
+
+        setDatabaseObject(jsonObject.get("normalEntity"), () ->
+                normalEntity = DatabaseObjectUtils.getDatabaseObject(jsonObject, "normalEntity")
         );
     }
 
@@ -34,7 +41,11 @@ public class EntityFunctionalStatus extends DatabaseObject {
         return functionalStatus;
     }
 
-    public PhysicalEntity getPhysicalEntity() {
-        return physicalEntity;
+    public PhysicalEntity getDiseaseEntity() {
+        return diseaseEntity;
+    }
+
+    public PhysicalEntity getNormalEntity() {
+        return normalEntity;
     }
 }
