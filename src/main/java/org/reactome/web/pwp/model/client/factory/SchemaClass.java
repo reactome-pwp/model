@@ -2,6 +2,8 @@ package org.reactome.web.pwp.model.client.factory;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
+ * @author Kostas Sidiropoulos <ksidiro@ebi.ac.uk>
+ * @author Guilherme Viteri <gviteri@ebi.ac.uk>
  */
 public enum SchemaClass {
     AFFILIATION("Affiliation"),
@@ -10,10 +12,12 @@ public enum SchemaClass {
     BOOK("Book"),
     CANDIDATE_SET("CandidateSet"),
     CATALYST_ACTIVITY("CatalystActivity"),
+    CATALYST_ACTIVITY_REFERENCE("CatalystActivityReference"),
     CELL_TYPE("CellType"),
     CHEMICAL_DRUG("ChemicalDrug"),
     COMPARTMENT("Compartment"),
     COMPLEX("Complex"),
+//    CONTROL_REFERENCE("ControlReference"),
     CROSS_LINKED_RESIDUE("CrosslinkedResidue"),
     DATABASE_IDENTIFIER("DatabaseIdentifier"),
     DATABASE_OBJECT("DatabaseObject"),
@@ -72,6 +76,7 @@ public enum SchemaClass {
     REFERENCE_SEQUENCE("ReferenceSequence"),
     REFERENCE_THERAPEUTIC("ReferenceTherapeutic"),
     REGULATION("Regulation"),
+    REGULATION_REFERENCE("RegulationReference"),
 //    REGULATION_TYPE("RegulationType"),
     REPLACED_RESIDUE("ReplacedResidue"),
     REQUIREMENT("Requirement"),

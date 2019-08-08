@@ -66,6 +66,7 @@ public abstract class DatabaseObjectFactory {
             case BOOK:                                      rtn = new Book();                               break;
             case CANDIDATE_SET:                             rtn = new CandidateSet();                       break;
             case CATALYST_ACTIVITY:                         rtn = new CatalystActivity();                   break;
+            case CATALYST_ACTIVITY_REFERENCE:               rtn = new CatalystActivityReference();          break;
             case CELL_TYPE:                                 rtn = new CellType();                           break;
             case CHEMICAL_DRUG:                             rtn = new ChemicalDrug();                       break;
             case COMPARTMENT:                               rtn = new Compartment();                        break;
@@ -127,6 +128,7 @@ public abstract class DatabaseObjectFactory {
             //case REFERENCE_SEQUENCE:  //NOT USED HERE
             case REFERENCE_THERAPEUTIC:                     rtn = new ReferenceTherapeutic();               break;
             case REGULATION:                                rtn = new Regulation();                         break;
+            case REGULATION_REFERENCE:                      rtn = new RegulationReference();                break;
             case REPLACED_RESIDUE:                          rtn = new ReplacedResidue();                    break;
             case REQUIREMENT:                               rtn = new Requirement();                        break;
             case RNA_DRUG:                                  rtn = new RNADrug();                            break;

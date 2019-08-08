@@ -16,6 +16,7 @@ public abstract class ReactionLikeEvent extends Event {
     private Boolean isChimeric;
     private String systematicName;
     private List<CatalystActivity> catalystActivities;
+    private CatalystActivityReference catalystActivityReference;
     private List<EntityFunctionalStatus> entityFunctionalStatus;
     private List<PhysicalEntity> entityOnOtherCell;
     private List<PhysicalEntity> inputs;
@@ -24,6 +25,7 @@ public abstract class ReactionLikeEvent extends Event {
     private List<DatabaseObject> requiredInputComponent;
 
     private List<Regulation> regulatedBy;
+    private List<RegulationReference> regulationReference;
 
     public ReactionLikeEvent(SchemaClass schemaClass) {
         super(schemaClass);
@@ -39,6 +41,8 @@ public abstract class ReactionLikeEvent extends Event {
 
         this.catalystActivities = DatabaseObjectUtils.getObjectList(jsonObject, "catalystActivity");
 
+        this.catalystActivityReference = DatabaseObjectUtils.getDatabaseObject(jsonObject, "catalystActivityReference");
+
         this.entityFunctionalStatus = DatabaseObjectUtils.getObjectList(jsonObject, "entityFunctionalStatus");
 
         this.entityOnOtherCell = DatabaseObjectUtils.getObjectList(jsonObject, "entityOnOtherCell");
@@ -52,6 +56,8 @@ public abstract class ReactionLikeEvent extends Event {
         this.requiredInputComponent = DatabaseObjectUtils.getObjectList(jsonObject, "requiredInputComponent");
 
         this.regulatedBy = DatabaseObjectUtils.getObjectList(jsonObject, "regulatedBy");
+
+        this.regulationReference = DatabaseObjectUtils.getObjectList(jsonObject, "regulationReference");
     }
 
     public Boolean getChimeric() {
@@ -88,6 +94,14 @@ public abstract class ReactionLikeEvent extends Event {
 
     public List<DatabaseObject> getRequiredInputComponent() {
         return requiredInputComponent;
+    }
+
+    public CatalystActivityReference getCatalystActivityReference() {
+        return catalystActivityReference;
+    }
+
+    public List<RegulationReference> getRegulationReference() {
+        return regulationReference;
     }
 
     private List<NegativeRegulation> negativeRegulations;
