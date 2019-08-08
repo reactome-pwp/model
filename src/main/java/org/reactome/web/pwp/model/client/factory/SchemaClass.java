@@ -106,21 +106,12 @@ public enum SchemaClass {
 
     private static String getName(String schemaClass) {
         StringBuilder sb = new StringBuilder();
-        //Following code does the same than the commented for underneath
-        // The problem with the split(regex) is that the shown one is not working in javascript
-        // so is necessary to do that in using another approach
         for(int pos = 0; pos < schemaClass.length(); ++pos){
-            String c = String.valueOf(schemaClass.charAt(pos));// schemaClass.substring(pos, pos);
-            //noinspection NonJREEmulationClassesInClientCode
-            if(c.matches("[A-Z]"))
+            char c = schemaClass.charAt(pos);
+            if (Character.isUpperCase(c))
                 sb.append(" ");
             sb.append(c);
         }
-        //READ THE PREVIOUS COMMENT before deleting the next commented code
-        /*for (String word : schemaClass.split("(?<!^)(?=[A-Z])")) {
-            sb.append(word);
-            sb.append(" ");
-        }*/
         return sb.toString().trim();
     }
 }
