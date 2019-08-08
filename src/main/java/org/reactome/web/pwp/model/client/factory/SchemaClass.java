@@ -106,12 +106,11 @@ public enum SchemaClass {
 
     private static String getName(String schemaClass) {
         StringBuilder sb = new StringBuilder();
-        for(int pos = 0; pos < schemaClass.length(); ++pos){
-            char c = schemaClass.charAt(pos);
-            if (Character.isUpperCase(c))
+        schemaClass.chars().forEach(c -> {
+            if (Character.isUpperCase((char)c))
                 sb.append(" ");
             sb.append(c);
-        }
+        });
         return sb.toString().trim();
     }
 }
