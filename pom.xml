@@ -31,7 +31,7 @@
 
     <properties>
         <!-- Convenience property to set the GWT version -->
-        <gwtVersion>2.8.1</gwtVersion>
+        <gwtVersion>2.8.2</gwtVersion>
         <gwtStyle>OBF</gwtStyle> <!-- OBF | PRETTY | DETAILED -->
 
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -98,16 +98,16 @@
         </dependency>
 
         <!-- logging dependencies, delegate all to slf4j and use logback -->
-        <!--<dependency>-->
-            <!--<groupId>org.slf4j</groupId>-->
-            <!--<artifactId>slf4j-api</artifactId>-->
-            <!--<version>1.7.22</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.slf4j</groupId>-->
-            <!--<artifactId>slf4j-nop</artifactId>-->
-            <!--<version>1.7.22</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.22</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.22</version>
+        </dependency>
     </dependencies>
 
     <build>
