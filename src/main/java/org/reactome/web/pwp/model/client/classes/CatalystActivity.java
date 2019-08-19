@@ -10,7 +10,7 @@ import java.util.List;
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 @SuppressWarnings("UnusedDeclaration")
-public class CatalystActivity extends DatabaseObject implements Regulator {
+public class CatalystActivity extends DatabaseObject {
     private List<PhysicalEntity> activeUnit;
     private GO_MolecularFunction activity;
     private PhysicalEntity physicalEntity;
