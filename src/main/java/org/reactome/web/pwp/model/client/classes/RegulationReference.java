@@ -10,7 +10,7 @@ import org.reactome.web.pwp.model.client.factory.SchemaClass;
  */
 public class RegulationReference extends ControlReference {
 
-    private Regulation regulatedBy;
+    private Regulation regulation;
 
     public RegulationReference() {
         super(SchemaClass.REGULATION_REFERENCE);
@@ -20,11 +20,11 @@ public class RegulationReference extends ControlReference {
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
 
-        regulatedBy = DatabaseObjectUtils.getDatabaseObject(jsonObject, "regulatedBy");
+        regulation = DatabaseObjectUtils.getDatabaseObject(jsonObject, "regulation");
 
     }
 
-    public Regulation getRegulatedBy() {
-        return regulatedBy;
+    public Regulation getRegulation() {
+        return regulation;
     }
 }
