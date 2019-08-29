@@ -80,7 +80,7 @@ public enum SchemaClass {
 //    REGULATION_TYPE("RegulationType"),
     REPLACED_RESIDUE("ReplacedResidue"),
     REQUIREMENT("Requirement"),
-    RNA_DRUG("RNADrug"),
+    RNA_DRUG("RNADrug", "RNA Drug"),
     SEQUENCE_ONTOLOGY("SequenceOntology"),
     SIMPLE_ENTITY("SimpleEntity"),
     SPECIES("Species"),
@@ -88,7 +88,7 @@ public enum SchemaClass {
     TAXON("Taxon"),
     TRANSLATIONAL_MODIFICATION("TranslationalModification"),
     TOP_LEVEL_PATHWAY("TopLevelPathway", "Pathway"),
-    URL("URL");
+    URL("URL", "URL");
 
     public final String schemaClass;
     public final String name;
@@ -114,7 +114,7 @@ public enum SchemaClass {
         schemaClass.chars().forEach(c -> {
             if (Character.isUpperCase((char)c))
                 sb.append(" ");
-            sb.append(c);
+            sb.append((char)c);
         });
         return sb.toString().trim();
     }
