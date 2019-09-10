@@ -8,7 +8,7 @@
     <groupId>org.reactome.web.pwp</groupId>
     <artifactId>model</artifactId>
     <packaging>jar</packaging>
-    <version>2.1.20-SNAPSHOT</version>
+    <version>2.1.20</version>
     <name>Reactome Data Model</name>
 
     <description>
@@ -21,6 +21,18 @@
     </organization>
 
     <developers>
+        <developer>
+            <id>ksidis</id>
+            <name>Kostas Sidiropoulos</name>
+            <email>ksidiro@ebi.ac.uk</email>
+            <organization>http://www.ebi.ac.uk/</organization>
+        </developer>
+        <developer>
+            <id>gviteri</id>
+            <name>Guilherme Viteri</name>
+            <email>gviteri@ebi.ac.uk</email>
+            <organization>http://www.ebi.ac.uk/</organization>
+        </developer>
         <developer>
             <id>fabregat</id>
             <name>Antonio Fabregat</name>
