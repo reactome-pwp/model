@@ -31,6 +31,7 @@ public class WidgetTest implements EntryPoint {
             addDatabaseName();
             addSpecies();
             addTopLvelPathway();
+            getCitation("31691815");
 //                //RAF/MAP -> 109869 (for v52)
 //                DatabaseObjectFactory.get(109869L, new DatabaseObjectCreatedHandler() {
 //                    @Override
@@ -147,4 +148,27 @@ public class WidgetTest implements EntryPoint {
             }
         });
     }
+
+    private void getCitation(String id) {
+        ContentClient.getStaticCitation(id, new ContentClientHandler.Citation() {
+            @Override
+            public void onCitationTextLoaded(String citation) {
+                container.add(new Label(citation));
+            }
+
+            @Override
+            public void onContentClientException(Type type, String message) {
+                container.add(new Label("in content client exception"));
+                container.add(new Label(type.toString()));
+                container.add(new Label(message));
+            }
+
+            @Override
+            public void onContentClientError(ContentClientError error) {
+                container.add(new Label("in content client error"));
+                container.add(new Label(error.toString()));
+            }
+        });
+    }
+
 }

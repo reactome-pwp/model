@@ -42,4 +42,9 @@ public interface ContentClientHandler {
     interface DatabaseInfo extends ContentClientHandler {
         void onDatabaseInfoLoaded(DBInfo dbInfo);
     }
+
+    interface Citation extends ContentClientHandler {
+        void onCitationTextLoaded(String citation);
+    }
+
 }
