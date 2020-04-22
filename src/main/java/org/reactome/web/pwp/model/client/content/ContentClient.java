@@ -177,7 +177,7 @@ public abstract class ContentClient extends ContentClientAbstract {
     }
 
     public static void getStaticCitation(String id, ContentClientHandler.Citation handler) {
-        request("citation/static/" + id, handler, body -> {
+        request("citation/static/" + id, Accept.TEXT_PLAIN, handler, body -> {
             String citation = body;
             handler.onCitationTextLoaded(citation);
         });
