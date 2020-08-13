@@ -102,6 +102,7 @@ public abstract class DatabaseObjectFactory {
             case INTRA_CHAIN_CROSSLINKED_RESIDUE:           rtn = new IntraChainCrosslinkedResidue();       break;
             case LITERATURE_REFERENCE:                      rtn = new LiteratureReference();                break;
             case MODIFIED_RESIDUE:                          rtn = new ModifiedResidue();                    break;
+            case MODIFIED_NUCLEOTIDE:                       rtn = new ModifiedNucleotide();                 break;
             case NEGATIVE_GENE_EXPRESSION_REGULATION:       rtn = new NegativeGeneExpressionRegulation();   break;
             case NEGATIVE_REGULATION:                       rtn = new NegativeRegulation();                 break;
             case OTHER_ENTITY:                              rtn = new OtherEntity();                        break;
@@ -130,6 +131,7 @@ public abstract class DatabaseObjectFactory {
             case REGULATION:                                rtn = new Regulation();                         break;
             case REGULATION_REFERENCE:                      rtn = new RegulationReference();                break;
             case REPLACED_RESIDUE:                          rtn = new ReplacedResidue();                    break;
+            case NONSENSE_MUTATION:                         rtn = new NonsenseMutation();                   break;
             case REQUIREMENT:                               rtn = new Requirement();                        break;
             case RNA_DRUG:                                  rtn = new RNADrug();                            break;
             case SEQUENCE_ONTOLOGY:                         rtn = new SequenceOntology();                   break;

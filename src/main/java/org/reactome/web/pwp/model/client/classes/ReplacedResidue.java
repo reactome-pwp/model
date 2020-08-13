@@ -7,7 +7,8 @@ import org.reactome.web.pwp.model.client.factory.SchemaClass;
 import java.util.List;
 
 /**
- * @author Antonio Fabregat <fabregat@ebi.ac.uk>
+ * @author Antonio
+ * @author Guilherme Viteri gviteri@ebi.ac.uk
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ReplacedResidue extends GeneticallyModifiedResidue {
@@ -17,6 +18,10 @@ public class ReplacedResidue extends GeneticallyModifiedResidue {
 
     public ReplacedResidue() {
         super(SchemaClass.REPLACED_RESIDUE);
+    }
+
+    public ReplacedResidue(SchemaClass schemaClass) {
+        super(schemaClass);
     }
 
     @Override
