@@ -9,7 +9,8 @@
     <artifactId>model</artifactId>
     <packaging>jar</packaging>
     <version>2.1.22</version>
-    <name>Reactome Data Model</name>
+
+    <name>Data Model</name>
 
     <description>
         Reactome Data Model and ContentService client
