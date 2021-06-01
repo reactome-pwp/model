@@ -65,12 +65,10 @@ public abstract class ContentClientAbstract {
                 @Override
                 public void onResponseReceived(Request request, Response response) {
                     int sc = response.getStatusCode();
-                    switch (sc) {
-                        case Response.SC_OK:
-                            responseHandler.on200(response.getText());
-                            break;
-                        default:
-                            processError(handler, sc, response.getText());
+                    if (sc == Response.SC_OK) {
+                        responseHandler.on200(response.getText());
+                    } else {
+                        processError(handler, sc, response.getText());
                     }
                 }
 
