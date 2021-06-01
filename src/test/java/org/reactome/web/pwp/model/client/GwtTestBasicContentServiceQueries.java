@@ -70,7 +70,7 @@ public class GwtTestBasicContentServiceQueries extends GWTTestCaseCommon {
         });
     }
 
-    public void testAttributesLoaded(){
+    public void testAttributesLoaded() {
         // Since RPC calls are asynchronous, we will need to wait for a response
         // after this test method returns. This line tells the test runner to wait
         // up to 2.5 seconds before timing out.
