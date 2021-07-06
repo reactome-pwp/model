@@ -28,13 +28,13 @@ public abstract class ContentClientAbstract {
 
     private static final String SERVICE_ERROR_MESSAGE = "There are problems connecting to the service. Please try in a short while.";
 
-    protected enum Accept {
+    protected enum MimeType {
         APPLICATION_JSON("application/json"),
         TEXT_PLAIN("text/plain");
 
         final String format;
 
-        Accept(String format) {
+        MimeType(String format) {
             this.format = format;
         }
     }
@@ -44,22 +44,23 @@ public abstract class ContentClientAbstract {
     }
 
     public static Request request(String url, ContentClientHandler handler, ResponseHandler responseHandler) {
-        return request(url, null, Accept.APPLICATION_JSON, handler, responseHandler);
+        return request(url, null, MimeType.TEXT_PLAIN, MimeType.APPLICATION_JSON, handler, responseHandler);
     }
 
 
-    public static Request request(String url, Accept accept, ContentClientHandler handler, ResponseHandler responseHandler) {
-        return request(url, null, accept, handler, responseHandler);
+    public static Request request(String url, MimeType accept, ContentClientHandler handler, ResponseHandler responseHandler) {
+        return request(url, null, MimeType.TEXT_PLAIN, accept, handler, responseHandler);
     }
 
     public static Request request(String method, String post, ContentClientHandler handler, ResponseHandler responseHandler) {
-        return request(method, post, Accept.APPLICATION_JSON, handler, responseHandler);
+        return request(method, post, MimeType.TEXT_PLAIN, MimeType.APPLICATION_JSON, handler, responseHandler);
     }
 
-    public static Request request(String method, String post, Accept accept, ContentClientHandler handler, ResponseHandler responseHandler) {
+    public static Request request(String method, String post, MimeType contentType, MimeType accept, ContentClientHandler handler, ResponseHandler responseHandler) {
         String url = SERVER + CONTENT_SERVICE + method;
         RequestBuilder requestBuilder = new RequestBuilder(post == null ? RequestBuilder.GET : RequestBuilder.POST, url);
         try {
+            requestBuilder.setHeader("Content-Type", contentType.format);
             requestBuilder.setHeader("Accept", accept.format);
             return requestBuilder.sendRequest(post, new RequestCallback() {
                 @Override
