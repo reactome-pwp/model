@@ -30,14 +30,15 @@ public class GwtTestDatabaseObjectsRefs extends GWTTestCaseCommon {
                 int duplicates = 0;
                 Set<PhysicalEntity> aux = new HashSet<>();
                 for (PhysicalEntity physicalEntity : rle.getInputs()) {
-                    if(!aux.contains(physicalEntity)) duplicates++;
+                    if (!aux.contains(physicalEntity)) duplicates++;
                     aux.add(physicalEntity);
                 }
                 assertTrue("Expecting duplicates in inputs", duplicates > 0);
 
-                duplicates = 0; aux = new HashSet<>();
+                duplicates = 0;
+                aux = new HashSet<>();
                 for (PhysicalEntity physicalEntity : rle.getOutputs()) {
-                    if(!aux.contains(physicalEntity)) duplicates++;
+                    if (!aux.contains(physicalEntity)) duplicates++;
                     aux.add(physicalEntity);
                 }
                 assertTrue("Expecting duplicates in outputs", duplicates > 0);
@@ -56,10 +57,10 @@ public class GwtTestDatabaseObjectsRefs extends GWTTestCaseCommon {
         // up to 2.5 seconds before timing out.
         delayTestFinish(2500);
 
-        ContentClient.query(1368092L, new ObjectLoadedTest<Pathway>() {
+        ContentClient.query(9612973L, new ObjectLoadedTest<Pathway>() {
             @Override
             public void onObjectLoaded(Pathway pathway) {
-                assertFalse("The list should contain ONE instance edit", pathway.getEdited()==null || pathway.getEdited().isEmpty());
+                assertFalse("The list should contain at least ONE instance edit", pathway.getEdited() == null || pathway.getEdited().isEmpty());
                 finishTest();
             }
         });
