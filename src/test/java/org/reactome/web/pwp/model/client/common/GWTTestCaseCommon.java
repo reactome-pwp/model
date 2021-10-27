@@ -4,6 +4,8 @@ import com.google.gwt.junit.client.GWTTestCase;
 import org.reactome.web.pwp.model.client.classes.DatabaseObject;
 import org.reactome.web.pwp.model.client.content.ContentClientError;
 
+import java.util.List;
+
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
@@ -56,7 +58,12 @@ public abstract class GWTTestCaseCommon extends GWTTestCase {
 
         @Override
         public void onContentClientError(ContentClientError error) {
-            fail(error.getMessage().toString());
+            List<String> message = error.getMessage();
+            if (message != null) {
+                fail(message.toString());
+            } else {
+                fail(error.getReason());
+            }
         }
     }
 

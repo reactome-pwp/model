@@ -30,7 +30,7 @@ public abstract class ContentClient extends ContentClientAbstract {
             object.load(handler);
             return null;
         } else {
-            return request("data/query/enhanced/" + identifier , handler, body -> {
+            return request("data/query/enhanced/" + identifier, handler, body -> {
                 JSONObject json = JSONParser.parseStrict(body).isObject();
                 T databaseObject = getDatabaseObject(json);
                 handler.onObjectLoaded(databaseObject);
@@ -39,7 +39,7 @@ public abstract class ContentClient extends ContentClientAbstract {
     }
 
     public static Request query(String identifier, String attribute, ContentClientHandler.AttributesLoaded handler) {
-        return request("data/query/" + identifier + "/" + attribute, Accept.TEXT_PLAIN, handler, body -> {
+        return request("data/query/" + identifier + "/" + attribute, MimeType.TEXT_PLAIN, handler, body -> {
             List<String[]> attributes = new ArrayList<>();
             if (body != null && !body.isEmpty()) {
                 String[] lines = body.split("\n");
@@ -177,7 +177,7 @@ public abstract class ContentClient extends ContentClientAbstract {
     }
 
     public static void getStaticCitation(String id, ContentClientHandler.Citation handler) {
-        request("citation/static/" + id, Accept.TEXT_PLAIN, handler, body -> {
+        request("citation/static/" + id, MimeType.TEXT_PLAIN, handler, body -> {
             String citation = body;
             handler.onCitationTextLoaded(citation);
         });
