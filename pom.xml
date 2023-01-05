@@ -8,9 +8,15 @@
     <groupId>org.reactome.web.pwp</groupId>
     <artifactId>model</artifactId>
     <packaging>jar</packaging>
-    <version>2.2.0</version>
+    <version>2.2.1</version>
 
     <name>Data Model</name>
+
+    <parent>
+        <groupId>org.reactome.server</groupId>
+        <artifactId>reactome-pwp-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
 
     <description>
         Reactome Data Model and ContentService client
@@ -18,7 +24,7 @@
 
     <organization>
         <name>The European Bioinformatics Institute</name>
-        <url>http://www.ebi.ac.uk/</url>
+        <url>https://www.ebi.ac.uk/</url>
     </organization>
 
     <developers>
@@ -26,52 +32,35 @@
             <id>ksidis</id>
             <name>Kostas Sidiropoulos</name>
             <email>ksidiro@ebi.ac.uk</email>
-            <organization>http://www.ebi.ac.uk/</organization>
+            <organization>https://www.ebi.ac.uk/</organization>
         </developer>
         <developer>
             <id>gviteri</id>
             <name>Guilherme Viteri</name>
             <email>gviteri@ebi.ac.uk</email>
-            <organization>http://www.ebi.ac.uk/</organization>
+            <organization>https://www.ebi.ac.uk/</organization>
         </developer>
         <developer>
             <id>fabregat</id>
             <name>Antonio Fabregat</name>
             <email>fabregat@ebi.ac.uk</email>
-            <organization>http://www.ebi.ac.uk/</organization>
+            <organization>https://www.ebi.ac.uk/</organization>
         </developer>
     </developers>
 
     <properties>
         <!-- Convenience property to set the GWT version -->
-        <gwtVersion>2.9.0</gwtVersion>
         <gwtStyle>OBF</gwtStyle> <!-- OBF | PRETTY | DETAILED -->
-        <jetty.runner.version>9.4.41.v20210516</jetty.runner.version>
 
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
-
-        <reactome.utils.version>1.1.0</reactome.utils.version>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <appModule>org.reactome.web.pwp.model.PathwayPortalModel</appModule>
         <appName>${appModule}</appName>
-        <slf4j.version>1.7.22</slf4j.version>
-    </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.google.gwt</groupId>
-                <artifactId>gwt</artifactId>
-                <version>${gwtVersion}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    </properties>
 
     <profiles>
         <profile>
@@ -124,7 +113,6 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-runner</artifactId>
-            <version>${jetty.runner.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -136,14 +124,12 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.reactome.server.utils</groupId>
             <artifactId>reactome-utils</artifactId>
-            <version>${reactome.utils.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -151,12 +137,10 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
     </dependencies>
 
@@ -168,7 +152,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>${maven.jar.version}</version>
                 <configuration>
                     <excludes>
                         <!-- Here we exclude the packages and files that we do NOT want to add to the jar file -->
@@ -183,7 +167,7 @@
             <plugin>
                 <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>1.0-rc-6</version>
+                <version>${gwt.maven.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -226,7 +210,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>${maven.war.version}</version>
                 <executions>
                     <execution>
                         <phase>compile</phase>
@@ -243,7 +227,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>${maven.source.version}</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -258,7 +242,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <extensions>true</extensions>
-                <version>2.8.2</version>
+                <version>${maven.deploy.version}</version>
             </plugin>
 
         </plugins>
@@ -268,7 +252,7 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh</artifactId>
-                <version>3.4.3</version>
+                <version>${wagon.ssh.version}</version>
             </extension>
         </extensions>
     </build>
@@ -293,47 +277,7 @@
             </snapshots>
         </repository>
 
-        <!-- EBI repo -->
-        <repository>
-            <id>nexus-ebi-repo</id>
-            <name>The EBI internal repository</name>
-            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-repo/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <!-- EBI SNAPSHOT repo -->
-        <repository>
-            <id>nexus-ebi-snapshot-repo</id>
-            <name>The EBI internal snapshot repository</name>
-            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
     </repositories>
-
-    <distributionManagement>
-        <!-- EBI repo -->
-        <repository>
-            <id>pst-release</id>
-            <name>EBI Nexus Repository</name>
-            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-release</url>
-        </repository>
-        <!-- EBI SNAPSHOT repo -->
-        <snapshotRepository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>pst-snapshots</id>
-            <name>EBI Nexus Snapshots Repository</name>
-            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <pluginRepositories>
         <pluginRepository>
