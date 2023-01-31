@@ -1,15 +1,13 @@
 package org.reactome.web.pwp.model.test;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
-import org.reactome.web.pwp.model.client.classes.DBInfo;
-import org.reactome.web.pwp.model.client.classes.Pathway;
-import org.reactome.web.pwp.model.client.classes.Species;
-import org.reactome.web.pwp.model.client.classes.TopLevelPathway;
+import org.reactome.web.pwp.model.client.classes.*;
 import org.reactome.web.pwp.model.client.common.ContentClientHandler;
 import org.reactome.web.pwp.model.client.content.ContentClient;
 import org.reactome.web.pwp.model.client.content.ContentClientError;
@@ -31,6 +29,7 @@ public class WidgetTest implements EntryPoint {
             addDatabaseName();
             addSpecies();
             addTopLvelPathway();
+            addPathway("c");
             getCitation("31691815");
 //                //RAF/MAP -> 109869 (for v52)
 //                DatabaseObjectFactory.get(109869L, new DatabaseObjectCreatedHandler() {
@@ -80,6 +79,25 @@ public class WidgetTest implements EntryPoint {
 //                        Window.alert(exception.getMessage());
 //                    }
 //                });
+        });
+    }
+
+    private void addPathway(String s) {
+        ContentClient.query(s, new ContentClientHandler.ObjectLoaded<Pathway>() {
+            @Override
+            public void onObjectLoaded(Pathway databaseObject) {
+                container.add(new Label(databaseObject.getHasEvent().toString()));
+                GWT.log(databaseObject.toString());
+            }
+
+            @Override
+            public void onContentClientException(Type type, String message) {
+            }
+
+            @Override
+            public void onContentClientError(ContentClientError error) {
+
+            }
         });
     }
 

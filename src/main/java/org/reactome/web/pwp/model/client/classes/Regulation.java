@@ -20,6 +20,7 @@ public class Regulation extends DatabaseObject {
     private List<Pathway> containedInPathway;
     private List<InstanceEdit> edited;
     private List<Publication> literatureReference;
+    private List<ReactionLikeEvent> regulatedEntity;
     private DatabaseObject regulator;
     private List<InstanceEdit> reviewed;
     private List<InstanceEdit> revised;
@@ -51,6 +52,8 @@ public class Regulation extends DatabaseObject {
         this.edited = DatabaseObjectUtils.getObjectList(jsonObject, "edited");
 
         this.literatureReference = DatabaseObjectUtils.getObjectList(jsonObject, "literatureReference");
+
+        this.regulatedEntity = DatabaseObjectUtils.getObjectList(jsonObject, "regulatedEntity");
 
         setDatabaseObject(jsonObject.get("regulator"), () ->
                 regulator = DatabaseObjectUtils.getDatabaseObject(jsonObject, "regulator")
@@ -95,6 +98,10 @@ public class Regulation extends DatabaseObject {
 
     public List<Publication> getLiteratureReference() {
         return literatureReference;
+    }
+
+    public List<ReactionLikeEvent> getRegulatedEntity() {
+        return regulatedEntity;
     }
 
     public DatabaseObject getRegulator() {
