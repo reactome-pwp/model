@@ -39,6 +39,7 @@ public abstract class Event extends DatabaseObject {
     private List<InstanceEdit> revised;
     private List<Species> species;
     private List<Summation> summation;
+    private ReviewStatus reviewStatus;
 
     public Event(SchemaClass schemaClass) {
         super(schemaClass);
@@ -96,6 +97,10 @@ public abstract class Event extends DatabaseObject {
         this.species = DatabaseObjectUtils.getObjectList(jsonObject, "species");
 
         this.summation = DatabaseObjectUtils.getObjectList(jsonObject, "summation");
+
+        setDatabaseObject(jsonObject.get("reviewStatus"), () ->
+                reviewStatus = DatabaseObjectUtils.getDatabaseObject(jsonObject, "reviewStatus")
+        );
     }
 
     public ImageResource getStatusIcon() {
@@ -217,4 +222,7 @@ public abstract class Event extends DatabaseObject {
         return summation;
     }
 
+    public ReviewStatus getReviewStatus() {
+        return reviewStatus;
+    }
 }

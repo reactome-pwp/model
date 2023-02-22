@@ -8,9 +8,7 @@ import org.reactome.web.pwp.model.client.factory.SchemaClass;
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
 @SuppressWarnings("UnusedDeclaration")
-public class EvidenceType extends DatabaseObject {
-
-    private String definition;
+public class EvidenceType extends ExternalOntology {
 
     public EvidenceType() {
         super(SchemaClass.EVIDENCE_TYPE);
@@ -19,11 +17,5 @@ public class EvidenceType extends DatabaseObject {
     @Override
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
-
-        this.definition = DatabaseObjectUtils.getStringValue(jsonObject, "definition");
-    }
-
-    public String getDefinition() {
-        return definition;
     }
 }
