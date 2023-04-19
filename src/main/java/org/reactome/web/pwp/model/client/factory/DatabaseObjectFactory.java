@@ -61,6 +61,7 @@ public abstract class DatabaseObjectFactory {
             case AFFILIATION:
                 rtn = new Affiliation();
                 break;
+            case ANATOMY:                                   rtn = new Anatomy();                            break;
             //case ABSTRACT_MODIFIED_RESIDUE:  //NOT USED HERE
             case BLACK_BOX_EVENT:                           rtn = new BlackBoxEvent();                      break;
             case BOOK:                                      rtn = new Book();                               break;
@@ -68,6 +69,9 @@ public abstract class DatabaseObjectFactory {
             case CATALYST_ACTIVITY:                         rtn = new CatalystActivity();                   break;
             case CATALYST_ACTIVITY_REFERENCE:               rtn = new CatalystActivityReference();          break;
             case CELL_TYPE:                                 rtn = new CellType();                           break;
+            case CELL:                                      rtn = new Cell();                               break;
+            case CELL_DEVELOPMENT_STEP:                     rtn = new CellDevelopmentStep();                break;
+            case CELL_LINEAGE_PATH:                         rtn = new CellLineagePath();                    break;
             case CHEMICAL_DRUG:                             rtn = new ChemicalDrug();                       break;
             case COMPARTMENT:                               rtn = new Compartment();                        break;
             case COMPLEX:                                   rtn = new Complex();                            break;

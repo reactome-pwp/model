@@ -8,16 +8,20 @@ package org.reactome.web.pwp.model.client.factory;
 public enum SchemaClass {
     AFFILIATION("Affiliation"),
     ABSTRACT_MODIFIED_RESIDUE("AbstractModifiedResidue"),
+    ANATOMY("Anatomy"),
     BLACK_BOX_EVENT("BlackBoxEvent"),
     BOOK("Book"),
     CANDIDATE_SET("CandidateSet"),
     CATALYST_ACTIVITY("CatalystActivity"),
     CATALYST_ACTIVITY_REFERENCE("CatalystActivityReference"),
+    CELL("Cell"),
+    CELL_DEVELOPMENT_STEP("CellDevelopmentStep"),
+    CELL_LINEAGE_PATH("CellLineagePath"),
     CELL_TYPE("CellType"),
     CHEMICAL_DRUG("ChemicalDrug"),
     COMPARTMENT("Compartment"),
     COMPLEX("Complex"),
-//    CONTROL_REFERENCE("ControlReference"),
+    //    CONTROL_REFERENCE("ControlReference"),
     CONTROLLED_VOCABULARY("ControlledVocabulary"),
     CROSS_LINKED_RESIDUE("CrosslinkedResidue"),
     DATABASE_IDENTIFIER("DatabaseIdentifier"),
@@ -50,6 +54,7 @@ public enum SchemaClass {
     INTER_CHAIN_CROSSLINKED_RESIDUE("InterChainCrosslinkedResidue"),
     INTRA_CHAIN_CROSSLINKED_RESIDUE("IntraChainCrosslinkedResidue"),
     LITERATURE_REFERENCE("LiteratureReference"),
+    MARKER_REFERENCE("MarkerReference"),
     MODIFIED_RESIDUE("ModifiedResidue"),
     MODIFIED_NUCLEOTIDE("ModifiedNucleotide"),
     NEGATIVE_GENE_EXPRESSION_REGULATION("NegativeGeneExpressionRegulation"),
@@ -79,7 +84,7 @@ public enum SchemaClass {
     REFERENCE_THERAPEUTIC("ReferenceTherapeutic"),
     REGULATION("Regulation"),
     REGULATION_REFERENCE("RegulationReference"),
-//    REGULATION_TYPE("RegulationType"),
+    //    REGULATION_TYPE("RegulationType"),
     REPLACED_RESIDUE("ReplacedResidue"),
     NONSENSE_MUTATION("NonsenseMutation"),
     REQUIREMENT("Requirement"),
@@ -101,14 +106,14 @@ public enum SchemaClass {
         this(schemaClass, getName(schemaClass));
     }
 
-    SchemaClass(String schemaClass, String name){
+    SchemaClass(String schemaClass, String name) {
         this.schemaClass = schemaClass;
         this.name = name;
     }
 
-    public static SchemaClass getSchemaClass(String schemaClass){
+    public static SchemaClass getSchemaClass(String schemaClass) {
         for (SchemaClass sc : values()) {
-            if(sc.schemaClass.equals(schemaClass)) return sc;
+            if (sc.schemaClass.equals(schemaClass)) return sc;
         }
         return DATABASE_OBJECT;
     }
@@ -116,9 +121,9 @@ public enum SchemaClass {
     private static String getName(String schemaClass) {
         StringBuilder sb = new StringBuilder();
         schemaClass.chars().forEach(c -> {
-            if (Character.isUpperCase((char)c))
+            if (Character.isUpperCase((char) c))
                 sb.append(" ");
-            sb.append((char)c);
+            sb.append((char) c);
         });
         return sb.toString().trim();
     }
