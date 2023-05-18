@@ -105,6 +105,7 @@ public abstract class DatabaseObjectFactory {
             case INSTANCE_EDIT:                             rtn = new InstanceEdit();                       break;
             case INTER_CHAIN_CROSSLINKED_RESIDUE:           rtn = new InterChainCrosslinkedResidue();       break;
             case INTRA_CHAIN_CROSSLINKED_RESIDUE:           rtn = new IntraChainCrosslinkedResidue();       break;
+            case MARKER_REFERENCE:                          rtn = new MarkerReference();                    break;
             case LITERATURE_REFERENCE:                      rtn = new LiteratureReference();                break;
             case MODIFIED_RESIDUE:                          rtn = new ModifiedResidue();                    break;
             case MODIFIED_NUCLEOTIDE:                       rtn = new ModifiedNucleotide();                 break;

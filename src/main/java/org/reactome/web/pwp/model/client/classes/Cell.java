@@ -1,6 +1,8 @@
 package org.reactome.web.pwp.model.client.classes;
 
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.resources.client.ImageResource;
+import org.reactome.web.pwp.model.client.factory.DatabaseObjectImages;
 import org.reactome.web.pwp.model.client.factory.DatabaseObjectUtils;
 import org.reactome.web.pwp.model.client.factory.SchemaClass;
 
@@ -32,19 +34,29 @@ public class Cell extends PhysicalEntity {
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
 
-        this.rnaMarker = DatabaseObjectUtils.getObjectList(jsonObject, "RNAMarker");
+        this.rnaMarker = DatabaseObjectUtils.getObjectList(jsonObject, "rnaMarker");
         this.markerReference = DatabaseObjectUtils.getObjectList(jsonObject, "markerReference");
-        this.organ = DatabaseObjectUtils.getDatabaseObject(jsonObject, "organ");
-        this.proteinMarker = DatabaseObjectUtils.getDatabaseObject(jsonObject, "proteinMarker");
-        this.species = DatabaseObjectUtils.getDatabaseObject(jsonObject, "species");
-        this.tissue = DatabaseObjectUtils.getDatabaseObject(jsonObject, "tissue");
-        this.tissueLayer = DatabaseObjectUtils.getDatabaseObject(jsonObject, "tissueLayer");
+
+        setDatabaseObject(jsonObject.get("organ"), () ->
+                organ = DatabaseObjectUtils.getDatabaseObject(jsonObject, "organ")
+        );
+
+        this.proteinMarker = DatabaseObjectUtils.getObjectList(jsonObject, "proteinMarker");
+        this.species = DatabaseObjectUtils.getObjectList(jsonObject, "species");
+
+        setDatabaseObject(jsonObject.get("tissue"), () ->
+                tissue = DatabaseObjectUtils.getDatabaseObject(jsonObject, "tissue")
+        );
+
+        setDatabaseObject(jsonObject.get("tissue"), () ->
+                tissueLayer = DatabaseObjectUtils.getDatabaseObject(jsonObject, "tissueLayer")
+        );
+
     }
 
     public List<EntityWithAccessionedSequence> getRnaMarker() {
         return rnaMarker;
     }
-
 
     public List<MarkerReference> getMarkerReference() {
         return markerReference;
@@ -72,5 +84,9 @@ public class Cell extends PhysicalEntity {
         return tissueLayer;
     }
 
+    @Override
+    public ImageResource getImageResource() {
+        return DatabaseObjectImages.INSTANCE.Cell();
+    }
 
 }

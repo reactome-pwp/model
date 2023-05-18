@@ -6,16 +6,12 @@ import org.reactome.web.pwp.model.client.factory.DatabaseObjectImages;
 import org.reactome.web.pwp.model.client.factory.DatabaseObjectUtils;
 import org.reactome.web.pwp.model.client.factory.SchemaClass;
 
-import java.util.List;
 
-/**
- * @author Antonio Fabregat <fabregat@ebi.ac.uk>
- */
 @SuppressWarnings("UnusedDeclaration")
-public class CellLineagePath extends Event {
+public class CellLineagePath extends Pathway {
 
-    private List<Event> hasEvent;
     private Anatomy tissue;
+
     public CellLineagePath(SchemaClass schemaClass) {
         super(schemaClass);
     }
@@ -28,13 +24,9 @@ public class CellLineagePath extends Event {
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
 
-        this.hasEvent = DatabaseObjectUtils.getObjectList(jsonObject, "hasEvent");
-        this.tissue = DatabaseObjectUtils.getDatabaseObject(jsonObject, "tissue");
-    }
-
-
-    public List<Event> getHasEvent() {
-        return hasEvent;
+        setDatabaseObject(jsonObject.get("tissue"), () ->
+                tissue = DatabaseObjectUtils.getDatabaseObject(jsonObject, "tissue")
+        );
     }
 
     public Anatomy getTissue() {
