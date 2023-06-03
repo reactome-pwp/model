@@ -42,6 +42,8 @@ public abstract class PhysicalEntity extends DatabaseObject {
     private List<PhysicalEntity> memberOf;
     private List<Polymer> repeatedUnitOf;
 
+    private List<MarkerReference> markingReferences;
+
     public PhysicalEntity(SchemaClass schemaClass) {
         super(schemaClass);
     }
@@ -81,6 +83,7 @@ public abstract class PhysicalEntity extends DatabaseObject {
 
         this.literatureReference = DatabaseObjectUtils.getObjectList(jsonObject, "literatureReference");
 
+        this.markingReferences = DatabaseObjectUtils.getObjectList(jsonObject, "markingReferences");
 
         this.reviewed = DatabaseObjectUtils.getObjectList(jsonObject, "reviewed");
 
