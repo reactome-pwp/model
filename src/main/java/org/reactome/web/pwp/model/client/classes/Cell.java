@@ -86,7 +86,7 @@ public class Cell extends PhysicalEntity {
 
     @Override
     public ImageResource getImageResource() {
-        return DatabaseObjectImages.INSTANCE.Cell();
+        return DatabaseObjectImages.INSTANCE.cell();
     }
 
 }
