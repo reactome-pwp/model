@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MarkerReference extends ControlReference {
 
-    private List<EntityWithAccessionedSequence> marker;
+    private EntityWithAccessionedSequence marker;
 
     private List<Cell> cell;
 
@@ -21,7 +21,7 @@ public class MarkerReference extends ControlReference {
         super(SchemaClass.MARKER_REFERENCE);
     }
 
-    public List<EntityWithAccessionedSequence> getMarker() {
+    public EntityWithAccessionedSequence getMarker() {
         return marker;
     }
 
@@ -33,6 +33,6 @@ public class MarkerReference extends ControlReference {
     public void load(JSONObject jsonObject) {
         super.load(jsonObject);
         this.cell = DatabaseObjectUtils.getObjectList(jsonObject, "cell");
-        this.marker = DatabaseObjectUtils.getObjectList(jsonObject, "marker");
+        this.marker = DatabaseObjectUtils.getDatabaseObject(jsonObject, "marker");
     }
 }
